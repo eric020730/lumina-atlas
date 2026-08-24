@@ -2,12 +2,13 @@
   "name": "lumina-atlas",
   "private": true,
   "scripts": {
+    "build": "node scripts/build-worker-assets.mjs",
     "validate:data": "node scripts/validate-course-data.mjs",
     "check": "npm run validate:data && npm run cf:check",
     "cf:types": "wrangler types worker/worker-configuration.d.ts --config worker/wrangler.jsonc",
-    "cf:check": "npm run cf:types && tsc --noEmit -p worker/tsconfig.json && wrangler deploy --dry-run --config worker/wrangler.jsonc",
+    "cf:check": "npm run build && npm run cf:types && tsc --noEmit -p worker/tsconfig.json && wrangler deploy --dry-run --config worker/wrangler.jsonc",
     "cf:dev": "wrangler dev --config worker/wrangler.jsonc --port 8787",
-    "cf:deploy": "wrangler deploy --config worker/wrangler.jsonc"
+    "cf:deploy": "npm run build && wrangler deploy --config worker/wrangler.jsonc"
   },
   "devDependencies": {
     "@types/node": "^26.2.0",

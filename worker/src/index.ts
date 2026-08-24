@@ -1,18 +1,8 @@
 const SITE_PREFIX = "/beauty";
 const LEGACY_SITE_PREFIX = "/lumina-atlas";
-const UPSTREAM_SITE_PREFIX = "/lumina-atlas";
-const UPSTREAM_ORIGIN = "https://eric020730.github.io";
-
-const FORWARDED_REQUEST_HEADERS = [
-  "accept",
-  "accept-language",
-  "if-modified-since",
-  "if-none-match",
-  "range",
-] as const;
 
 export default {
-  async fetch(request): Promise<Response> {
+  async fetch(request, env): Promise<Response> {
     const incomingUrl = new URL(request.url);
     const isSitePath =
       incomingUrl.pathname === SITE_PREFIX ||
@@ -21,10 +11,8 @@ export default {
       incomingUrl.pathname === LEGACY_SITE_PREFIX ||
       incomingUrl.pathname.startsWith(`${LEGACY_SITE_PREFIX}/`);
 
-    // The route pattern ends in a wildcard so it also matches query strings.
-    // Preserve any similarly named path on the existing root application.
     if (!isSitePath && !isLegacySitePath) {
-      return fetch(request);
+      return new Response("Not Found", { status: 404 });
     }
 
     if (isLegacySitePath) {
@@ -45,36 +33,25 @@ export default {
       });
     }
 
-    const siteSuffix = incomingUrl.pathname.slice(SITE_PREFIX.length);
-    const upstreamUrl = new URL(
-      `${UPSTREAM_SITE_PREFIX}${siteSuffix}${incomingUrl.search}`,
-      UPSTREAM_ORIGIN,
-    );
-    const upstreamHeaders = new Headers();
+    const assetUrl = new URL(request.url);
+    assetUrl.pathname = incomingUrl.pathname.slice(SITE_PREFIX.length) || "/";
 
-    for (const headerName of FORWARDED_REQUEST_HEADERS) {
-      const headerValue = request.headers.get(headerName);
-      if (headerValue) upstreamHeaders.set(headerName, headerValue);
-    }
-
-    const upstreamResponse = await fetch(
-      new Request(upstreamUrl, {
+    const assetResponse = await env.ASSETS.fetch(
+      new Request(assetUrl, {
         method: request.method,
-        headers: upstreamHeaders,
-        redirect: "follow",
+        headers: request.headers,
       }),
     );
-    const responseHeaders = new Headers(upstreamResponse.headers);
+    const responseHeaders = new Headers(assetResponse.headers);
 
-    responseHeaders.delete("set-cookie");
     responseHeaders.set("X-Content-Type-Options", "nosniff");
     responseHeaders.set("Referrer-Policy", "strict-origin-when-cross-origin");
-    responseHeaders.set("X-Lumina-Origin", "github-pages");
+    responseHeaders.set("X-Lumina-Origin", "cloudflare-assets");
 
-    return new Response(upstreamResponse.body, {
-      status: upstreamResponse.status,
-      statusText: upstreamResponse.statusText,
+    return new Response(assetResponse.body, {
+      status: assetResponse.status,
+      statusText: assetResponse.statusText,
       headers: responseHeaders,
     });
   },
-} satisfies ExportedHandler;
+} satisfies ExportedHandler<Env>;

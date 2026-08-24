@@ -22,11 +22,14 @@ python3 -m http.server 4173
 
 開啟 `http://localhost:4173`。
 
-## Cloudflare 路由
+## Cloudflare 部署
 
-`worker/` 內的 Cloudflare Worker 接管 `eric020730.com/beauty*`，並以串流方式代理 GitHub Pages 上的已發布內容。舊網址 `eric020730.com/lumina-atlas*` 會保留為永久導向，根網站與其他既有路由不受影響。
+`worker/` 內的 Cloudflare Worker 接管 `eric020730.com/beauty` 與其子路徑，並直接提供建置後的靜態資產，不依賴 GitHub Pages。舊網址 `eric020730.com/lumina-atlas` 會保留為永久導向，根網站與其他既有路由不受影響。
+
+push 到 GitHub `main` 後，GitHub Actions 會先驗證資料、建置與執行 Wrangler dry-run，通過後自動部署 Cloudflare Worker。GitHub repository 需設定 Secret `CLOUDFLARE_API_TOKEN` 與 Variable `CLOUDFLARE_ACCOUNT_ID`。
 
 ```bash
+npm run check
 npm run cf:types
 npm run cf:check
 npm run cf:deploy

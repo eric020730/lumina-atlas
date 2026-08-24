@@ -6,13 +6,15 @@
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": false,
   "preview_urls": false,
+  "assets": {
+    "directory": "../dist",
+    "binding": "ASSETS",
+    "not_found_handling": "none",
+    "run_worker_first": true
+  },
   "routes": [
     {
       "pattern": "eric020730.com/beauty",
-      "zone_name": "eric020730.com"
-    },
-    {
-      "pattern": "eric020730.com/beauty*",
       "zone_name": "eric020730.com"
     },
     {
@@ -21,10 +23,6 @@
     },
     {
       "pattern": "eric020730.com/lumina-atlas",
-      "zone_name": "eric020730.com"
-    },
-    {
-      "pattern": "eric020730.com/lumina-atlas*",
       "zone_name": "eric020730.com"
     },
     {
