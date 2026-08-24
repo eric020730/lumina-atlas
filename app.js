@@ -27,6 +27,7 @@ const searchFilters = [...document.querySelectorAll("[data-search-filter]")];
 const clearSearchButton = document.querySelector("[data-clear-search]");
 const recentSearches = document.querySelector("[data-recent-searches]");
 const recentSearchList = document.querySelector("[data-recent-search-list]");
+const pulseCoursePicks = document.querySelector("[data-pulse-course-picks]");
 const toast = document.querySelector("[data-toast]");
 let toastTimer;
 
@@ -847,7 +848,7 @@ const loadVideoLessons = async () => {
   renderVideoPlaylist();
 };
 
-loadVideoLessons();
+const videoLoadTask = loadVideoLessons();
 
 const parseTaiwanDate = (date) => new Date(`${date}T12:00:00+08:00`);
 const formatShortDate = (date) =>
@@ -1042,6 +1043,61 @@ const upcomingEventTemplate = (course) => {
     </a>`;
 };
 
+const pulseCourseMarker = (course) => {
+  if (course.formats.includes("online")) return "ONLINE";
+  if (course.formats.includes("conference")) return "EVENT";
+  if (course.formats.includes("practice")) return "PRACTICE";
+  return "COURSE";
+};
+
+const pulseCourseReason = (course) => {
+  if (course.status === "ongoing" && course.creditStatus === "confirmed") {
+    return "自動挑選・持續開放且時數已明示";
+  }
+  if (course.status === "open" && course.creditStatus === "confirmed") {
+    return "自動挑選・近期開課且認證資訊較完整";
+  }
+  if (course.status === "open") return "自動挑選・近期開課，認證仍待核定";
+  return "自動挑選・目前可報名，細節需再次確認";
+};
+
+const pulseCourseTemplate = (course) => `
+  <article class="brief-item">
+    <div class="brief-item__marker">${escapeHTML(pulseCourseMarker(course))}</div>
+    <div>
+      <span>${escapeHTML(course.statusLabel)}・${escapeHTML(formatDateRange(course.startDate, course.endDate))}</span>
+      <h3>${escapeHTML(course.title)}</h3>
+      <p>${escapeHTML(course.summary)}</p>
+      <small class="brief-item__reason">${escapeHTML(pulseCourseReason(course))}</small>
+    </div>
+    <a href="#course-${escapeHTML(course.id)}" aria-label="查看${escapeHTML(course.title)}">→</a>
+  </article>`;
+
+const renderPulseCoursePicks = (courses) => {
+  if (!pulseCoursePicks) return;
+
+  const now = new Date();
+  const statusPriority = { open: 50, ongoing: 45, verify: 20 };
+  const creditPriority = { confirmed: 20, expected: 10, unverified: 0 };
+  const picks = courses
+    .filter((course) => statusPriority[course.status] && parseTaiwanDate(course.endDate) >= now)
+    .map((course) => {
+      const daysUntil = Math.max(0, Math.ceil((parseTaiwanDate(course.startDate) - now) / 86_400_000));
+      const proximityScore = Math.max(0, 30 - Math.min(daysUntil, 30));
+      return {
+        course,
+        score: statusPriority[course.status] + creditPriority[course.creditStatus] + proximityScore,
+      };
+    })
+    .sort((a, b) => b.score - a.score || a.course.startDate.localeCompare(b.course.startDate))
+    .slice(0, 2)
+    .map(({ course }) => course);
+
+  pulseCoursePicks.innerHTML = picks.length
+    ? picks.map(pulseCourseTemplate).join("")
+    : '<article class="brief-item brief-item--loading"><div class="brief-item__marker">AUTO</div><div><span>目前沒有可自動挑選的課程</span><h3>請查看完整課程情報</h3><p>新資料加入後，這裡會自動重新排序。</p></div><a href="#courses" aria-label="查看完整課程情報">→</a></article>';
+};
+
 const updateUpcomingEvents = (courses) => {
   const now = new Date();
   const upcoming = courses
@@ -1103,6 +1159,7 @@ const loadCourseIntelligence = async () => {
     applyCourseFilter();
     renderCourseTimeline(payload.courses);
     updateUpcomingEvents(payload.courses);
+    renderPulseCoursePicks(payload.courses);
     registerCourseSearchItems(payload.courses);
   } catch (error) {
     console.error("課程情報載入失敗", error);
@@ -1115,10 +1172,11 @@ const loadCourseIntelligence = async () => {
       upcomingEvents.innerHTML = '<p class="upcoming-events__loading">無法讀取近期活動，請稍後再試。</p>';
     }
     if (upcomingCount) upcomingCount.textContent = "—";
+    renderPulseCoursePicks([]);
   }
 };
 
-loadCourseIntelligence();
+const courseLoadTask = loadCourseIntelligence();
 
 const qualificationForm = document.querySelector("[data-qualification-form]");
 const qualificationResult = document.querySelector("[data-qualification-result]");
@@ -1733,7 +1791,7 @@ lifeExperiments?.addEventListener("change", (event) => {
   showToast(input.checked ? "已記錄一項人生實驗證據" : "已重新開啟這項人生實驗");
 });
 
-initializeLifeOs();
+const lifeOsLoadTask = initializeLifeOs();
 
 const reveals = document.querySelectorAll(".reveal");
 const observer = new IntersectionObserver(
@@ -1785,3 +1843,11 @@ window.addEventListener("scroll", () => {
 }, { passive: true });
 
 window.addEventListener("load", updateCurrentSection);
+
+Promise.allSettled([videoLoadTask, courseLoadTask, lifeOsLoadTask]).then(() => {
+  const hashTarget = location.hash ? document.querySelector(location.hash) : null;
+  window.requestAnimationFrame(() => {
+    if (hashTarget) hashTarget.scrollIntoView({ block: "start" });
+    updateCurrentSection();
+  });
+});

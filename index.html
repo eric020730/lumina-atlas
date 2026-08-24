@@ -26,8 +26,8 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css?v=20260824-no-notes" />
-    <link rel="stylesheet" href="./taste.css?v=20260824-no-notes" />
-    <script src="./app.js?v=20260824-no-notes" defer></script>
+    <link rel="stylesheet" href="./taste.css?v=20260824-auto-picks" />
+    <script src="./app.js?v=20260824-auto-picks" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
@@ -219,24 +219,14 @@
             </div>
           </article>
 
-          <aside class="pulse-side reveal" aria-label="接下來的學習項目">
-            <article class="brief-item">
-              <div class="brief-item__marker">COURSE</div>
+          <aside class="pulse-side reveal" data-pulse-course-picks aria-label="自動挑選的近期課程" aria-live="polite">
+            <article class="brief-item brief-item--loading">
+              <div class="brief-item__marker">AUTO</div>
               <div>
-                <span>持續報名中</span>
-                <h3>微創針劑注射教育訓練</h3>
-                <p>13.5 小時線上理論，完成後銜接 12 小時實體臨床實操。</p>
+                <span>正在讀取最新課程</span>
+                <h3>依開放狀態、日期與認證資訊排序</h3>
+                <p>課程資料載入後，這裡會自動顯示目前較值得先看的兩門。</p>
               </div>
-              <a href="#courses" aria-label="查看微創針劑注射教育訓練">→</a>
-            </article>
-            <article class="brief-item">
-              <div class="brief-item__marker">SYSTEM</div>
-              <div>
-                <span>版本提醒</span>
-                <h3>先確認版本，再採取下一步</h3>
-                <p>醫美規則會變動；每一則摘要都保留來源與最後查核日。</p>
-              </div>
-              <a href="#source-trace" aria-label="查看官方版本追蹤">→</a>
             </article>
           </aside>
         </div>
