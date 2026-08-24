@@ -1,0 +1,348 @@
+{
+  "updatedAt": "2026-08-24",
+  "sourceNote": "依過往對話、現實限制與反方壓力測試整理；情境數字不是財務預測。",
+  "thesis": "你的優勢位在臨床可信度、軟體建造能力與結構化醫學知識的交集；真正的限制不是能力，而是注意力。",
+  "values": [
+    {
+      "id": "autonomy",
+      "label": "時間自主",
+      "description": "能否主動安排工作週與停工時間",
+      "defaultWeight": 5
+    },
+    {
+      "id": "family",
+      "label": "家庭相容",
+      "description": "是否留下穩定、可預測的共同時間",
+      "defaultWeight": 5
+    },
+    {
+      "id": "health",
+      "label": "健康續航",
+      "description": "能否長期維持睡眠、運動與恢復",
+      "defaultWeight": 4
+    },
+    {
+      "id": "wealth",
+      "label": "財富上限",
+      "description": "五年後現金流與股權的非對稱機會",
+      "defaultWeight": 4
+    },
+    {
+      "id": "influence",
+      "label": "專業影響",
+      "description": "臨床、研究或產品帶來的長期影響力",
+      "defaultWeight": 3
+    },
+    {
+      "id": "creativity",
+      "label": "創意空間",
+      "description": "能否持續寫程式、創作、學習與旅行",
+      "defaultWeight": 4
+    }
+  ],
+  "paths": [
+    {
+      "id": "clinic",
+      "code": "A",
+      "shortTitle": "旗艦診所",
+      "title": "證據導向的醫美診所創辦人",
+      "tagline": "把臨床品質、患者教育與 outcome tracking 做成一間可信任的旗艦診所。",
+      "weeklyHours": "38–50 小時",
+      "incomeShape": "臨床現金流高；資產流動性低",
+      "certainty": "中高",
+      "reversibility": "低",
+      "dailyLife": "三天看診、一天團隊與品質管理、一天保留給家庭或產品。收入與品牌較強，但患者、員工與設備會把你綁在固定城市。",
+      "sacrifice": "放射科深度、地理自由，以及 AI 創業最適合全力投入的時間窗口。",
+      "dimensions": {
+        "autonomy": 3,
+        "family": 2,
+        "health": 2,
+        "wealth": 4,
+        "influence": 4,
+        "creativity": 2
+      },
+      "weekShape": [
+        { "label": "3 天", "value": "患者與處置" },
+        { "label": "1 天", "value": "品質與團隊" },
+        { "label": "1 天", "value": "家庭／產品" }
+      ],
+      "roadmap": [
+        { "year": "2026", "text": "完成資格與法規盤點；不簽長約、不買設備。" },
+        { "year": "2027", "text": "每週固定兩天成熟診所，累積諮詢、追蹤與併發症能力。" },
+        { "year": "2028", "text": "以受僱或分潤模式驗證患者來源、回診率與單位經濟。" },
+        { "year": "2029", "text": "需求與毛利證據成立後，才開業或買入股權。" },
+        { "year": "2030", "text": "培養第二位醫師與營運主管，移除單點依賴。" },
+        { "year": "2031", "text": "你離開三週，診所仍能維持品質與營運。" }
+      ],
+      "reversible": [
+        "先在成熟診所每週工作一至兩天",
+        "建立病例、併發症與 outcome log",
+        "用一年驗證自己是否喜歡患者服務與營運"
+      ],
+      "irreversible": [
+        "長期租約、設備貸款與個人擔保",
+        "與姓名高度綁定的療程品牌",
+        "完全離開放射科超過兩年"
+      ],
+      "switchSignals": [
+        "連續六個月每週至少兩天醫美，病例與轉介持續成長",
+        "你喜歡諮詢、術後追蹤與管理，不只喜歡操作",
+        "在尚未開店前，現有模式已能穩定獲利"
+      ]
+    },
+    {
+      "id": "venture",
+      "code": "B",
+      "shortTitle": "醫療 AI 公司",
+      "title": "醫療 AI 垂直軟體公司創辦人",
+      "tagline": "不做泛用聊天機器人；專注可追溯知識、工作流程或 AI 治理的窄型產品。",
+      "weeklyHours": "40–60 小時",
+      "incomeShape": "現金不確定；股權上限最高",
+      "certainty": "低",
+      "reversibility": "低",
+      "dailyLife": "你以產品、銷售、資安、法規與招募為主，只保留少量臨床維持觸覺。成功可能帶來高度非對稱報酬，但前兩三年通常不是自由生活。",
+      "sacrifice": "穩定醫師收入、臨床熟練度，以及在產品市場契合前的晚間與心理空間。",
+      "dimensions": {
+        "autonomy": 2,
+        "family": 1,
+        "health": 1,
+        "wealth": 5,
+        "influence": 5,
+        "creativity": 5
+      },
+      "weekShape": [
+        { "label": "3 天", "value": "產品與客戶" },
+        { "label": "1 天", "value": "團隊與銷售" },
+        { "label": "0.5 天", "value": "維持臨床" }
+      ],
+      "roadmap": [
+        { "year": "2026", "text": "訪談 30 位使用者，取得 3 個付費試點。" },
+        { "year": "2027", "text": "至少 10 個付費客戶；導入不再依靠逐家客製。" },
+        { "year": "2028", "text": "明確選擇非醫材工作流或受監管醫材路線。" },
+        { "year": "2029", "text": "建立可重複銷售的核心產品與專業業務能力。" },
+        { "year": "2030", "text": "成為小而高獲利的垂直軟體公司，或擴大 ARR。" },
+        { "year": "2031", "text": "公司穩定獲利、被收購，或你已能交出部分 CEO 工作。" }
+      ],
+      "reversible": [
+        "用公共資料打造可追溯知識 MVP",
+        "每週保留一天，先取得三個付費試點",
+        "建立小型、可獲利的 bootstrapped 工具"
+      ],
+      "irreversible": [
+        "接受創投並承諾高速成長",
+        "太早分出大量共同創辦人股權",
+        "處理可識別病人資料或作出臨床宣稱"
+      ],
+      "switchSignals": [
+        "三個以上互不相關機構付費，至少兩個續約",
+        "導入可標準化，不需要你每次重寫產品",
+        "你投入銷售與招募的意願不低於寫程式"
+      ]
+    },
+    {
+      "id": "authority",
+      "code": "C",
+      "shortTitle": "學術 AI 權威",
+      "title": "放射醫學 × 醫療 AI 的臨床學術權威",
+      "tagline": "讓一套真正改善影像工作流程、而且安全可驗證的 AI 系統進入臨床常規。",
+      "weeklyHours": "45–55 小時",
+      "incomeShape": "現金穩定；商業上限較低",
+      "certainty": "高",
+      "reversibility": "中",
+      "dailyLife": "三天臨床、一天研究與合作、其餘時間教學與行政。專業影響力高、國際連結強，但時間仍由機構、IRB、計畫與升等制度切割。",
+      "sacrifice": "商業自主、股權財富，以及建立醫美患者群與診所品牌的早期窗口。",
+      "dimensions": {
+        "autonomy": 2,
+        "family": 3,
+        "health": 3,
+        "wealth": 2,
+        "influence": 5,
+        "creativity": 3
+      },
+      "weekShape": [
+        { "label": "3 天", "value": "影像臨床" },
+        { "label": "1 天", "value": "研究與轉譯" },
+        { "label": "1 天", "value": "教學與行政" }
+      ],
+      "roadmap": [
+        { "year": "2026", "text": "選定一個願意追五年的生成式 AI 工作流程題目。" },
+        { "year": "2027", "text": "完成第一個前瞻性 workflow study 或公開 benchmark。" },
+        { "year": "2028", "text": "形成具辨識度的研究主題、經費與產學合作。" },
+        { "year": "2029", "text": "建立多中心研究、真實世界驗證與臨床導入。" },
+        { "year": "2030", "text": "取得正式 AI 領導職務、中心資源或升等。" },
+        { "year": "2031", "text": "領導轉譯中心並參與國內外標準與合作。" }
+      ],
+      "reversible": [
+        "執行一個前瞻性研究",
+        "參與產學合作或保留每週一天研究",
+        "用一年測試自己是否享受學術領導"
+      ],
+      "irreversible": [
+        "再投入三至五年建立學術身份",
+        "接受升等與管理責任後降低時間自主",
+        "公開身份固定為放射與醫療 AI 專家"
+      ],
+      "switchSignals": [
+        "機構正式給予 protected time、資源與主持權",
+        "已有前瞻性資料、多中心合作與升等路徑",
+        "做研究時比做產品銷售更有能量"
+      ]
+    },
+    {
+      "id": "portfolio",
+      "code": "D",
+      "shortTitle": "組合型建造者",
+      "title": "組合型 Physician-Builder",
+      "tagline": "刻意只保留兩個經濟引擎：一個高價值臨床身份，加上一項可擴張的數位資產。",
+      "weeklyHours": "32–40 小時",
+      "incomeShape": "臨床保底；數位資產提供上行",
+      "certainty": "中高",
+      "reversibility": "極高",
+      "dailyLife": "兩至三天臨床、一天半經營唯一的知識產品，其餘留給行政、家庭與學習。不募大型創投、不開多間診所，保留旅行與創作空間。",
+      "sacrifice": "診所連鎖、獨角獸公司或學術領導等單一路徑的極致規模。",
+      "dimensions": {
+        "autonomy": 5,
+        "family": 4,
+        "health": 4,
+        "wealth": 3,
+        "influence": 3,
+        "creativity": 5
+      },
+      "weekShape": [
+        { "label": "3 天", "value": "有收入的臨床" },
+        { "label": "1 天", "value": "醫美能力" },
+        { "label": "1 天", "value": "唯一產品" }
+      ],
+      "roadmap": [
+        { "year": "2026", "text": "凍結專案數量，只留一條臨床線與一個付費產品。" },
+        { "year": "2027", "text": "建立穩定臨床角色與首批付費專業使用者。" },
+        { "year": "2028", "text": "數位產品年收入達 200–300 萬，否則結束或改題。" },
+        { "year": "2029", "text": "集中唯一有效的數位資產，停止其他實驗。" },
+        { "year": "2030", "text": "聘用營運或內容負責人，移除日常依賴。" },
+        { "year": "2031", "text": "一週約四天工作，臨床與產品都不需要你每天在線。" }
+      ],
+      "reversible": [
+        "每週一天產品、兩天診所的小規模測試",
+        "聘用短期自由工作者或建立付費內容",
+        "六至十二個月後關閉沒有 traction 的產品"
+      ],
+      "irreversible": [
+        "放射科工作減少到能力明顯退化",
+        "個人品牌跨太多領域，市場無法理解",
+        "長期接受小而美，放棄部分規模窗口"
+      ],
+      "switchSignals": [
+        "十個月內有一條路徑取得明確且可重複的付費證據",
+        "總工時能穩定控制在 42 小時內",
+        "你能淘汰專案，而不是把每條路都延長三個月"
+      ]
+    },
+    {
+      "id": "freedom",
+      "code": "E",
+      "shortTitle": "時間富足",
+      "title": "時間富足的醫師創作者",
+      "tagline": "不追求最大規模；用部分財務獨立換回家庭、身體、旅行與真正完成作品的時間。",
+      "weeklyHours": "20–30 小時",
+      "incomeShape": "收入夠用；長期財富上限較低",
+      "certainty": "中",
+      "reversibility": "高",
+      "dailyLife": "每週兩至三天做擅長且不厭惡的臨床工作，其餘投入運動、旅行、吉他、皮件、影像或程式創作。AI 用來降低生活摩擦，而不是再建立一家公司。",
+      "sacrifice": "頭銜、最大財富、組織規模，以及日後回到高強度職涯的部分機會。",
+      "dimensions": {
+        "autonomy": 5,
+        "family": 5,
+        "health": 5,
+        "wealth": 1,
+        "influence": 2,
+        "creativity": 5
+      },
+      "weekShape": [
+        { "label": "2–3 天", "value": "高價值臨床" },
+        { "label": "1 天", "value": "創作與學習" },
+        { "label": "10–14 週／年", "value": "旅行或長住" }
+      ],
+      "roadmap": [
+        { "year": "2026", "text": "算出家庭的夠用金額，而不是模糊追求更多收入。" },
+        { "year": "2027", "text": "移除值班與不必要週末工作，測試四天工作週。" },
+        { "year": "2028", "text": "進行一次六至八週 mini-retirement。" },
+        { "year": "2029", "text": "臨床降至每週兩三天，每年完成一個作品。" },
+        { "year": "2030", "text": "建立季節性工作與長途旅行模式。" },
+        { "year": "2031", "text": "二至三天工作成為常態，不再是暫時休息。" }
+      ],
+      "reversible": [
+        "六個月四天工作週",
+        "一次六週 mini-retirement",
+        "先將臨床降至七成觀察健康與創造力"
+      ],
+      "irreversible": [
+        "孩子、父母與身體某個階段的時間無法延後",
+        "過早退出會降低回到高強度職涯的機率",
+        "部分診所、學術與創投窗口會隨時間關閉"
+      ],
+      "switchSignals": [
+        "減少工時三個月後，收入仍可覆蓋支出",
+        "睡眠、運動、關係與創作完成率明顯改善",
+        "家人認同這種生活，而且你沒有因失去忙碌而失序"
+      ]
+    }
+  ],
+  "experiments": [
+    {
+      "id": "life-spec",
+      "phase": "本週",
+      "title": "寫下 2031 理想的一週",
+      "description": "先寫工作天數、自由晚上、家庭、運動、旅行與收入，不寫職稱。",
+      "proof": "一頁 Life Specification"
+    },
+    {
+      "id": "finance-baseline",
+      "phase": "本週",
+      "title": "完成財務底盤",
+      "description": "算出基本支出、舒適支出、最低安全收入、資產、負債與可承受虧損。",
+      "proof": "一頁 Financial Baseline"
+    },
+    {
+      "id": "credential-map",
+      "phase": "本週",
+      "title": "完成醫美資格地圖",
+      "description": "整理畢業年度、專科、訓練、案例、導師、法規與併發症能力缺口。",
+      "proof": "一頁 Credential Map"
+    },
+    {
+      "id": "one-product",
+      "phase": "本月",
+      "title": "只留下唯一產品問題",
+      "description": "聚焦三分鐘內完成療程比較、風險與來源追溯的專業使用場景。",
+      "proof": "可操作原型＋明確停止條件"
+    },
+    {
+      "id": "interviews",
+      "phase": "本月",
+      "title": "完成 12 次高資訊量訪談",
+      "description": "涵蓋診所經營者、付費使用者、醫師創業者、財務專業者與重要家人。",
+      "proof": "12 份訪談紀錄"
+    },
+    {
+      "id": "paid-pilot",
+      "phase": "本季",
+      "title": "取得第一個付費試點",
+      "description": "不再詢問喜不喜歡；直接測試誰願意為同一核心問題付費。",
+      "proof": "至少 1 筆真實付款"
+    },
+    {
+      "id": "energy-log",
+      "phase": "90 天",
+      "title": "記錄工時、睡眠與能量",
+      "description": "每週不超過約 42 小時，保留一整天離線、三次運動與兩個自由晚上。",
+      "proof": "連續 12 週紀錄"
+    }
+  ],
+  "stopList": [
+    "不開新的 AI repo",
+    "不測新的 agent 或模型",
+    "不新增影片自動化專案",
+    "不報名與唯一實驗無關的課程",
+    "不用晚上與週末偷偷支付轉職成本"
+  ]
+}

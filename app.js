@@ -156,6 +156,21 @@ const baseKnowledgeIndex = [
     risk: "safety",
     keywords: "官方 來源 證據 文獻 查核 衛福部 醫師全聯會 學會 公告 函文 版本 更新 日期",
   },
+  {
+    id: "life-os",
+    type: "私人決策工具",
+    audience: "職涯轉換",
+    intents: ["quick", "compare"],
+    readTime: 3,
+    title: "2031 人生路徑與 90 天實驗",
+    scope: "比較診所、醫療 AI、學術、組合職涯與時間富足五條路徑，調整價值權重並追蹤九十天證據。",
+    match: "職涯、創業、AI、家庭、健康、財務與時間自主",
+    evidence: "個人對話脈絡與情境推演",
+    updatedAt: "2026-08-24",
+    href: "#life-os",
+    risk: "standard",
+    keywords: "2031 人生 路徑 職涯 創業 AI 診所 家庭 健康 財務 旅行 生活方式 決策 實驗 physician builder",
+  },
 ];
 
 let knowledgeIndex = [...baseKnowledgeIndex];
@@ -1453,6 +1468,306 @@ noteForm?.addEventListener("submit", (event) => {
   noteStatus.textContent = `已於 ${now} 儲存`;
   showToast("筆記已儲存在這台裝置");
 });
+
+const lifeOsConsole = document.querySelector("[data-life-os]");
+const lifeOsError = document.querySelector("[data-life-error]");
+const lifeThesis = document.querySelector("[data-life-thesis]");
+const lifePathTabs = document.querySelector("[data-life-path-tabs]");
+const lifePathDetail = document.querySelector("[data-life-path-detail]");
+const lifeValuesForm = document.querySelector("[data-life-values]");
+const lifeRanking = document.querySelector("[data-life-ranking]");
+const lifeRankingNote = document.querySelector("[data-life-ranking-note]");
+const lifeExperiments = document.querySelector("[data-life-experiments]");
+const lifeStopList = document.querySelector("[data-life-stop-list]");
+const lifeCompleted = document.querySelector("[data-life-completed]");
+const lifeTotal = document.querySelector("[data-life-total]");
+const lifeProgressTrack = document.querySelector("[data-life-progress-track]");
+const lifeProgressBar = document.querySelector("[data-life-progress-bar]");
+const lifeUpdated = document.querySelector("[data-life-updated]");
+const lifeResetButton = document.querySelector("[data-life-reset]");
+
+let lifeOsData;
+let activeLifePathId = "portfolio";
+let lifeWeights = {};
+let completedLifeExperiments = new Set();
+
+const parseLifeStorage = (key, fallback) => {
+  try {
+    return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+  } catch {
+    localStorage.removeItem(key);
+    return fallback;
+  }
+};
+
+const calculateLifeScores = () => {
+  if (!lifeOsData) return [];
+  const totalWeight = lifeOsData.values.reduce((sum, value) => sum + Number(lifeWeights[value.id] || 0), 0);
+  return lifeOsData.paths.map((path, order) => {
+    if (!totalWeight) return { path, order, score: null };
+    const weightedScore = lifeOsData.values.reduce(
+      (sum, value) => sum + Number(lifeWeights[value.id] || 0) * Number(path.dimensions[value.id] || 0),
+      0,
+    );
+    return { path, order, score: Math.round((weightedScore / (totalWeight * 5)) * 100) };
+  });
+};
+
+const renderLifePathTabs = () => {
+  if (!lifePathTabs || !lifeOsData) return;
+  const scores = new Map(calculateLifeScores().map(({ path, score }) => [path.id, score]));
+  lifePathTabs.innerHTML = lifeOsData.paths
+    .map((path) => {
+      const isActive = path.id === activeLifePathId;
+      const score = scores.get(path.id);
+      return `
+        <button
+          class="life-path-tab${isActive ? " is-active" : ""}"
+          id="life-path-tab-${safeHTML(path.id)}"
+          type="button"
+          role="tab"
+          aria-selected="${isActive}"
+          aria-controls="life-path-detail"
+          tabindex="${isActive ? "0" : "-1"}"
+          data-life-path="${safeHTML(path.id)}"
+        >
+          <span class="life-path-tab__code">${safeHTML(path.code)}</span>
+          <span class="life-path-tab__title">${safeHTML(path.shortTitle)}</span>
+          <span class="life-path-tab__score">${score === null ? "—" : `${score}`}</span>
+        </button>`;
+    })
+    .join("");
+};
+
+const renderLifeList = (selector, values) => {
+  const element = document.querySelector(selector);
+  if (!element) return;
+  element.innerHTML = values.map((value) => `<li>${safeHTML(value)}</li>`).join("");
+};
+
+const renderLifePath = () => {
+  if (!lifeOsData || !lifePathDetail) return;
+  const path = lifeOsData.paths.find((item) => item.id === activeLifePathId) || lifeOsData.paths[0];
+  activeLifePathId = path.id;
+  localStorage.setItem("lumina-life-path", activeLifePathId);
+  lifePathDetail.setAttribute("aria-labelledby", `life-path-tab-${path.id}`);
+
+  const textBindings = [
+    ["[data-life-code]", path.code],
+    ["[data-life-short-title]", path.shortTitle],
+    ["[data-life-title]", path.title],
+    ["[data-life-tagline]", path.tagline],
+    ["[data-life-hours]", path.weeklyHours],
+    ["[data-life-income]", path.incomeShape],
+    ["[data-life-certainty]", path.certainty],
+    ["[data-life-reversibility]", path.reversibility],
+    ["[data-life-daily]", path.dailyLife],
+    ["[data-life-sacrifice]", path.sacrifice],
+  ];
+  textBindings.forEach(([selector, value]) => {
+    const element = document.querySelector(selector);
+    if (element) element.textContent = value;
+  });
+
+  const weekShape = document.querySelector("[data-life-week-shape]");
+  if (weekShape) {
+    weekShape.innerHTML = path.weekShape
+      .map((item) => `<div><strong>${safeHTML(item.label)}</strong><small>${safeHTML(item.value)}</small></div>`)
+      .join("");
+  }
+
+  const roadmap = document.querySelector("[data-life-roadmap]");
+  if (roadmap) {
+    roadmap.innerHTML = path.roadmap
+      .map((item) => `<li><strong>${safeHTML(item.year)}</strong><p>${safeHTML(item.text)}</p></li>`)
+      .join("");
+  }
+
+  renderLifeList("[data-life-reversible]", path.reversible);
+  renderLifeList("[data-life-irreversible]", path.irreversible);
+  renderLifeList("[data-life-signals]", path.switchSignals);
+  renderLifePathTabs();
+};
+
+const renderLifeValues = () => {
+  if (!lifeValuesForm || !lifeOsData) return;
+  lifeValuesForm.innerHTML = lifeOsData.values
+    .map((value) => `
+      <div class="life-value-control">
+        <label for="life-value-${safeHTML(value.id)}">
+          <span>${safeHTML(value.label)}</span>
+          <output for="life-value-${safeHTML(value.id)}" data-life-value-output="${safeHTML(value.id)}">${Number(lifeWeights[value.id] || 0)}</output>
+        </label>
+        <p>${safeHTML(value.description)}</p>
+        <input
+          id="life-value-${safeHTML(value.id)}"
+          type="range"
+          min="0"
+          max="5"
+          step="1"
+          value="${Number(lifeWeights[value.id] || 0)}"
+          aria-label="${safeHTML(value.label)}權重"
+          data-life-value="${safeHTML(value.id)}"
+        />
+      </div>`)
+    .join("");
+};
+
+const renderLifeRanking = () => {
+  if (!lifeRanking || !lifeOsData) return;
+  const scores = calculateLifeScores();
+  const hasWeights = scores.some(({ score }) => score !== null);
+  const ranked = [...scores].sort((a, b) => {
+    if (a.score === null || b.score === null) return a.order - b.order;
+    return b.score - a.score || a.order - b.order;
+  });
+
+  lifeRanking.innerHTML = ranked
+    .map(({ path, score }, index) => `
+      <li>
+        <span>${String(index + 1).padStart(2, "0")}</span>
+        <div>
+          <strong>${safeHTML(path.shortTitle)}</strong>
+          <span class="life-ranking__track"><i style="width:${score === null ? 0 : score}%"></i></span>
+        </div>
+        <b>${score === null ? "—" : score}</b>
+      </li>`)
+    .join("");
+
+  if (lifeRankingNote) {
+    lifeRankingNote.textContent = hasWeights
+      ? "分數只反映你設定的價值，不代表客觀最佳解。"
+      : "請至少提高一項權重，系統才會開始比較。";
+  }
+  renderLifePathTabs();
+};
+
+const renderLifeExperimentProgress = () => {
+  if (!lifeOsData) return;
+  const validIds = new Set(lifeOsData.experiments.map((experiment) => experiment.id));
+  completedLifeExperiments = new Set([...completedLifeExperiments].filter((id) => validIds.has(id)));
+  const complete = completedLifeExperiments.size;
+  const total = lifeOsData.experiments.length;
+  const percent = total ? (complete / total) * 100 : 0;
+  if (lifeCompleted) lifeCompleted.textContent = complete;
+  if (lifeTotal) lifeTotal.textContent = total;
+  lifeProgressTrack?.setAttribute("aria-valuenow", String(complete));
+  lifeProgressTrack?.setAttribute("aria-valuemax", String(total));
+  if (lifeProgressBar) lifeProgressBar.style.width = `${percent}%`;
+};
+
+const renderLifeExperiments = () => {
+  if (!lifeExperiments || !lifeOsData) return;
+  lifeExperiments.innerHTML = lifeOsData.experiments
+    .map((experiment) => `
+      <article class="life-experiment-item">
+        <input
+          id="life-experiment-${safeHTML(experiment.id)}"
+          type="checkbox"
+          data-life-experiment="${safeHTML(experiment.id)}"
+          ${completedLifeExperiments.has(experiment.id) ? "checked" : ""}
+        />
+        <label for="life-experiment-${safeHTML(experiment.id)}">
+          <span>${safeHTML(experiment.phase)}</span>
+          <h4>${safeHTML(experiment.title)}</h4>
+          <p>${safeHTML(experiment.description)}</p>
+          <small>完成證據 · ${safeHTML(experiment.proof)}</small>
+        </label>
+      </article>`)
+    .join("");
+  renderLifeExperimentProgress();
+};
+
+const initializeLifeOs = async () => {
+  if (!lifeOsConsole) return;
+  try {
+    const response = await fetch("./data/life-os.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`Life OS data request failed: ${response.status}`);
+    lifeOsData = await response.json();
+
+    const storedPath = localStorage.getItem("lumina-life-path");
+    if (lifeOsData.paths.some((path) => path.id === storedPath)) activeLifePathId = storedPath;
+
+    const storedWeights = parseLifeStorage("lumina-life-values", {});
+    lifeWeights = Object.fromEntries(
+      lifeOsData.values.map((value) => {
+        const storedValue = Number(storedWeights[value.id]);
+        const weight = Number.isFinite(storedValue) && storedValue >= 0 && storedValue <= 5
+          ? storedValue
+          : value.defaultWeight;
+        return [value.id, weight];
+      }),
+    );
+    completedLifeExperiments = new Set(parseLifeStorage("lumina-life-experiments", []));
+
+    if (lifeThesis) lifeThesis.textContent = lifeOsData.thesis;
+    if (lifeUpdated) lifeUpdated.textContent = `資料版本 ${lifeOsData.updatedAt.replaceAll("-", "/")}`;
+    if (lifeStopList) lifeStopList.innerHTML = lifeOsData.stopList.map((item) => `<li>${safeHTML(item)}</li>`).join("");
+
+    renderLifeValues();
+    renderLifeRanking();
+    renderLifePath();
+    renderLifeExperiments();
+    lifeOsConsole.setAttribute("aria-busy", "false");
+  } catch (error) {
+    console.error(error);
+    lifeOsConsole.setAttribute("aria-busy", "false");
+    if (lifeOsError) lifeOsError.hidden = false;
+  }
+};
+
+lifePathTabs?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-life-path]");
+  if (!button || !lifeOsData) return;
+  activeLifePathId = button.dataset.lifePath;
+  renderLifePath();
+});
+
+lifePathTabs?.addEventListener("keydown", (event) => {
+  if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) return;
+  const tabs = [...lifePathTabs.querySelectorAll("[data-life-path]")];
+  const currentIndex = tabs.findIndex((tab) => tab.dataset.lifePath === activeLifePathId);
+  let nextIndex = currentIndex;
+  if (["ArrowRight", "ArrowDown"].includes(event.key)) nextIndex = (currentIndex + 1) % tabs.length;
+  if (["ArrowLeft", "ArrowUp"].includes(event.key)) nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+  if (event.key === "Home") nextIndex = 0;
+  if (event.key === "End") nextIndex = tabs.length - 1;
+  event.preventDefault();
+  activeLifePathId = tabs[nextIndex].dataset.lifePath;
+  renderLifePath();
+  lifePathTabs.querySelector(`[data-life-path="${activeLifePathId}"]`)?.focus();
+});
+
+lifeValuesForm?.addEventListener("input", (event) => {
+  const input = event.target.closest("[data-life-value]");
+  if (!input || !lifeOsData) return;
+  lifeWeights[input.dataset.lifeValue] = Number(input.value);
+  const output = lifeValuesForm.querySelector(`[data-life-value-output="${input.dataset.lifeValue}"]`);
+  if (output) output.textContent = input.value;
+  localStorage.setItem("lumina-life-values", JSON.stringify(lifeWeights));
+  renderLifeRanking();
+});
+
+lifeResetButton?.addEventListener("click", () => {
+  if (!lifeOsData) return;
+  lifeWeights = Object.fromEntries(lifeOsData.values.map((value) => [value.id, value.defaultWeight]));
+  localStorage.setItem("lumina-life-values", JSON.stringify(lifeWeights));
+  renderLifeValues();
+  renderLifeRanking();
+  showToast("已重設人生路徑權重");
+});
+
+lifeExperiments?.addEventListener("change", (event) => {
+  const input = event.target.closest("[data-life-experiment]");
+  if (!input || !lifeOsData) return;
+  if (input.checked) completedLifeExperiments.add(input.dataset.lifeExperiment);
+  else completedLifeExperiments.delete(input.dataset.lifeExperiment);
+  localStorage.setItem("lumina-life-experiments", JSON.stringify([...completedLifeExperiments]));
+  renderLifeExperimentProgress();
+  showToast(input.checked ? "已記錄一項人生實驗證據" : "已重新開啟這項人生實驗");
+});
+
+initializeLifeOs();
 
 const reveals = document.querySelectorAll(".reveal");
 const observer = new IntersectionObserver(

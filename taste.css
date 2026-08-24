@@ -1569,3 +1569,1103 @@ body::after {
     display: none;
   }
 }
+
+/* 2031 Life OS — a private, evidence-led decision lab. */
+.life-os {
+  position: relative;
+  padding-top: 126px;
+}
+
+.life-os::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  height: 1px;
+  background: var(--line);
+  content: "";
+  transform: translateX(-50%);
+}
+
+.life-os::after {
+  position: absolute;
+  top: 98px;
+  right: -2vw;
+  z-index: -1;
+  color: rgba(23, 54, 50, 0.035);
+  content: "2031";
+  font-family: var(--utility);
+  font-size: clamp(120px, 18vw, 250px);
+  font-weight: 600;
+  letter-spacing: -0.09em;
+  line-height: 0.8;
+}
+
+.life-os__thesis {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding: 18px 22px;
+  border-left: 4px solid var(--coral);
+  background: rgba(255, 253, 248, 0.72);
+}
+
+.life-os__thesis > div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 18px;
+  align-items: baseline;
+}
+
+.life-os__thesis span,
+.life-path-nav__head > span,
+.life-values > header > span,
+.life-path-narrative span,
+.life-backcast__head > span,
+.life-switch-signals > div > span,
+.life-stop-list > span {
+  color: var(--aqua-deep);
+  font-family: var(--utility);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.life-os__thesis strong {
+  max-width: 74ch;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.life-os__thesis > p {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.life-os__thesis i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--aqua-deep);
+  box-shadow: 0 0 0 5px rgba(37, 107, 97, 0.1);
+}
+
+.life-os-console {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(190px, 0.75fr) minmax(480px, 2fr) minmax(265px, 1fr);
+  min-height: 900px;
+  border: 1px solid rgba(23, 54, 50, 0.2);
+  border-radius: 7px 62px 7px 7px;
+  background: rgba(255, 253, 248, 0.78);
+  box-shadow: 22px 28px 0 rgba(155, 195, 181, 0.2);
+  overflow: hidden;
+}
+
+.life-path-nav,
+.life-values {
+  min-width: 0;
+  padding: 30px 24px;
+  background: rgba(243, 239, 231, 0.64);
+}
+
+.life-path-nav {
+  border-right: 1px solid var(--line);
+}
+
+.life-path-nav__head h3,
+.life-values h3 {
+  margin: 8px 0 0;
+  font-family: var(--display);
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+}
+
+.life-path-nav__head p,
+.life-values header p {
+  margin: 10px 0 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.life-path-tabs {
+  display: grid;
+  gap: 4px;
+  margin-top: 28px;
+}
+
+.life-path-tab {
+  position: relative;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  min-height: 70px;
+  padding: 12px 10px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: color 200ms ease, background 200ms ease, padding 200ms ease, transform 200ms ease;
+}
+
+.life-path-tab:hover {
+  padding-left: 15px;
+  background: rgba(255, 253, 248, 0.8);
+}
+
+.life-path-tab:active {
+  transform: scale(0.985);
+}
+
+.life-path-tab.is-active {
+  border-bottom-color: transparent;
+  border-radius: 4px 18px 4px 4px;
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.life-path-tab__code {
+  font-family: var(--utility);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.life-path-tab__title {
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.life-path-tab__score {
+  font-family: var(--utility);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.life-path-tab.is-active .life-path-tab__score {
+  color: var(--aqua);
+}
+
+.life-path-skeleton {
+  height: 70px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(90deg, transparent, rgba(155, 195, 181, 0.25), transparent);
+  background-size: 220% 100%;
+  animation: life-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes life-shimmer {
+  to { background-position: -220% 0; }
+}
+
+.life-path-detail {
+  min-width: 0;
+  padding: 36px clamp(28px, 3vw, 48px) 48px;
+  outline-offset: -6px;
+}
+
+.life-path-detail__header {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.life-path-detail__header > span {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 3px 18px 3px 3px;
+  color: var(--paper);
+  background: var(--coral);
+  font-family: var(--utility);
+  font-size: 25px;
+  font-weight: 600;
+  transform: rotate(-2deg);
+}
+
+.life-path-detail__header p {
+  margin: 0;
+}
+
+.life-path-detail__header div > p:first-child {
+  color: var(--aqua-deep);
+  font-family: var(--utility);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.life-path-detail__header h3 {
+  max-width: 18ch;
+  margin: 5px 0 0;
+  font-family: var(--display);
+  font-size: clamp(30px, 3.2vw, 45px);
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.life-path-detail__header div > p:last-child {
+  max-width: 65ch;
+  margin-top: 15px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.75;
+  text-wrap: pretty;
+}
+
+.life-path-metrics {
+  display: grid;
+  grid-template-columns: 0.8fr 1.5fr 0.7fr 0.7fr;
+  gap: 1px;
+  margin: 34px 0 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--line);
+}
+
+.life-path-metrics > div {
+  min-width: 0;
+  padding: 15px 13px;
+  background: var(--paper);
+}
+
+.life-path-metrics span {
+  display: block;
+  color: var(--ink-soft);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+}
+
+.life-path-metrics strong {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--utility);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.45;
+}
+
+.life-path-narrative {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(170px, 0.8fr);
+  gap: 28px;
+  margin-top: 32px;
+}
+
+.life-path-narrative p {
+  margin: 9px 0 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.75;
+  text-wrap: pretty;
+}
+
+.life-path-narrative aside {
+  padding: 17px 18px;
+  border-left: 3px solid var(--coral);
+  background: rgba(223, 104, 71, 0.07);
+}
+
+.life-path-narrative aside span {
+  color: var(--coral);
+}
+
+.life-week-shape {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 17px;
+}
+
+.life-week-shape div {
+  flex: 1 1 110px;
+  padding: 10px 11px;
+  border-top: 2px solid var(--aqua-deep);
+  background: rgba(155, 195, 181, 0.14);
+}
+
+.life-week-shape strong,
+.life-week-shape small {
+  display: block;
+}
+
+.life-week-shape strong {
+  font-family: var(--utility);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.life-week-shape small {
+  margin-top: 2px;
+  color: var(--ink-soft);
+  font-size: 10px;
+}
+
+.life-backcast {
+  margin-top: 40px;
+  padding-top: 25px;
+  border-top: 1px solid var(--line);
+}
+
+.life-backcast__head,
+.life-switch-signals > div {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+}
+
+.life-backcast h4,
+.life-switch-signals h4,
+.life-decision-doors h4,
+.life-stop-list h4 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 19px;
+  letter-spacing: -0.025em;
+}
+
+.life-backcast ol {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(98px, 1fr));
+  gap: 0;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.life-backcast ol::before {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--line);
+  content: "";
+}
+
+.life-backcast li {
+  position: relative;
+  padding: 24px 12px 0 0;
+}
+
+.life-backcast li::before {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  background: var(--aqua-deep);
+  box-shadow: 0 0 0 1px var(--aqua-deep);
+  content: "";
+}
+
+.life-backcast li:first-child::before,
+.life-backcast li:last-child::before {
+  background: var(--coral);
+  box-shadow: 0 0 0 1px var(--coral);
+}
+
+.life-backcast li strong {
+  display: block;
+  font-family: var(--utility);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.life-backcast li p {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.life-decision-doors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  margin-top: 36px;
+}
+
+.life-decision-doors section {
+  padding: 19px 20px 20px;
+  background: rgba(155, 195, 181, 0.16);
+}
+
+.life-decision-doors section:last-child {
+  background: rgba(223, 104, 71, 0.08);
+}
+
+.life-decision-doors section > div {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.life-decision-doors section > div > span {
+  color: var(--aqua-deep);
+  font-family: var(--utility);
+  font-size: 22px;
+}
+
+.life-decision-doors section:last-child > div > span {
+  color: var(--coral);
+}
+
+.life-decision-doors ul,
+.life-switch-signals ol,
+.life-stop-list ul {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.life-decision-doors li,
+.life-switch-signals li,
+.life-stop-list li {
+  position: relative;
+  padding: 8px 0 8px 17px;
+  border-top: 1px solid rgba(23, 54, 50, 0.1);
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.life-decision-doors li::before,
+.life-switch-signals li::before,
+.life-stop-list li::before {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--aqua-deep);
+  content: "";
+}
+
+.life-decision-doors section:last-child li::before,
+.life-stop-list li::before {
+  border-radius: 0;
+  background: var(--coral);
+  transform: rotate(45deg);
+}
+
+.life-switch-signals {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.7fr) minmax(0, 1.3fr);
+  gap: 24px;
+  margin-top: 7px;
+  padding: 22px 20px;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--ink);
+}
+
+.life-switch-signals > div {
+  display: grid;
+  gap: 4px;
+}
+
+.life-switch-signals ol {
+  margin-top: 0;
+  counter-reset: signal;
+}
+
+.life-switch-signals li {
+  padding-left: 32px;
+  counter-increment: signal;
+}
+
+.life-switch-signals li::before {
+  top: 10px;
+  width: 22px;
+  height: 22px;
+  color: var(--paper);
+  background: var(--ink);
+  content: counter(signal, decimal-leading-zero);
+  font-family: var(--utility);
+  font-size: 8px;
+  line-height: 22px;
+  text-align: center;
+}
+
+.life-values {
+  border-left: 1px solid var(--line);
+}
+
+.life-values form {
+  display: grid;
+  gap: 21px;
+  margin-top: 30px;
+}
+
+.life-value-control label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.life-value-control output {
+  color: var(--coral);
+  font-family: var(--utility);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.life-value-control p {
+  margin: 2px 0 7px;
+  color: var(--ink-soft);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.life-value-control input[type="range"] {
+  width: 100%;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--coral);
+  cursor: ew-resize;
+}
+
+.life-ranking {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.life-ranking__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.life-ranking__head > span {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.life-ranking__head button {
+  padding: 4px 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  color: var(--ink-soft);
+  background: transparent;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.life-ranking ol {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.life-ranking li {
+  display: grid;
+  grid-template-columns: 19px minmax(0, 1fr) 30px;
+  gap: 8px;
+  align-items: center;
+}
+
+.life-ranking li > span {
+  color: var(--ink-soft);
+  font-family: var(--utility);
+  font-size: 9px;
+}
+
+.life-ranking li > div {
+  min-width: 0;
+}
+
+.life-ranking li strong {
+  display: block;
+  overflow: hidden;
+  font-size: 10px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.life-ranking__track {
+  display: block;
+  height: 3px;
+  margin-top: 5px;
+  background: rgba(23, 54, 50, 0.1);
+}
+
+.life-ranking__track i {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--aqua-deep);
+  transition: width 260ms ease;
+}
+
+.life-ranking li:first-child .life-ranking__track i {
+  background: var(--coral);
+}
+
+.life-ranking li > b {
+  font-family: var(--utility);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.life-ranking > p {
+  margin: 18px 0 0;
+  color: var(--ink-soft);
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+.life-os-error {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  place-content: center;
+  padding: 30px;
+  background: rgba(255, 253, 248, 0.94);
+  text-align: center;
+}
+
+.life-os-error:not([hidden]) {
+  display: grid;
+}
+
+.life-os-error strong {
+  font-family: var(--display);
+  font-size: 26px;
+}
+
+.life-os-error p {
+  color: var(--ink-soft);
+}
+
+.life-experiment-lab {
+  margin-top: 72px;
+  border-top: 1px solid var(--line);
+}
+
+.life-experiment-lab__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 50px;
+  align-items: end;
+  padding: 38px 0 30px;
+}
+
+.life-experiment-lab__header h3 {
+  max-width: 20ch;
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(31px, 4vw, 50px);
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.life-experiment-lab__header > div:first-child > p:last-child {
+  max-width: 65ch;
+  margin: 15px 0 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.life-experiment-progress {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 10px;
+  align-items: baseline;
+}
+
+.life-experiment-progress strong {
+  font-family: var(--utility);
+  font-size: 28px;
+  font-variant-numeric: tabular-nums;
+}
+
+.life-experiment-progress strong b {
+  font-weight: 600;
+}
+
+.life-experiment-progress > span {
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.life-experiment-progress > div {
+  grid-column: 1 / -1;
+  height: 6px;
+  margin-top: 10px;
+  background: rgba(23, 54, 50, 0.1);
+  overflow: hidden;
+}
+
+.life-experiment-progress i {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--coral);
+  transition: width 260ms ease;
+}
+
+.life-experiment-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(270px, 0.7fr);
+  gap: 8px;
+}
+
+.life-experiment-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+}
+
+.life-experiment-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 14px;
+  min-height: 158px;
+  padding: 22px;
+  background: var(--paper);
+  transition: background 200ms ease, transform 200ms ease;
+}
+
+.life-experiment-item:hover {
+  background: rgba(255, 253, 248, 0.82);
+}
+
+.life-experiment-item:has(input:checked) {
+  background: rgba(155, 195, 181, 0.22);
+}
+
+.life-experiment-item input {
+  width: 22px;
+  height: 22px;
+  margin: 1px 0 0;
+  accent-color: var(--aqua-deep);
+  cursor: pointer;
+}
+
+.life-experiment-item label {
+  cursor: pointer;
+}
+
+.life-experiment-item span {
+  color: var(--coral);
+  font-family: var(--utility);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.life-experiment-item h4 {
+  margin: 5px 0 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.life-experiment-item p {
+  margin: 7px 0 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.life-experiment-item small {
+  display: block;
+  margin-top: 10px;
+  color: var(--aqua-deep);
+  font-size: 10px;
+}
+
+.life-experiment-loading {
+  grid-column: 1 / -1;
+  min-height: 260px;
+  padding: 30px;
+  background: var(--paper);
+  color: var(--ink-soft);
+}
+
+.life-stop-list {
+  padding: 30px 28px 32px;
+  border-radius: 4px 42px 4px 4px;
+  color: var(--paper);
+  background:
+    radial-gradient(circle at 100% 0, rgba(223, 104, 71, 0.22), transparent 16rem),
+    var(--ink);
+}
+
+.life-stop-list > span {
+  color: var(--aqua);
+}
+
+.life-stop-list h4 {
+  margin-top: 8px;
+  color: var(--paper);
+  font-size: 25px;
+}
+
+.life-stop-list > p {
+  margin: 12px 0 0;
+  color: rgba(255, 253, 248, 0.68);
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.life-stop-list li {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 253, 248, 0.86);
+}
+
+.life-os__disclaimer {
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  margin: 24px 0 0;
+  color: var(--ink-soft);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.life-os__disclaimer span {
+  flex: 0 0 auto;
+  font-family: var(--utility);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 1180px) {
+  .life-os-console {
+    grid-template-columns: minmax(180px, 0.65fr) minmax(0, 2fr);
+  }
+
+  .life-values {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr) 280px;
+    gap: 28px;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .life-values form {
+    grid-template-columns: 1fr 1fr;
+    margin-top: 0;
+  }
+
+  .life-ranking {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+@media (max-width: 820px) {
+  .life-os__thesis,
+  .life-os__thesis > div {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .life-os__thesis > div {
+    display: flex;
+    gap: 7px;
+  }
+
+  .life-os-console {
+    grid-template-columns: 1fr;
+    border-radius: 6px 36px 6px 6px;
+  }
+
+  .life-path-nav {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .life-path-tabs {
+    display: flex;
+    gap: 5px;
+    margin-right: -24px;
+    padding-right: 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .life-path-tab,
+  .life-path-skeleton {
+    flex: 0 0 170px;
+  }
+
+  .life-path-tab {
+    grid-template-columns: 24px minmax(0, 1fr);
+    border: 1px solid var(--line);
+    border-radius: 4px 16px 4px 4px;
+  }
+
+  .life-path-tab__score {
+    display: none;
+  }
+
+  .life-values {
+    grid-column: auto;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .life-values > header {
+    grid-column: 1 / -1;
+  }
+
+  .life-values form {
+    grid-template-columns: 1fr;
+  }
+
+  .life-experiment-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .life-os {
+    padding-top: 96px;
+  }
+
+  .life-os::after {
+    top: 90px;
+    right: 0;
+    font-size: 34vw;
+  }
+
+  .life-os__thesis {
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .life-os__thesis > p {
+    align-items: flex-start;
+    white-space: normal;
+  }
+
+  .life-path-nav,
+  .life-values,
+  .life-path-detail {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .life-path-detail__header {
+    grid-template-columns: 43px minmax(0, 1fr);
+    gap: 13px;
+  }
+
+  .life-path-detail__header > span {
+    width: 42px;
+    height: 42px;
+    border-radius: 3px 13px 3px 3px;
+    font-size: 20px;
+  }
+
+  .life-path-detail__header h3 {
+    font-size: 31px;
+  }
+
+  .life-path-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .life-path-narrative,
+  .life-decision-doors,
+  .life-switch-signals {
+    grid-template-columns: 1fr;
+  }
+
+  .life-backcast ol {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-left: 12px;
+  }
+
+  .life-backcast ol::before {
+    top: 0;
+    bottom: 0;
+    left: 16px;
+    width: 1px;
+    height: auto;
+  }
+
+  .life-backcast li {
+    padding: 0 0 18px 28px;
+  }
+
+  .life-backcast li::before {
+    top: 4px;
+    left: 0;
+  }
+
+  .life-values {
+    grid-template-columns: 1fr;
+  }
+
+  .life-values > header {
+    grid-column: auto;
+  }
+
+  .life-experiment-lab__header {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .life-experiment-list {
+    grid-template-columns: 1fr;
+  }
+
+  .life-experiment-item {
+    min-height: 0;
+  }
+
+  .life-os__disclaimer {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .life-path-skeleton {
+    animation: none;
+  }
+
+  .life-path-tab,
+  .life-ranking__track i,
+  .life-experiment-progress i {
+    transition: none;
+  }
+}
