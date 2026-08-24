@@ -1,18 +1,18 @@
 const layerContent = {
   regulation: {
-    label: "目前層級・法規與資格",
+    label: "第 1 步・法規與資格",
     description: "追蹤特管辦法、訓練資格與案例認定，是所有學習路徑的基底。",
   },
   course: {
-    label: "目前層級・訓練與課程",
+    label: "第 2 步・訓練與課程",
     description: "整理課程資格、時數、費用與截止日，把零散報名資訊變成清楚路徑。",
   },
   technique: {
-    label: "目前層級・技術與解剖",
+    label: "第 3 步・技術與解剖",
     description: "從組織層次、針具選擇到材料特性，建立操作之前必須理解的地圖。",
   },
   safety: {
-    label: "目前層級・安全與處置",
+    label: "第 4 步・安全與處置",
     description: "預先學習風險辨識與併發症處理，讓安全不是課程最後才出現的附註。",
   },
 };
@@ -427,8 +427,12 @@ renderRecentSearches();
 
 document.querySelectorAll("[data-layer]").forEach((layer) => {
   layer.addEventListener("click", () => {
-    document.querySelectorAll("[data-layer]").forEach((item) => item.classList.remove("is-active"));
+    document.querySelectorAll("[data-layer]").forEach((item) => {
+      item.classList.remove("is-active");
+      item.setAttribute("aria-pressed", "false");
+    });
     layer.classList.add("is-active");
+    layer.setAttribute("aria-pressed", "true");
     const content = layerContent[layer.dataset.layer];
     document.querySelector("[data-layer-label]").textContent = content.label;
     document.querySelector("[data-layer-description]").textContent = content.description;
@@ -502,9 +506,7 @@ const timelineViewport = document.querySelector("[data-timeline-viewport]");
 const timelineSummary = document.querySelector("[data-timeline-summary]");
 const timelineRange = document.querySelector("[data-timeline-range]");
 const verifiedCount = document.querySelector("[data-verified-count]");
-const deadlineDate = document.querySelector("[data-deadline-date]");
-const deadlineTitle = document.querySelector("[data-deadline-title]");
-const daysLabel = document.querySelector("[data-days-left]");
+const upcomingEvents = document.querySelector("[data-upcoming-events]");
 
 const escapeHTML = (value = "") =>
   String(value).replace(
@@ -1054,24 +1056,32 @@ const courseCardTemplate = (course) => {
     </article>`;
 };
 
-const updateNextDeadline = (courses) => {
+const upcomingEventTemplate = (course) => {
+  const dateLabel = formatDateRange(course.startDate, course.endDate).replaceAll("/", ".");
+  return `
+    <a class="upcoming-event" href="#course-${escapeHTML(course.id)}">
+      <time datetime="${escapeHTML(course.startDate)}">${escapeHTML(dateLabel)}</time>
+      <span class="upcoming-event__status">${escapeHTML(course.statusLabel)}</span>
+      <strong>${escapeHTML(course.title)}</strong>
+      <span class="upcoming-event__arrow" aria-hidden="true">↘</span>
+    </a>`;
+};
+
+const updateUpcomingEvents = (courses) => {
   const now = new Date();
   const upcoming = courses
-    .filter((course) => course.registrationDeadline && parseTaiwanDate(course.registrationDeadline) >= now)
-    .sort((a, b) => a.registrationDeadline.localeCompare(b.registrationDeadline))[0];
+    .filter((course) => course.startDate && parseTaiwanDate(course.startDate) >= now)
+    .sort((a, b) => a.startDate.localeCompare(b.startDate))
+    .slice(0, 3);
 
-  if (!upcoming) {
-    deadlineDate.textContent = "持續追蹤";
-    deadlineTitle.textContent = "目前沒有已核實的最近報名期限";
-    daysLabel.textContent = "請查看各課程狀態";
+  if (!upcomingEvents) return;
+
+  if (!upcoming.length) {
+    upcomingEvents.innerHTML = '<p class="upcoming-events__loading">目前沒有已核實的近期活動，請查看完整課程情報。</p>';
     return;
   }
 
-  const deadline = new Date(`${upcoming.registrationDeadline}T23:59:59+08:00`);
-  const daysLeft = Math.max(0, Math.ceil((deadline - now) / 86_400_000));
-  deadlineDate.textContent = formatFullDate(upcoming.registrationDeadline).replaceAll("/", ".");
-  deadlineTitle.textContent = upcoming.title;
-  daysLabel.textContent = daysLeft === 0 ? "今天截止" : `距截止還有 ${daysLeft} 天`;
+  upcomingEvents.innerHTML = upcoming.map(upcomingEventTemplate).join("");
 };
 
 const registerCourseSearchItems = (courses) => {
@@ -1115,7 +1125,7 @@ const loadCourseIntelligence = async () => {
     wireSaveButtons(courseFeed);
     applyCourseFilter();
     renderCourseTimeline(payload.courses);
-    updateNextDeadline(payload.courses);
+    updateUpcomingEvents(payload.courses);
     registerCourseSearchItems(payload.courses);
   } catch (error) {
     console.error("課程情報載入失敗", error);
@@ -1124,9 +1134,9 @@ const loadCourseIntelligence = async () => {
     courseFreshness.textContent = "課程資料暫時無法載入";
     if (courseTimeline) courseTimeline.hidden = true;
     verifiedCount.textContent = "查核資料載入失敗";
-    deadlineDate.textContent = "請稍後再試";
-    deadlineTitle.textContent = "無法讀取課程資料";
-    daysLabel.textContent = "—";
+    if (upcomingEvents) {
+      upcomingEvents.innerHTML = '<p class="upcoming-events__loading">無法讀取近期活動，請稍後再試。</p>';
+    }
   }
 };
 

@@ -81,7 +81,10 @@
       <section class="hero" id="top">
         <div class="hero__copy reveal">
           <p class="eyebrow"><span>EVIDENCE FIRST</span> 台灣醫美學習情報</p>
-          <h1>先找到<span>可靠答案</span>，<br />再決定下一步<br />怎麼學。</h1>
+          <h1>
+            <span class="hero-title__line">先找到可靠答案，</span>
+            <span class="hero-title__line">再決定下一步怎麼學。</span>
+          </h1>
           <p class="hero__intro">
             用自然語言搜尋法規、課程、技術與安全資訊。先看三分鐘重點，再回到官方來源確認版本與適用範圍。
           </p>
@@ -108,57 +111,55 @@
             <span>最後查核日清楚標示</span>
             <span>查不到時不生成答案</span>
           </div>
-          <div class="deadline-strip" aria-label="近期截止資訊">
-            <div class="deadline-strip__date">
-              <span>最近報名期限</span>
-              <strong data-deadline-date>載入中</strong>
+          <section class="upcoming-events" aria-labelledby="upcoming-events-title">
+            <header class="upcoming-events__header">
+              <div>
+                <span>UPCOMING</span>
+                <strong id="upcoming-events-title">近期活動</strong>
+              </div>
+              <a href="#courses">查看全部 <span aria-hidden="true">↓</span></a>
+            </header>
+            <div class="upcoming-events__list" data-upcoming-events aria-live="polite">
+              <p class="upcoming-events__loading">正在讀取最新活動</p>
             </div>
-            <div class="deadline-strip__detail">
-              <span data-days-left>計算中</span>
-              <p data-deadline-title>正在讀取最新課程情報</p>
-            </div>
-          </div>
+          </section>
         </div>
 
         <figure class="depth-map reveal" aria-labelledby="depth-map-title">
           <figcaption class="depth-map__header">
             <div>
-              <span>LIVE LEARNING MAP</span>
-              <strong id="depth-map-title">知識皮層</strong>
+              <span>HOW TO USE THIS SITE</span>
+              <strong id="depth-map-title">四步找到學習方向</strong>
+              <p>依序點選每個步驟，看看現在該先處理什麼。</p>
             </div>
             <span class="depth-map__status"><i></i> <span data-verified-count>正在載入查核資料</span></span>
           </figcaption>
 
           <div class="layers" data-layers>
-            <button class="layer layer--regulation is-active" type="button" data-layer="regulation">
-              <span class="layer__code">A / 基底</span>
+            <button class="layer layer--regulation is-active" type="button" data-layer="regulation" aria-pressed="true">
+              <span class="layer__code">01</span>
               <strong>法規與資格</strong>
               <small>先確認可以做什麼</small>
             </button>
-            <button class="layer layer--course" type="button" data-layer="course">
-              <span class="layer__code">B / 路徑</span>
+            <button class="layer layer--course" type="button" data-layer="course" aria-pressed="false">
+              <span class="layer__code">02</span>
               <strong>訓練與課程</strong>
               <small>建立合格學習紀錄</small>
             </button>
-            <button class="layer layer--technique" type="button" data-layer="technique">
-              <span class="layer__code">C / 臨床</span>
+            <button class="layer layer--technique" type="button" data-layer="technique" aria-pressed="false">
+              <span class="layer__code">03</span>
               <strong>技術與解剖</strong>
               <small>理解層次與操作</small>
             </button>
-            <button class="layer layer--safety" type="button" data-layer="safety">
-              <span class="layer__code">D / 防護</span>
+            <button class="layer layer--safety" type="button" data-layer="safety" aria-pressed="false">
+              <span class="layer__code">04</span>
               <strong>安全與處置</strong>
               <small>把併發症放在前面</small>
             </button>
-
-            <div class="needle-path" aria-hidden="true">
-              <span class="needle-path__hub"></span>
-              <span class="needle-path__tip"></span>
-            </div>
           </div>
 
           <div class="depth-map__readout" aria-live="polite">
-            <span data-layer-label>目前層級・法規與資格</span>
+            <span data-layer-label>第 1 步・法規與資格</span>
             <p data-layer-description>追蹤特管辦法、訓練資格與案例認定，是所有學習路徑的基底。</p>
           </div>
         </figure>
