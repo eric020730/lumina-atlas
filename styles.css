@@ -15,9 +15,10 @@
   --line: rgba(16, 42, 51, 0.16);
   --white: #ffffff;
   --shadow: 0 24px 70px rgba(16, 42, 51, 0.12);
-  --display: "LXGW WenKai TC", serif;
-  --body: "Noto Sans TC", sans-serif;
-  --utility: "IBM Plex Mono", monospace;
+  --font-primary: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --display: var(--font-primary);
+  --body: var(--font-primary);
+  --utility: var(--font-primary);
   --max-width: 1240px;
 }
 
