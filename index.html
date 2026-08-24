@@ -25,9 +25,9 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260824-life-os" />
-    <link rel="stylesheet" href="./taste.css?v=20260824-life-os" />
-    <script src="./app.js?v=20260824-life-os" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=20260824-no-notes" />
+    <link rel="stylesheet" href="./taste.css?v=20260824-no-notes" />
+    <script src="./app.js?v=20260824-no-notes" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
@@ -246,11 +246,11 @@
             <article class="brief-item">
               <div class="brief-item__marker">SYSTEM</div>
               <div>
-                <span>學習提醒</span>
-                <h3>先記錄版本，再開始做筆記</h3>
+                <span>版本提醒</span>
+                <h3>先確認版本，再採取下一步</h3>
                 <p>醫美規則會變動；每一則摘要都保留來源與最後查核日。</p>
               </div>
-              <a href="#notes" aria-label="前往研習筆記">→</a>
+              <a href="#source-trace" aria-label="查看官方版本追蹤">→</a>
             </article>
           </aside>
         </div>
@@ -915,23 +915,6 @@
         </p>
       </section>
 
-      <section class="notes section-shell" id="notes">
-        <div class="notes-panel reveal">
-          <div class="notes-panel__intro">
-            <p class="section-kicker">PRIVATE FIELD NOTES</p>
-            <h2>留下一個下次要追的問題</h2>
-            <p>筆記只保存在這台裝置的瀏覽器，不會上傳或公開。</p>
-          </div>
-          <form class="note-form" data-note-form>
-            <label for="quick-note">我的研習筆記</label>
-            <textarea id="quick-note" rows="4" placeholder="例如：整理特定美容醫學處置三大類別的時數差異……" data-note-input></textarea>
-            <div class="note-form__footer">
-              <span data-note-status>尚未儲存</span>
-              <button class="button button--light" type="submit">儲存筆記</button>
-            </div>
-          </form>
-        </div>
-      </section>
     </main>
 
     <footer class="site-footer">

@@ -2750,79 +2750,6 @@ svg {
 .curriculum-line--c { background: var(--aqua); }
 .curriculum-line--d { color: var(--white); background: var(--ink); }
 
-.notes {
-  padding-top: 50px;
-}
-
-.notes-panel {
-  display: grid;
-  grid-template-columns: minmax(260px, 0.65fr) minmax(360px, 1fr);
-  gap: 80px;
-  padding: 56px 64px;
-  border-radius: 4px 70px 4px 4px;
-  color: var(--white);
-  background: var(--aqua-deep);
-}
-
-.notes-panel h2 {
-  max-width: 460px;
-  margin: 0;
-  font-family: var(--display);
-  font-size: clamp(32px, 3.5vw, 48px);
-  font-weight: 400;
-  line-height: 1.4;
-}
-
-.notes-panel__intro > p:last-child {
-  margin: 18px 0 0;
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 12px;
-}
-
-.note-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.note-form label {
-  margin-bottom: 8px;
-  font-size: 11px;
-}
-
-.note-form textarea {
-  width: 100%;
-  min-height: 150px;
-  padding: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: 2px 28px 2px 2px;
-  outline: 0;
-  color: var(--white);
-  background: rgba(16, 42, 51, 0.22);
-  resize: vertical;
-}
-
-.note-form textarea::placeholder {
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.note-form textarea:focus {
-  border-color: var(--white);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.16);
-}
-
-.note-form__footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 16px;
-}
-
-.note-form__footer span {
-  color: rgba(255, 255, 255, 0.7);
-  font-family: var(--utility);
-  font-size: 9px;
-}
-
 .site-footer {
   display: grid;
   grid-template-columns: 1fr minmax(300px, 620px) 1fr;
@@ -3527,27 +3454,6 @@ svg {
 
   .curriculum-line {
     min-height: 180px;
-  }
-
-  .notes {
-    padding-top: 20px;
-  }
-
-  .notes-panel {
-    grid-template-columns: 1fr;
-    gap: 38px;
-    padding: 38px 22px;
-    border-radius: 4px 46px 4px 4px;
-  }
-
-  .note-form__footer {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .note-form__footer .button {
-    width: 100%;
   }
 
   .site-footer {

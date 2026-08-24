@@ -1447,28 +1447,6 @@ complianceInputs.forEach((input) => {
 
 renderCompliance();
 
-const noteForm = document.querySelector("[data-note-form]");
-const noteInput = document.querySelector("[data-note-input]");
-const noteStatus = document.querySelector("[data-note-status]");
-const storedNote = localStorage.getItem("lumina-note");
-
-if (storedNote) {
-  noteInput.value = storedNote;
-  noteStatus.textContent = "已從這台裝置載入";
-}
-
-noteInput?.addEventListener("input", () => {
-  noteStatus.textContent = "有尚未儲存的變更";
-});
-
-noteForm?.addEventListener("submit", (event) => {
-  event.preventDefault();
-  localStorage.setItem("lumina-note", noteInput.value.trim());
-  const now = new Date().toLocaleTimeString("zh-TW", { hour: "2-digit", minute: "2-digit" });
-  noteStatus.textContent = `已於 ${now} 儲存`;
-  showToast("筆記已儲存在這台裝置");
-});
-
 const lifeOsConsole = document.querySelector("[data-life-os]");
 const lifeOsError = document.querySelector("[data-life-error]");
 const lifeThesis = document.querySelector("[data-life-thesis]");

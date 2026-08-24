@@ -434,18 +434,6 @@ body::after {
   border-radius: 5px 42px 5px 5px;
 }
 
-.notes {
-  padding-top: 76px;
-}
-
-.notes-panel {
-  border-radius: 6px 100px 6px 6px;
-  background:
-    radial-gradient(circle at 86% 20%, rgba(255, 255, 255, 0.12), transparent 18rem),
-    var(--aqua-deep);
-  box-shadow: 22px 26px 0 rgba(23, 54, 50, 0.13);
-}
-
 .site-footer {
   margin-bottom: 34px;
   padding: 44px 0;
@@ -582,10 +570,6 @@ body::after {
     gap: 6px;
   }
 
-  .notes-panel {
-    border-radius: 6px 54px 6px 6px;
-    box-shadow: 10px 12px 0 rgba(23, 54, 50, 0.13);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -672,7 +656,6 @@ body::after {
 .course-sheet__aside dt,
 .curriculum-line span,
 .curriculum-line small,
-.note-form__footer span,
 .footer-brand span,
 .search-results a span {
   font-size: 12px;
@@ -720,9 +703,7 @@ body::after {
 .course-card__takeaway p,
 .course-card__notice p,
 .course-sheet__main > p,
-.curriculum-line > p,
-.notes-panel__intro > p:last-child,
-.note-form label {
+.curriculum-line > p {
   font-size: 16px;
   line-height: 1.75;
 }
