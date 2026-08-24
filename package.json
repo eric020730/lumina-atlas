@@ -1,0 +1,15 @@
+{
+  "name": "lumina-atlas",
+  "private": true,
+  "scripts": {
+    "cf:types": "wrangler types worker/worker-configuration.d.ts --config worker/wrangler.jsonc",
+    "cf:check": "npm run cf:types && tsc --noEmit -p worker/tsconfig.json && wrangler deploy --dry-run --config worker/wrangler.jsonc",
+    "cf:dev": "wrangler dev --config worker/wrangler.jsonc --port 8787",
+    "cf:deploy": "wrangler deploy --config worker/wrangler.jsonc"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "typescript": "^7.0.2",
+    "wrangler": "^4.125.0"
+  }
+}
