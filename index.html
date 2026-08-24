@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="微光研習所 LUMINA ATLAS——個人的台灣醫美課程、法規與臨床知識學習索引。"
+    />
+    <meta name="theme-color" content="#f2f7f7" />
+    <title>微光研習所 LUMINA ATLAS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要內容</a>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="#top" aria-label="回到微光研習所首頁">
+        <svg class="brand__mark" viewBox="0 0 42 42" aria-hidden="true">
+          <path d="M8 13.5c8.5-8 17.5-8 26 0" />
+          <path d="M5 21c10.5-8 21.5-8 32 0" />
+          <path d="M8 28.5c8.5-8 17.5-8 26 0" />
+          <circle cx="21" cy="22" r="2.4" />
+        </svg>
+        <span class="brand__name">微光研習所</span>
+        <span class="brand__en">LUMINA ATLAS</span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="主要導覽">
+        <a href="#pulse">本週重點</a>
+        <a href="#atlas">知識圖譜</a>
+        <a href="#courses">課程</a>
+        <a href="#notes">研習筆記</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="search-trigger" type="button" data-open-search aria-label="開啟搜尋">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5" />
+            <path d="m16 16 4 4" />
+          </svg>
+          <span>搜尋</span><kbd>/</kbd>
+        </button>
+        <button class="menu-trigger" type="button" data-menu-trigger aria-expanded="false" aria-label="開啟選單">
+          <span></span><span></span>
+        </button>
+      </div>
+
+      <nav class="mobile-nav" data-mobile-nav aria-label="行動版導覽">
+        <a href="#pulse">本週重點</a>
+        <a href="#atlas">知識圖譜</a>
+        <a href="#courses">課程</a>
+        <a href="#notes">研習筆記</a>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="hero" id="top">
+        <div class="hero__copy reveal">
+          <p class="eyebrow"><span>PERSONAL INDEX</span> 台灣醫美學習情報</p>
+          <h1>把零散資訊，<br />整理成<span>可前進</span>的<br />學習路徑。</h1>
+          <p class="hero__intro">
+            一處追蹤學會消息、課程期限與合規更新。從知道發生什麼，到知道下一步要學什麼。
+          </p>
+          <div class="hero__actions">
+            <a class="button button--primary" href="#pulse">查看本週重點</a>
+            <button class="text-action" type="button" data-open-search>搜尋學習資料 <span>↗</span></button>
+          </div>
+          <div class="deadline-strip" aria-label="近期截止資訊">
+            <div class="deadline-strip__date">
+              <span>報名截止</span>
+              <strong>2027.10.25</strong>
+            </div>
+            <div class="deadline-strip__detail">
+              <span data-days-left>計算中</span>
+              <p>微創針劑注射教育訓練・線上理論課程</p>
+            </div>
+          </div>
+        </div>
+
+        <figure class="depth-map reveal" aria-labelledby="depth-map-title">
+          <figcaption class="depth-map__header">
+            <div>
+              <span>LIVE LEARNING MAP</span>
+              <strong id="depth-map-title">知識皮層</strong>
+            </div>
+            <span class="depth-map__status"><i></i> 已查核 2 筆</span>
+          </figcaption>
+
+          <div class="layers" data-layers>
+            <button class="layer layer--regulation is-active" type="button" data-layer="regulation">
+              <span class="layer__code">A / 基底</span>
+              <strong>法規與資格</strong>
+              <small>先確認可以做什麼</small>
+            </button>
+            <button class="layer layer--course" type="button" data-layer="course">
+              <span class="layer__code">B / 路徑</span>
+              <strong>訓練與課程</strong>
+              <small>建立合格學習紀錄</small>
+            </button>
+            <button class="layer layer--technique" type="button" data-layer="technique">
+              <span class="layer__code">C / 臨床</span>
+              <strong>技術與解剖</strong>
+              <small>理解層次與操作</small>
+            </button>
+            <button class="layer layer--safety" type="button" data-layer="safety">
+              <span class="layer__code">D / 防護</span>
+              <strong>安全與處置</strong>
+              <small>把併發症放在前面</small>
+            </button>
+
+            <div class="needle-path" aria-hidden="true">
+              <span class="needle-path__hub"></span>
+              <span class="needle-path__tip"></span>
+            </div>
+          </div>
+
+          <div class="depth-map__readout" aria-live="polite">
+            <span data-layer-label>目前層級・法規與資格</span>
+            <p data-layer-description>追蹤特管辦法、訓練資格與案例認定，是所有學習路徑的基底。</p>
+          </div>
+        </figure>
+      </section>
+
+      <section class="pulse section-shell" id="pulse">
+        <header class="section-heading reveal">
+          <p class="section-kicker">WEEKLY PULSE · 2026/08</p>
+          <h2>這週先看這些</h2>
+          <p>依時效與學習價值排序，不讓收藏夾變成資料墳場。</p>
+        </header>
+
+        <div class="pulse-grid">
+          <article class="lead-story reveal">
+            <div class="story-meta">
+              <span class="tag tag--urgent">法規更新</span>
+              <span>版本 2026.07.31</span>
+              <button class="save-button" type="button" data-save="regulation-guide" aria-label="收藏特管新法合規導航">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z" /></svg>
+                <span>收藏</span>
+              </button>
+            </div>
+            <div class="lead-story__body">
+              <p class="story-source">台灣微整形美容醫學會</p>
+              <h3>特管新法：訓練時數、案例認定與關鍵期限</h3>
+              <p>
+                一次釐清美容醫學三大治療類別的訓練規則，並連結衛福部與醫師全聯會正式專區。頁面內容仍可能更新，閱讀時請同步核對官方版本。
+              </p>
+              <div class="story-actions">
+                <a href="https://www.tmias.org.tw/news/content.php?id=95" target="_blank" rel="noreferrer">閱讀原始公告 <span>↗</span></a>
+                <a href="https://www.tma.tw/CosMedCertify_2026/" target="_blank" rel="noreferrer">醫師全聯會專區 <span>↗</span></a>
+              </div>
+            </div>
+            <div class="lead-story__index" aria-hidden="true">
+              <span>RULE</span><strong>特管</strong><small>95</small>
+            </div>
+          </article>
+
+          <aside class="pulse-side reveal" aria-label="接下來的學習項目">
+            <article class="brief-item">
+              <div class="brief-item__marker">COURSE</div>
+              <div>
+                <span>持續報名中</span>
+                <h3>微創針劑注射教育訓練</h3>
+                <p>13.5 小時線上理論，完成後銜接 12 小時實體臨床實操。</p>
+              </div>
+              <a href="#courses" aria-label="查看微創針劑注射教育訓練">→</a>
+            </article>
+            <article class="brief-item">
+              <div class="brief-item__marker">SYSTEM</div>
+              <div>
+                <span>學習提醒</span>
+                <h3>先記錄版本，再開始做筆記</h3>
+                <p>醫美規則會變動；每一則摘要都保留來源與最後查核日。</p>
+              </div>
+              <a href="#notes" aria-label="前往研習筆記">→</a>
+            </article>
+          </aside>
+        </div>
+      </section>
+
+      <section class="atlas section-shell" id="atlas">
+        <header class="section-heading section-heading--split reveal">
+          <div>
+            <p class="section-kicker">LEARNING ATLAS</p>
+            <h2>不只收集，還要形成結構</h2>
+          </div>
+          <p>每一筆資料依照它回答的問題歸位。法規是邊界、課程是路徑、技術是方法、安全是底線。</p>
+        </header>
+
+        <div class="atlas-list reveal">
+          <article class="atlas-row" data-search-item data-keywords="法規 資格 特管 PGY 案例認定">
+            <div class="atlas-row__identity"><span>A</span><strong>法規與資格</strong></div>
+            <p>我具備什麼資格？需要哪些時數與案例？</p>
+            <div class="atlas-row__topics"><span>特管辦法</span><span>案例認定</span><span>PGY</span></div>
+            <a href="https://www.tmias.org.tw/news/content.php?id=95" target="_blank" rel="noreferrer" aria-label="開啟法規與資格來源">↗</a>
+          </article>
+          <article class="atlas-row" data-search-item data-keywords="課程 訓練 積分 線上 實體">
+            <div class="atlas-row__identity"><span>B</span><strong>訓練與課程</strong></div>
+            <p>下一門課學什麼？何時截止？能取得哪些時數？</p>
+            <div class="atlas-row__topics"><span>線上理論</span><span>實體實操</span><span>認證積分</span></div>
+            <a href="#courses" aria-label="前往訓練與課程">↓</a>
+          </article>
+          <article class="atlas-row" data-search-item data-keywords="技術 解剖 肉毒 玻尿酸 線材 超音波 注射">
+            <div class="atlas-row__identity"><span>C</span><strong>技術與解剖</strong></div>
+            <p>治療在哪一層發生？材料與手法如何選擇？</p>
+            <div class="atlas-row__topics"><span>組織構造</span><span>針劑材料</span><span>即時影像</span></div>
+            <a href="#curriculum" aria-label="前往技術與解剖課綱">↓</a>
+          </article>
+          <article class="atlas-row" data-search-item data-keywords="安全 併發症 血管 栓塞 處理">
+            <div class="atlas-row__identity"><span>D</span><strong>安全與處置</strong></div>
+            <p>如何預防風險？發生併發症時怎麼辨識與處理？</p>
+            <div class="atlas-row__topics"><span>風險評估</span><span>併發症</span><span>緊急處置</span></div>
+            <a href="#curriculum" aria-label="前往安全與處置課綱">↓</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="courses section-shell" id="courses">
+        <header class="section-heading section-heading--split reveal">
+          <div>
+            <p class="section-kicker">COURSE TRACKER</p>
+            <h2>課程追蹤</h2>
+          </div>
+          <div class="filter-group" aria-label="課程篩選">
+            <button class="filter is-active" type="button" data-filter="all">全部</button>
+            <button class="filter" type="button" data-filter="online">線上</button>
+            <button class="filter" type="button" data-filter="practice">實體</button>
+          </div>
+        </header>
+
+        <article class="course-sheet reveal" data-course data-format="online practice" data-search-item data-keywords="微創 針劑 注射 線上 實體 肉毒 玻尿酸">
+          <div class="course-sheet__rail">
+            <span>OPEN</span>
+            <strong>20</strong>
+            <small>認證積分</small>
+          </div>
+          <div class="course-sheet__main">
+            <div class="course-sheet__meta">
+              <span>中華民國美容醫學醫學會</span>
+              <span>混成教學</span>
+              <span>限具西醫執照醫師</span>
+            </div>
+            <h3>微創針劑注射教育訓練課程</h3>
+            <p>從針劑趨勢、組織構造與材料應用，延伸到即時影像及微整形併發症處理。</p>
+            <div class="course-sheet__route" aria-label="課程學習路徑">
+              <div><span>第一階段</span><strong>13.5 小時</strong><small>非同步線上理論</small></div>
+              <i aria-hidden="true">→</i>
+              <div><span>第二階段</span><strong>12 小時</strong><small>實體臨床實操</small></div>
+              <i aria-hidden="true">→</i>
+              <div><span>完訓核發</span><strong>25.5 小時</strong><small>核心 4.5＋進階 21</small></div>
+            </div>
+          </div>
+          <div class="course-sheet__aside">
+            <dl>
+              <div><dt>報名截止</dt><dd>2027.10.25</dd></div>
+              <div><dt>課程截止</dt><dd>2027.12.31</dd></div>
+              <div><dt>線上費用</dt><dd>會員 NT$10,000 起</dd></div>
+            </dl>
+            <div class="course-sheet__buttons">
+              <a class="button button--primary" href="https://www.cscsm.org.tw/elearning_detail.aspx?c=aa614f4a17ea4fad92601a69ee325ee6" target="_blank" rel="noreferrer">查看課程原頁</a>
+              <button class="save-button save-button--wide" type="button" data-save="injection-course">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z" /></svg>
+                <span>收藏課程</span>
+              </button>
+            </div>
+          </div>
+        </article>
+        <div class="course-empty" data-course-empty hidden>這個篩選目前沒有獨立課程；新的上課資訊加入後會顯示在這裡。</div>
+      </section>
+
+      <section class="curriculum section-shell" id="curriculum">
+        <header class="section-heading section-heading--split reveal">
+          <div>
+            <p class="section-kicker">CURRICULUM TRACE</p>
+            <h2>這門課會走過哪些知識？</h2>
+          </div>
+          <p>將原課程的十四個單元重新編入四條學習線，方便之後逐項延伸筆記。</p>
+        </header>
+        <div class="curriculum-grid reveal">
+          <div class="curriculum-line curriculum-line--a">
+            <span>策略</span><strong>產業趨勢與諮商策略</strong><small>2 單元</small>
+          </div>
+          <div class="curriculum-line curriculum-line--b">
+            <span>基礎</span><strong>組織構造、尖針與鈍針技巧</strong><small>2 單元</small>
+          </div>
+          <div class="curriculum-line curriculum-line--c">
+            <span>材料</span><strong>肉毒、玻尿酸、PLLA、PDLLA、CaHA 與線材</strong><small>7 單元</small>
+          </div>
+          <div class="curriculum-line curriculum-line--d">
+            <span>安全</span><strong>即時影像與併發症處理</strong><small>3 單元</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="notes section-shell" id="notes">
+        <div class="notes-panel reveal">
+          <div class="notes-panel__intro">
+            <p class="section-kicker">PRIVATE FIELD NOTES</p>
+            <h2>留下一個下次要追的問題</h2>
+            <p>筆記只保存在這台裝置的瀏覽器，不會上傳或公開。</p>
+          </div>
+          <form class="note-form" data-note-form>
+            <label for="quick-note">我的研習筆記</label>
+            <textarea id="quick-note" rows="4" placeholder="例如：整理特定美容醫學處置三大類別的時數差異……" data-note-input></textarea>
+            <div class="note-form__footer">
+              <span data-note-status>尚未儲存</span>
+              <button class="button button--light" type="submit">儲存筆記</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <strong>微光研習所</strong><span>LUMINA ATLAS</span>
+      </div>
+      <p>個人醫美學習與資訊索引。內容僅供學習整理，不取代法規原文、專業訓練或臨床判斷。</p>
+      <a href="#top">回到頂端 ↑</a>
+    </footer>
+
+    <dialog class="search-dialog" data-search-dialog>
+      <div class="search-dialog__header">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4 4" /></svg>
+        <input type="search" placeholder="搜尋法規、課程、技術……" aria-label="搜尋網站內容" data-search-input />
+        <button type="button" data-close-search>ESC</button>
+      </div>
+      <div class="search-results" data-search-results>
+        <p class="search-results__hint">輸入關鍵字，或從下方開始</p>
+        <a href="#pulse" data-search-entry data-keywords="法規 特管 最新 更新 合規">
+          <span>法規更新</span><strong>特管新法合規導航</strong><small>↘</small>
+        </a>
+        <a href="#courses" data-search-entry data-keywords="課程 針劑 微創 線上 實體">
+          <span>課程</span><strong>微創針劑注射教育訓練</strong><small>↘</small>
+        </a>
+        <a href="#atlas" data-search-entry data-keywords="知識 法規 課程 技術 安全 解剖">
+          <span>學習地圖</span><strong>四層知識圖譜</strong><small>↘</small>
+        </a>
+        <a href="#notes" data-search-entry data-keywords="筆記 收藏 儲存 個人">
+          <span>個人區</span><strong>研習筆記</strong><small>↘</small>
+        </a>
+        <p class="search-results__empty" data-search-empty hidden>沒有符合的內容，試試「針劑」或「法規」。</p>
+      </div>
+    </dialog>
+
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+  </body>
+</html>
