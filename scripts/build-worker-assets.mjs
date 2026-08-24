@@ -11,6 +11,7 @@ const assetPaths = [
   "taste.css",
   "assets/favicon.svg",
   "data/course-intelligence.json",
+  "data/video-learning.json",
 ];
 
 await rm(outputRoot, { recursive: true, force: true });

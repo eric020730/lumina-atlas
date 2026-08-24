@@ -497,7 +497,7 @@ const escapeHTML = (value = "") =>
     (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[character],
   );
 
-const videoLessons = [
+const fallbackVideoLessons = [
   {
     id: "zRjTkEIjEM8",
     week: 1,
@@ -632,6 +632,8 @@ const videoLessons = [
   },
 ];
 
+let videoLessons = fallbackVideoLessons;
+
 const videoPlaylist = document.querySelector("[data-video-playlist]");
 const videoIframe = document.querySelector("[data-video-iframe]");
 const videoWeek = document.querySelector("[data-video-week]");
@@ -648,6 +650,7 @@ const videoTotal = document.querySelector("[data-video-total]");
 const videoProgressTrack = document.querySelector("[data-video-progress-track]");
 const videoProgressBar = document.querySelector("[data-video-progress-bar]");
 const videoProgressCopy = document.querySelector("[data-video-progress-copy]");
+const videoFreshness = document.querySelector("[data-video-freshness]");
 const videoEmpty = document.querySelector("[data-video-empty]");
 const videoFilters = [...document.querySelectorAll("[data-video-filter]")];
 const videoNoteForm = document.querySelector("[data-video-note-form]");
@@ -679,7 +682,7 @@ const videoMatchesFilter = (lesson) => {
 };
 
 const renderVideoProgress = () => {
-  const complete = completedVideos.size;
+  const complete = videoLessons.filter((lesson) => completedVideos.has(lesson.id)).length;
   const total = videoLessons.length;
   const percent = total ? Math.round((complete / total) * 100) : 0;
   if (videoCompletedCount) videoCompletedCount.textContent = String(complete);
@@ -816,9 +819,43 @@ videoNoteForm?.addEventListener("submit", (event) => {
   showToast(note ? "這堂課的筆記已儲存" : "這堂課的筆記已清除");
 });
 
-renderVideoProgress();
-renderActiveVideo();
-renderVideoPlaylist();
+const loadVideoLessons = async () => {
+  try {
+    const response = await fetch("./data/video-learning.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const payload = await response.json();
+    if (!Array.isArray(payload.lessons) || payload.lessons.length === 0) {
+      throw new Error("影片課程資料為空");
+    }
+
+    videoLessons = payload.lessons;
+    const storedId = localStorage.getItem("lumina-video-current");
+    activeVideoId = videoLessons.some((lesson) => lesson.id === storedId)
+      ? storedId
+      : videoLessons[0].id;
+    if (videoFreshness) {
+      const updatedAt = new Date(payload.lastUpdated).toLocaleString("zh-TW", {
+        timeZone: "Asia/Taipei",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      videoFreshness.textContent = `最後查核 ${updatedAt}・${payload.sourceCount} 個影片來源・${payload.lessons.length} 堂課`;
+    }
+  } catch (error) {
+    console.error("影片課程載入失敗，改用內建備援資料", error);
+    videoLessons = fallbackVideoLessons;
+    if (videoFreshness) videoFreshness.textContent = "最新資料暫時無法載入，現正使用備援課程清單";
+  }
+
+  renderVideoProgress();
+  renderActiveVideo();
+  renderVideoPlaylist();
+};
+
+loadVideoLessons();
 
 const parseTaiwanDate = (date) => new Date(`${date}T12:00:00+08:00`);
 const formatShortDate = (date) =>
