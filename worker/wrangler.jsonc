@@ -8,7 +8,15 @@
   "preview_urls": false,
   "routes": [
     {
+      "pattern": "eric020730.com/lumina-atlas",
+      "zone_name": "eric020730.com"
+    },
+    {
       "pattern": "eric020730.com/lumina-atlas*",
+      "zone_name": "eric020730.com"
+    },
+    {
+      "pattern": "eric020730.com/lumina-atlas/*",
       "zone_name": "eric020730.com"
     }
   ],
