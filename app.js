@@ -1,3 +1,19 @@
+const mainContent = document.querySelector("#main-content");
+const contentSectionOrder = [
+  "pulse",
+  "courses",
+  "video-learning",
+  "curriculum",
+  "regulation-radar",
+  "atlas",
+  "life-os",
+];
+
+contentSectionOrder.forEach((sectionId) => {
+  const section = document.getElementById(sectionId);
+  if (section && mainContent) mainContent.append(section);
+});
+
 const header = document.querySelector("[data-header]");
 const menuTrigger = document.querySelector("[data-menu-trigger]");
 const mobileNav = document.querySelector("[data-mobile-nav]");
