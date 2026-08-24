@@ -593,3 +593,238 @@ body::after {
     transform: none;
   }
 }
+
+/* Readability pass: keep editorial hierarchy without using micro-sized body copy. */
+.brand__name {
+  font-size: 18px;
+}
+
+.brand__en,
+.brand__edition {
+  font-size: 10px;
+}
+
+.desktop-nav a,
+.search-trigger span,
+.button,
+.text-action {
+  font-size: 14px;
+}
+
+.search-trigger kbd {
+  font-size: 12px;
+}
+
+.eyebrow,
+.section-kicker {
+  font-size: 13px;
+}
+
+.hero__intro {
+  max-width: 660px;
+  font-size: 18px;
+  line-height: 1.85;
+}
+
+.deadline-strip__detail span,
+.deadline-strip__date span,
+.depth-map__status,
+.depth-map__header div span,
+.depth-map__readout > span,
+.layer__code,
+.story-meta,
+.lead-story__index span,
+.brief-item__marker,
+.brief-item span,
+.regulation-version span,
+.regulation-version small,
+.qualification-form__topline span,
+.qualification-result__head > span:first-child,
+.qualification-result__context,
+.choice-fieldset legend span,
+.result-badge,
+.result-context,
+.result-deadline span,
+.result-deadline small,
+.tracker-heading > span,
+.tracker-storage,
+.deadline-status,
+.scope-card > span,
+.regulation-details summary small,
+.source-events time,
+.source-events small,
+.atlas-row__answer > span,
+.atlas-row__identity > span,
+.course-freshness,
+.course-card__organizer,
+.course-card__header time span,
+.course-status,
+.verification-badge,
+.course-card__takeaway > span,
+.course-card__notice > span,
+.course-card__facts dt,
+.course-card__footer > div > span,
+.course-sheet__rail span,
+.course-sheet__rail small,
+.course-sheet__meta span,
+.course-sheet__route span,
+.course-sheet__route small,
+.course-sheet__aside dt,
+.curriculum-line span,
+.curriculum-line small,
+.note-form__footer span,
+.footer-brand span,
+.search-results a span {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.deadline-strip__detail p,
+.depth-map__readout p,
+.story-source,
+.story-actions a,
+.qualification-form__topline p,
+.choice-card__body small,
+.switch-row small,
+.result-caveat,
+.compliance-list small,
+.deadline-board time,
+.deadline-board li small,
+.scope-card > strong,
+.source-timeline__head > p,
+.atlas-row__topics span,
+.filter,
+.course-monitor span,
+.course-monitor p,
+.course-card__tags span,
+.course-card__footer a,
+.course-sheet__aside dd,
+.curriculum-line ul,
+.site-footer p,
+.site-footer > a,
+.search-results__empty,
+.search-results a p {
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.section-heading > p:not(.section-kicker),
+.lead-story__body > p:not(.story-source),
+.brief-item p,
+.choice-fieldset legend,
+.qualification-result > p[data-result-summary],
+.result-requirements li,
+.scope-card p,
+.detail-content p,
+.atlas-row__answer p,
+.course-card__takeaway p,
+.course-card__notice p,
+.course-sheet__main > p,
+.curriculum-line > p,
+.notes-panel__intro > p:last-child,
+.note-form label {
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.choice-card__body strong,
+.switch-row strong,
+.compliance-list strong,
+.deadline-board li strong,
+.course-card__facts dd {
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.deadline-strip__date strong,
+.course-monitor strong,
+.source-events span {
+  font-size: 19px;
+}
+
+.layer strong,
+.brief-item h3,
+.atlas-row__identity strong,
+.curriculum-line strong,
+.regulation-details summary span {
+  font-size: 22px;
+}
+
+.layer small {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.regulation-version strong {
+  font-size: 13px;
+}
+
+.qualification-form__topline p,
+.source-timeline__head > p,
+.site-footer p {
+  max-width: 68ch;
+}
+
+.tracker-storage span {
+  font-size: 10px;
+}
+
+.deadline-status,
+.regulation-details summary small {
+  font-size: 12px;
+}
+
+.course-card__header time strong {
+  font-size: 34px;
+}
+
+.course-sheet__route strong {
+  font-size: 17px;
+}
+
+.footer-brand strong,
+.search-results a strong {
+  font-size: 19px;
+}
+
+.toast {
+  font-size: 14px;
+}
+
+.save-button,
+.search-dialog__header [data-close-search],
+.search-results__hint {
+  font-size: 12px;
+}
+
+@media (max-width: 700px) {
+  .brand__name {
+    font-size: 17px;
+  }
+
+  .brand__en {
+    font-size: 10px;
+  }
+
+  .mobile-nav a {
+    font-size: 16px;
+  }
+
+  .eyebrow,
+  .section-kicker {
+    font-size: 12px;
+  }
+
+  .hero__intro {
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  .layer strong {
+    font-size: 19px;
+  }
+
+  .layer small {
+    font-size: 13px;
+  }
+}
