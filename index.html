@@ -199,12 +199,12 @@
         </div>
       </section>
 
-      <section class="regulation-radar" id="regulation-radar" data-search-item data-keywords="法規 放射科 專科醫師 2019 108 PGY 32小時 案例審查 手術 雷射 針劑 FUE">
+      <section class="regulation-radar" id="regulation-radar" data-search-item data-keywords="法規 科別 家庭醫學科 家醫科 放射診斷科 放射科 專科醫師 2019 108 PGY 32小時 案例審查 手術 雷射 針劑 FUE">
         <div class="regulation-radar__inner">
           <header class="section-heading section-heading--split reveal">
             <div>
-              <p class="section-kicker">REGULATION RADAR · RADIOLOGY</p>
-              <h2>放射科醫師的法規切層</h2>
+              <p class="section-kicker">REGULATION RADAR · BY SPECIALTY</p>
+              <h2>依科別切換的法規雷達</h2>
             </div>
             <div class="regulation-version" aria-label="法規資料版本">
               <span><i aria-hidden="true"></i> 已核對官方來源</span>
@@ -224,7 +224,44 @@
               </div>
 
               <fieldset class="choice-fieldset">
-                <legend><span>01</span> 醫學系畢業時間</legend>
+                <legend><span>01</span> 目前的部定專科</legend>
+                <label class="specialty-select" for="specialty">
+                  <span class="specialty-select__label">選擇科別</span>
+                  <select id="specialty" name="specialty">
+                    <option value="family">家庭醫學科</option>
+                    <option value="radiology" selected>放射診斷科</option>
+                    <optgroup label="法定美容手術九大專科">
+                      <option value="surgery">外科</option>
+                      <option value="orthopedics">骨科</option>
+                      <option value="neurosurgery">神經外科</option>
+                      <option value="plastic">整形外科</option>
+                      <option value="urology">泌尿科</option>
+                      <option value="obgyn">婦產科</option>
+                      <option value="ophthalmology">眼科</option>
+                      <option value="ent">耳鼻喉科</option>
+                      <option value="dermatology">皮膚科</option>
+                    </optgroup>
+                    <optgroup label="其他常見部定專科">
+                      <option value="internal">內科</option>
+                      <option value="pediatrics">兒科</option>
+                      <option value="emergency">急診醫學科</option>
+                      <option value="anesthesiology">麻醉科</option>
+                      <option value="rehabilitation">復健科</option>
+                      <option value="neurology">神經科</option>
+                      <option value="psychiatry">精神科</option>
+                      <option value="radiationOncology">放射腫瘤科</option>
+                      <option value="pathology">解剖病理科</option>
+                      <option value="clinicalPathology">臨床病理科</option>
+                      <option value="nuclearMedicine">核子醫學科</option>
+                      <option value="occupational">職業醫學科</option>
+                    </optgroup>
+                  </select>
+                  <span class="specialty-select__hint" data-specialty-hint>放射診斷科屬部定專科，但不在美容手術九大專科內。</span>
+                </label>
+              </fieldset>
+
+              <fieldset class="choice-fieldset">
+                <legend><span>02</span> 醫學系畢業時間</legend>
                 <div class="choice-grid choice-grid--two">
                   <label class="choice-card">
                     <input type="radio" name="graduation" value="before" checked />
@@ -244,7 +281,7 @@
               </fieldset>
 
               <fieldset class="choice-fieldset">
-                <legend><span>02</span> 想確認的施作類型</legend>
+                <legend><span>03</span> 想確認的施作類型</legend>
                 <div class="choice-grid choice-grid--three">
                   <label class="choice-card choice-card--procedure">
                     <input type="radio" name="procedure" value="procedure" checked />
@@ -286,6 +323,14 @@
                 </label>
               </div>
 
+              <div class="conditional-field" data-conditional="eligibleSurgery" hidden>
+                <label class="switch-row">
+                  <input type="checkbox" name="existingSurgery" />
+                  <span class="switch-row__control" aria-hidden="true"></span>
+                  <span><strong>2026.01.01 前已施作美容手術</strong><small>影響是否可在一年期限內補齊32小時訓練</small></span>
+                </label>
+              </div>
+
               <div class="conditional-field" data-conditional="highRisk" hidden>
                 <label class="switch-row">
                   <input type="checkbox" name="hasLegacyCertificate" />
@@ -301,7 +346,7 @@
                 <span>LEGAL SCOPE</span>
                 <span class="result-badge" data-result-badge>可依法施行</span>
               </div>
-              <p class="qualification-result__context">已取得・放射診斷科專科醫師</p>
+              <p class="qualification-result__context" data-result-context>已取得・放射診斷科專科醫師</p>
               <h3 data-result-title>可施行光電、針劑與FUE等處置</h3>
               <p data-result-summary>2019年8月1日前畢業且已取得部定專科資格，不必提出32例，也不受PGY及初始32小時訓練限制。</p>
               <ul class="result-requirements" data-result-requirements></ul>
@@ -357,19 +402,19 @@
               <span>01 / NON-SURGICAL</span>
               <h3>特定美容醫學處置</h3>
               <p>雷射、脈衝光、電波、超音波、肉毒桿菌素、填充製劑及FUE等。</p>
-              <strong>放射科專科可適用</strong>
+              <strong data-scope-procedure>放射診斷科專科可適用</strong>
             </article>
             <article class="scope-card scope-card--conditional">
               <span>02 / SURGERY</span>
               <h3>美容醫學手術</h3>
               <p>雙眼皮、眼袋、除疤、FUT、局部小量抽脂及其他改變外觀之手術。</p>
-              <strong>須符合九大專科或既有30例過渡</strong>
+              <strong data-scope-surgery>非九大專科；僅限既有30例過渡</strong>
             </article>
             <article class="scope-card scope-card--restricted">
               <span>03 / HIGH RISK</span>
               <h3>特定美容醫學手術</h3>
               <p>削骨、中全臉拉皮、大量或全麻抽脂、腹整、鼻整形、義乳等。</p>
-              <strong>放射科原則上不得新施作</strong>
+              <strong data-scope-high-risk>放射診斷科原則上不得新施作</strong>
             </article>
           </div>
 
@@ -384,7 +429,7 @@
             <details>
               <summary><span>九大美容手術專科是哪些？</span><small>第25條</small></summary>
               <div class="detail-content">
-                <p>外科、骨科、神經外科、整形外科、泌尿科、婦產科、眼科、耳鼻喉科及皮膚科。放射診斷科不在其中；民間學會核發的美容醫學專科證書，不能取代這九大部定專科。</p>
+                <p>外科、骨科、神經外科、整形外科、泌尿科、婦產科、眼科、耳鼻喉科及皮膚科。<span data-specialty-detail>放射診斷科不在其中。</span>民間學會核發的美容醫學專科證書，不能取代這九大部定專科。</p>
               </div>
             </details>
             <details>
@@ -427,7 +472,7 @@
             <div class="atlas-row__identity"><span>A</span><strong>法規與資格</strong></div>
             <div class="atlas-row__answer">
               <span>先讀結論</span>
-              <p>先核對畢業時間、部定專科與院所備查。放射科可適用特定處置規則，但美容手術另有九大專科與過渡限制。</p>
+              <p>先選擇科別，再核對畢業時間、部定專科與院所備查。特定處置、美容手術與高風險手術的科別門檻不同。</p>
             </div>
             <div class="atlas-row__topics"><span>特管辦法</span><span>案例認定</span><span>PGY</span></div>
             <a href="https://www.tmias.org.tw/news/content.php?id=95" target="_blank" rel="noreferrer" aria-label="開啟法規與資格來源">↗</a>
@@ -568,8 +613,8 @@
         <a href="#pulse" data-search-entry data-keywords="法規 特管 最新 更新 合規">
           <span>法規更新</span><div><strong>特管新法合規導航</strong><p>直接看訓練時數、案例認定、過渡期限與官方來源。</p></div><small>↘</small>
         </a>
-        <a href="#regulation-radar" data-search-entry data-keywords="放射科 專科 法規 2019 PGY 32小時 案例審查 手術 雷射 針劑 FUE">
-          <span>資格工具</span><div><strong>放射科醫師法規雷達</strong><p>設定畢業時間與施作類型，直接看可施作範圍、缺口與期限。</p></div><small>↘</small>
+        <a href="#regulation-radar" data-search-entry data-keywords="家庭醫學科 家醫科 放射診斷科 科別 專科 法規 2019 PGY 32小時 案例審查 手術 雷射 針劑 FUE">
+          <span>資格工具</span><div><strong>依科別切換的法規雷達</strong><p>設定科別、畢業時間與施作類型，直接看可施作範圍、缺口與期限。</p></div><small>↘</small>
         </a>
         <a href="#courses" data-search-entry data-keywords="課程 針劑 微創 線上 實體 肉毒 玻尿酸 年會 原廠">
           <span>課程情報</span><div><strong>最新課程、期限與查核狀態</strong><p>在列表直接比較日期、地點、資格、費用與特管時數。</p></div><small>↘</small>

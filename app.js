@@ -296,6 +296,7 @@ loadCourseIntelligence();
 const qualificationForm = document.querySelector("[data-qualification-form]");
 const qualificationResult = document.querySelector("[data-qualification-result]");
 const resultBadge = document.querySelector("[data-result-badge]");
+const resultContext = document.querySelector("[data-result-context]");
 const resultTitle = document.querySelector("[data-result-title]");
 const resultSummary = document.querySelector("[data-result-summary]");
 const resultRequirements = document.querySelector("[data-result-requirements]");
@@ -304,10 +305,41 @@ const resultDays = document.querySelector("[data-result-days]");
 const resultDate = document.querySelector("[data-result-date]");
 const resultCaveat = document.querySelector("[data-result-caveat]");
 const regulationClock = document.querySelector("[data-regulation-clock]");
+const specialtyHint = document.querySelector("[data-specialty-hint]");
+const specialtyDetail = document.querySelector("[data-specialty-detail]");
+const scopeProcedure = document.querySelector("[data-scope-procedure]");
+const scopeSurgery = document.querySelector("[data-scope-surgery]");
+const scopeHighRisk = document.querySelector("[data-scope-high-risk]");
 const transitionDeadline = new Date("2026-12-31T23:59:59+08:00");
 const extendedTransitionDeadline = new Date("2027-12-31T23:59:59+08:00");
 
 const getDaysUntil = (date) => Math.max(0, Math.ceil((date - new Date()) / 86_400_000));
+
+const specialtyProfiles = {
+  family: { label: "家庭醫學科", society: "台灣家庭醫學醫學會" },
+  radiology: { label: "放射診斷科", society: "中華民國放射線醫學會" },
+  surgery: { label: "外科", society: "台灣外科醫學會", generalSurgery: true, highRisk: ["中／全臉拉皮", "大量或全麻抽脂", "腹部整形", "鼻整形", "義乳植入"] },
+  orthopedics: { label: "骨科", society: "中華民國骨科醫學會", generalSurgery: true, highRisk: ["臉部削骨", "臉部以外削骨", "中／全臉拉皮"] },
+  neurosurgery: { label: "神經外科", society: "台灣神經外科醫學會", generalSurgery: true, highRisk: ["臉部削骨"] },
+  plastic: { label: "整形外科", society: "台灣整形外科醫學會", generalSurgery: true, highRisk: ["削骨", "中／全臉拉皮", "大量或全麻抽脂", "腹部整形", "鼻整形", "義乳植入", "全身拉皮", "全麻生殖器整形"] },
+  urology: { label: "泌尿科", society: "台灣泌尿科醫學會", generalSurgery: true, highRisk: ["全麻生殖器整形"] },
+  obgyn: { label: "婦產科", society: "台灣婦產科醫學會", generalSurgery: true, highRisk: ["大量或全麻抽脂", "腹部整形", "全麻生殖器整形"] },
+  ophthalmology: { label: "眼科", society: "中華民國眼科醫學會", generalSurgery: true, highRisk: ["臉部削骨", "中／全臉拉皮"] },
+  ent: { label: "耳鼻喉科", society: "台灣耳鼻喉頭頸外科醫學會", generalSurgery: true, highRisk: ["臉部削骨", "中／全臉拉皮", "鼻整形"] },
+  dermatology: { label: "皮膚科", society: "台灣皮膚科醫學會", generalSurgery: true, highRisk: ["中／全臉拉皮", "大量或全麻抽脂", "腹部整形", "鼻整形"] },
+  internal: { label: "內科", society: "台灣內科醫學會" },
+  pediatrics: { label: "兒科", society: "臺灣兒科醫學會" },
+  emergency: { label: "急診醫學科", society: "台灣急診醫學會" },
+  anesthesiology: { label: "麻醉科", society: "台灣麻醉醫學會" },
+  rehabilitation: { label: "復健科", society: "台灣復健醫學會" },
+  neurology: { label: "神經科", society: "台灣神經學學會" },
+  psychiatry: { label: "精神科", society: "台灣精神醫學會" },
+  radiationOncology: { label: "放射腫瘤科", society: "台灣放射腫瘤學會" },
+  pathology: { label: "解剖病理科", society: "台灣病理學會" },
+  clinicalPathology: { label: "臨床病理科", society: "台灣臨床病理暨檢驗醫學會" },
+  nuclearMedicine: { label: "核子醫學科", society: "中華民國核醫學學會" },
+  occupational: { label: "職業醫學科", society: "中華民國環境職業醫學會" },
+};
 
 const qualificationScenarios = {
   procedureBefore: {
@@ -376,10 +408,12 @@ const saveQualificationProfile = () => {
   if (!qualificationForm) return;
   const data = new FormData(qualificationForm);
   const profile = {
+    specialty: data.get("specialty"),
     graduation: data.get("graduation"),
     procedure: data.get("procedure"),
     existingProcedure: data.get("existingProcedure") === "on",
     hasSurgeryCases: data.get("hasSurgeryCases") === "on",
+    existingSurgery: data.get("existingSurgery") === "on",
     hasLegacyCertificate: data.get("hasLegacyCertificate") === "on",
   };
   localStorage.setItem("lumina-qualification-profile", JSON.stringify(profile));
@@ -390,11 +424,13 @@ const loadQualificationProfile = () => {
   try {
     const profile = JSON.parse(localStorage.getItem("lumina-qualification-profile") || "null");
     if (!profile) return;
+    const specialty = qualificationForm.elements.specialty;
+    if (specialty && specialtyProfiles[profile.specialty]) specialty.value = profile.specialty;
     ["graduation", "procedure"].forEach((name) => {
       const input = qualificationForm.querySelector(`[name="${name}"][value="${profile[name]}"]`);
       if (input) input.checked = true;
     });
-    ["existingProcedure", "hasSurgeryCases", "hasLegacyCertificate"].forEach((name) => {
+    ["existingProcedure", "hasSurgeryCases", "existingSurgery", "hasLegacyCertificate"].forEach((name) => {
       const input = qualificationForm.elements[name];
       if (input) input.checked = Boolean(profile[name]);
     });
@@ -405,29 +441,90 @@ const loadQualificationProfile = () => {
 
 const getQualificationScenario = () => {
   const data = new FormData(qualificationForm);
+  const profile = specialtyProfiles[data.get("specialty")] || specialtyProfiles.radiology;
   const graduation = data.get("graduation");
   const procedure = data.get("procedure");
 
-  if (procedure === "surgery") return data.get("hasSurgeryCases") === "on" ? qualificationScenarios.surgeryCases : qualificationScenarios.surgeryNoCases;
-  if (procedure === "highRisk") return data.get("hasLegacyCertificate") === "on" ? qualificationScenarios.highRiskLegacy : qualificationScenarios.highRiskNoLegacy;
-  if (graduation === "before") return qualificationScenarios.procedureBefore;
-  return data.get("existingProcedure") === "on" ? qualificationScenarios.procedureAfterExisting : qualificationScenarios.procedureAfterNew;
+  if (procedure === "surgery" && profile.generalSurgery) {
+    const existing = data.get("existingSurgery") === "on";
+    return {
+      tone: existing ? "warning" : "allowed",
+      badge: existing ? "一年過渡期" : "具科別門檻",
+      title: existing ? "可在期限內補齊32小時訓練" : "完成32小時訓練後可施行",
+      summary: `${profile.label}屬第25條法定九大美容手術專科，${existing ? "2026年前已施行者可在一年內補齊訓練" : "新進業務應先取得32小時訓練證明"}。`,
+      requirements: ["完成認可學會美容醫學手術訓練至少32小時", "每3年完成繼續教育至少24小時", "由院所完成施行項目及醫師資格備查", "特定高風險手術仍須再核對第26條逐項科別"],
+      caveat: "第25條的一般美容手術資格，不代表可施行所有特定美容手術。",
+      deadline: existing ? transitionDeadline : undefined,
+      deadlineLabel: existing ? "2026.12.31・一年訓練期限" : undefined,
+    };
+  }
+
+  if (procedure === "surgery") {
+    const scenario = data.get("hasSurgeryCases") === "on"
+      ? { ...qualificationScenarios.surgeryCases }
+      : { ...qualificationScenarios.surgeryNoCases };
+    scenario.title = scenario.title.replace("放射科", profile.label);
+    scenario.summary = scenario.summary.replace("放射科", profile.label).replace("放射診斷科", profile.label);
+    return scenario;
+  }
+
+  if (procedure === "highRisk" && profile.highRisk?.length) {
+    return {
+      tone: "warning",
+      badge: "逐項限定",
+      title: "可施行第26條所列的部分項目",
+      summary: `${profile.label}並非可施行全部特定美容手術；現行條文列入的項目為：${profile.highRisk.join("、")}。`,
+      requirements: [`可適用項目：${profile.highRisk.join("、")}`, "應完成32小時美容手術訓練", "由院所依項目向地方衛生局申請核准與登記"],
+      caveat: "未列於第26條該科別之項目，不得以一般美容手術資格或訓練證明擴張施作。",
+    };
+  }
+
+  if (procedure === "highRisk") {
+    const scenario = data.get("hasLegacyCertificate") === "on"
+      ? { ...qualificationScenarios.highRiskLegacy }
+      : { ...qualificationScenarios.highRiskNoLegacy };
+    scenario.title = scenario.title.replace("放射科", profile.label);
+    scenario.requirements = scenario.requirements.map((item) => item.replace("放射診斷科", profile.label));
+    return scenario;
+  }
+
+  if (graduation === "before") {
+    return {
+      ...qualificationScenarios.procedureBefore,
+      summary: `2019年8月1日前畢業且已取得${profile.label}專科資格，不必提出32例，也不受PGY及初始32小時訓練限制。`,
+      caveat: `此豁免只適用特定美容醫學處置；${profile.label}的美容手術資格仍應另依第25條與第26條判斷。`,
+    };
+  }
+
+  const scenario = data.get("existingProcedure") === "on"
+    ? { ...qualificationScenarios.procedureAfterExisting }
+    : { ...qualificationScenarios.procedureAfterNew };
+  scenario.summary = scenario.summary.replace("放射科", profile.label);
+  scenario.caveat = data.get("existingProcedure") === "on"
+    ? scenario.caveat
+    : `${profile.society}在衛福部認可的特定處置訓練學會名單內；課程仍須符合全聯會最新課綱。`;
+  return scenario;
 };
 
 const renderQualification = () => {
   if (!qualificationForm || !qualificationResult) return;
   const data = new FormData(qualificationForm);
+  const profile = specialtyProfiles[data.get("specialty")] || specialtyProfiles.radiology;
   const graduation = data.get("graduation");
   const procedure = data.get("procedure");
 
   document.querySelectorAll("[data-conditional]").forEach((field) => {
     const type = field.dataset.conditional;
-    field.hidden = type === "procedure" ? !(procedure === "procedure" && graduation === "after") : type !== procedure;
+    if (type === "procedure") field.hidden = !(procedure === "procedure" && graduation === "after");
+    if (type === "surgery") field.hidden = !(procedure === "surgery" && !profile.generalSurgery);
+    if (type === "eligibleSurgery") field.hidden = !(procedure === "surgery" && profile.generalSurgery);
+    if (type === "highRisk") field.hidden = !(procedure === "highRisk" && !profile.highRisk?.length);
   });
 
   const scenario = getQualificationScenario();
   qualificationResult.dataset.tone = scenario.tone;
   resultBadge.textContent = scenario.badge;
+  resultContext.textContent = `已取得・${profile.label}專科醫師`;
   resultTitle.textContent = scenario.title;
   resultSummary.textContent = scenario.summary;
   resultCaveat.textContent = scenario.caveat;
@@ -445,6 +542,19 @@ const renderQualification = () => {
   } else {
     resultDeadline.hidden = true;
   }
+
+  const surgeryHint = profile.generalSurgery
+    ? "屬美容手術九大專科；特定美容手術仍應依項目核對科別。"
+    : "屬部定專科，但不在美容手術九大專科內。";
+  specialtyHint.textContent = `${profile.label}${surgeryHint}`;
+  specialtyDetail.textContent = `${profile.label}${profile.generalSurgery ? "在九大專科內，但特定美容手術仍有逐項限制。" : "不在其中。"}`;
+  scopeProcedure.textContent = `${profile.label}專科可適用（依畢業時間補足條件）`;
+  scopeSurgery.textContent = profile.generalSurgery
+    ? `${profile.label}屬九大專科；仍須32小時訓練`
+    : "非九大專科；僅限既有30例過渡";
+  scopeHighRisk.textContent = profile.highRisk?.length
+    ? `僅限法定項目：${profile.highRisk.join("、")}`
+    : `${profile.label}原則上不得新施作`;
 
   qualificationResult.classList.remove("is-scanning");
   void qualificationResult.offsetWidth;
