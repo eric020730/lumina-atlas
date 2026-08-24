@@ -44,8 +44,9 @@
 
       <nav class="desktop-nav" aria-label="主要導覽">
         <a href="#pulse">本週重點</a>
+        <a href="#regulation-radar">法規雷達</a>
         <a href="#atlas">知識圖譜</a>
-        <a href="#courses">課程</a>
+        <a href="#courses">課程情報</a>
         <a href="#notes">研習筆記</a>
       </nav>
 
@@ -64,8 +65,9 @@
 
       <nav class="mobile-nav" data-mobile-nav aria-label="行動版導覽">
         <a href="#pulse">本週重點</a>
+        <a href="#regulation-radar">法規雷達</a>
         <a href="#atlas">知識圖譜</a>
-        <a href="#courses">課程</a>
+        <a href="#courses">課程情報</a>
         <a href="#notes">研習筆記</a>
       </nav>
     </header>
@@ -84,12 +86,12 @@
           </div>
           <div class="deadline-strip" aria-label="近期截止資訊">
             <div class="deadline-strip__date">
-              <span>報名截止</span>
-              <strong>2027.10.25</strong>
+              <span>最近報名期限</span>
+              <strong data-deadline-date>載入中</strong>
             </div>
             <div class="deadline-strip__detail">
               <span data-days-left>計算中</span>
-              <p>微創針劑注射教育訓練・線上理論課程</p>
+              <p data-deadline-title>正在讀取最新課程情報</p>
             </div>
           </div>
         </div>
@@ -100,7 +102,7 @@
               <span>LIVE LEARNING MAP</span>
               <strong id="depth-map-title">知識皮層</strong>
             </div>
-            <span class="depth-map__status"><i></i> 已查核 2 筆</span>
+            <span class="depth-map__status"><i></i> <span data-verified-count>正在載入查核資料</span></span>
           </figcaption>
 
           <div class="layers" data-layers>
@@ -194,6 +196,220 @@
         </div>
       </section>
 
+      <section class="regulation-radar" id="regulation-radar" data-search-item data-keywords="法規 放射科 專科醫師 2019 108 PGY 32小時 案例審查 手術 雷射 針劑 FUE">
+        <div class="regulation-radar__inner">
+          <header class="section-heading section-heading--split reveal">
+            <div>
+              <p class="section-kicker">REGULATION RADAR · RADIOLOGY</p>
+              <h2>放射科醫師的法規切層</h2>
+            </div>
+            <div class="regulation-version" aria-label="法規資料版本">
+              <span><i aria-hidden="true"></i> 已核對官方來源</span>
+              <strong>資料版本 2026.08.24</strong>
+              <small>新制自 2026.01.01 生效</small>
+            </div>
+          </header>
+
+          <div class="qualification-scan reveal">
+            <form class="qualification-form" data-qualification-form>
+              <div class="qualification-form__topline">
+                <div>
+                  <span>YOUR PROFILE</span>
+                  <strong>個人資格掃描</strong>
+                </div>
+                <p>設定只保存在這台裝置，不會上傳。</p>
+              </div>
+
+              <fieldset class="choice-fieldset">
+                <legend><span>01</span> 醫學系畢業時間</legend>
+                <div class="choice-grid choice-grid--two">
+                  <label class="choice-card">
+                    <input type="radio" name="graduation" value="before" checked />
+                    <span class="choice-card__body">
+                      <strong>2019.08.01 前</strong>
+                      <small>民國108年8月1日前畢業</small>
+                    </span>
+                  </label>
+                  <label class="choice-card">
+                    <input type="radio" name="graduation" value="after" />
+                    <span class="choice-card__body">
+                      <strong>2019.08.01 起</strong>
+                      <small>適用PGY與新制訓練條件</small>
+                    </span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <fieldset class="choice-fieldset">
+                <legend><span>02</span> 想確認的施作類型</legend>
+                <div class="choice-grid choice-grid--three">
+                  <label class="choice-card choice-card--procedure">
+                    <input type="radio" name="procedure" value="procedure" checked />
+                    <span class="choice-card__body">
+                      <strong>特定美容醫學處置</strong>
+                      <small>光電、針劑、FUE</small>
+                    </span>
+                  </label>
+                  <label class="choice-card choice-card--procedure">
+                    <input type="radio" name="procedure" value="surgery" />
+                    <span class="choice-card__body">
+                      <strong>美容醫學手術</strong>
+                      <small>雙眼皮、眼袋、FUT等</small>
+                    </span>
+                  </label>
+                  <label class="choice-card choice-card--procedure">
+                    <input type="radio" name="procedure" value="highRisk" />
+                    <span class="choice-card__body">
+                      <strong>特定美容醫學手術</strong>
+                      <small>削骨、大量抽脂等高風險項目</small>
+                    </span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <div class="conditional-field" data-conditional="procedure" hidden>
+                <label class="switch-row">
+                  <input type="checkbox" name="existingProcedure" />
+                  <span class="switch-row__control" aria-hidden="true"></span>
+                  <span><strong>2026.01.01 前已施作此類項目</strong><small>影響是否可適用過渡期限</small></span>
+                </label>
+              </div>
+
+              <div class="conditional-field" data-conditional="surgery" hidden>
+                <label class="switch-row">
+                  <input type="checkbox" name="hasSurgeryCases" />
+                  <span class="switch-row__control" aria-hidden="true"></span>
+                  <span><strong>2026.01.01 前已有至少30例手術</strong><small>案例必須符合全聯會審查資料要求</small></span>
+                </label>
+              </div>
+
+              <div class="conditional-field" data-conditional="highRisk" hidden>
+                <label class="switch-row">
+                  <input type="checkbox" name="hasLegacyCertificate" />
+                  <span class="switch-row__control" aria-hidden="true"></span>
+                  <span><strong>已有2019年前舊制項目資格證明</strong><small>須為認可學會或醫師全聯會核發的既有證明</small></span>
+                </label>
+              </div>
+            </form>
+
+            <section class="qualification-result" aria-live="polite" aria-atomic="true" data-qualification-result>
+              <div class="scan-line" aria-hidden="true"></div>
+              <div class="qualification-result__head">
+                <span>LEGAL SCOPE</span>
+                <span class="result-badge" data-result-badge>可依法施行</span>
+              </div>
+              <p class="qualification-result__context">已取得・放射診斷科專科醫師</p>
+              <h3 data-result-title>可施行光電、針劑與FUE等處置</h3>
+              <p data-result-summary>2019年8月1日前畢業且已取得部定專科資格，不必提出32例，也不受PGY及初始32小時訓練限制。</p>
+              <ul class="result-requirements" data-result-requirements></ul>
+              <div class="result-deadline" data-result-deadline hidden>
+                <span>最接近期限</span>
+                <strong data-result-days>—</strong>
+                <small data-result-date>—</small>
+              </div>
+              <p class="result-caveat" data-result-caveat>仍須每3年完成24小時繼續教育，並由醫療機構向地方衛生局完成項目及醫師資格備查。</p>
+            </section>
+          </div>
+
+          <div class="regulation-dashboard reveal">
+            <section class="compliance-tracker" aria-labelledby="compliance-title">
+              <div class="tracker-heading">
+                <div>
+                  <p class="section-kicker">LOCAL CHECKLIST</p>
+                  <h3 id="compliance-title">我的合規進度</h3>
+                </div>
+                <span data-compliance-progress>0 / 5 完成</span>
+              </div>
+              <div class="progress-track" role="progressbar" aria-label="合規待辦完成進度" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" data-progress-track>
+                <i data-progress-bar></i>
+              </div>
+              <div class="compliance-list">
+                <label><input type="checkbox" data-compliance="profile" /><span><strong>確認畢業日期與專科證書</strong><small>保留證書與可供衛生局查核的文件</small></span></label>
+                <label><input type="checkbox" data-compliance="training" /><span><strong>確認初始訓練或豁免條件</strong><small>必要時完成認可學會32小時課程</small></span></label>
+                <label><input type="checkbox" data-compliance="filing" /><span><strong>院所完成項目及醫師資格備查</strong><small>有異動時也要重新申報</small></span></label>
+                <label><input type="checkbox" data-compliance="education" /><span><strong>建立每3年24小時繼續教育紀錄</strong><small>保存課程與完訓證明</small></span></label>
+                <label><input type="checkbox" data-compliance="clinical" /><span><strong>核對同意書、器材與病歷流程</strong><small>含風險說明、合格藥材與完整紀錄</small></span></label>
+              </div>
+              <p class="tracker-storage"><span aria-hidden="true">●</span> 勾選進度僅儲存在這台裝置</p>
+            </section>
+
+            <aside class="deadline-board" aria-labelledby="deadline-title">
+              <div class="tracker-heading">
+                <div>
+                  <p class="section-kicker">DEADLINE BOARD</p>
+                  <h3 id="deadline-title">關鍵期限</h3>
+                </div>
+                <span data-regulation-clock>計算中</span>
+              </div>
+              <ol>
+                <li><time datetime="2026-01-01">2026.01.01</time><div><strong>新制生效</strong><small>特定處置及美容手術資格全面更新</small></div><span class="deadline-status deadline-status--done">已生效</span></li>
+                <li><time datetime="2026-12-31">2026.12.31</time><div><strong>案例認定與一年期訓練期限</strong><small>手術30例過渡資格應提早完成審查與32小時</small></div><span class="deadline-status deadline-status--urgent">追蹤中</span></li>
+                <li><time datetime="2027-12-31">2027.12.31</time><div><strong>部分既有處置醫師二年過渡</strong><small>欲援用第27條之1第4項者，先向地方衛生局書面確認</small></div><span class="deadline-status">需確認</span></li>
+              </ol>
+            </aside>
+          </div>
+
+          <div class="legal-scope-grid reveal">
+            <article class="scope-card scope-card--allowed">
+              <span>01 / NON-SURGICAL</span>
+              <h3>特定美容醫學處置</h3>
+              <p>雷射、脈衝光、電波、超音波、肉毒桿菌素、填充製劑及FUE等。</p>
+              <strong>放射科專科可適用</strong>
+            </article>
+            <article class="scope-card scope-card--conditional">
+              <span>02 / SURGERY</span>
+              <h3>美容醫學手術</h3>
+              <p>雙眼皮、眼袋、除疤、FUT、局部小量抽脂及其他改變外觀之手術。</p>
+              <strong>須符合九大專科或既有30例過渡</strong>
+            </article>
+            <article class="scope-card scope-card--restricted">
+              <span>03 / HIGH RISK</span>
+              <h3>特定美容醫學手術</h3>
+              <p>削骨、中全臉拉皮、大量或全麻抽脂、腹整、鼻整形、義乳等。</p>
+              <strong>放射科原則上不得新施作</strong>
+            </article>
+          </div>
+
+          <div class="regulation-details reveal">
+            <details open>
+              <summary><span>院所端還要完成什麼？</span><small>機構責任</small></summary>
+              <div class="detail-content">
+                <p>醫療機構應將施行項目、醫師與資格報所在地衛生局備查；異動時亦同。並須落實風險評估、充分思考期、書面同意、合格藥品器材及病歷保存。</p>
+                <p>美容手術若涉及全麻或重度鎮靜，須由麻醉科專科醫師全程在場；診所或99床以下醫院另須有後送計畫與協議。</p>
+              </div>
+            </details>
+            <details>
+              <summary><span>九大美容手術專科是哪些？</span><small>第25條</small></summary>
+              <div class="detail-content">
+                <p>外科、骨科、神經外科、整形外科、泌尿科、婦產科、眼科、耳鼻喉科及皮膚科。放射診斷科不在其中；民間學會核發的美容醫學專科證書，不能取代這九大部定專科。</p>
+              </div>
+            </details>
+            <details>
+              <summary><span>違反資格規範會怎樣？</span><small>醫療法</small></summary>
+              <div class="detail-content">
+                <p>依醫療法第103條、第107條，醫療機構及實際行為人可能各受新臺幣5萬至25萬元罰鍰；行為人為醫事人員者，另可能進入專業懲戒程序。</p>
+              </div>
+            </details>
+          </div>
+
+          <section class="source-timeline reveal" aria-labelledby="source-title">
+            <div class="source-timeline__head">
+              <div>
+                <p class="section-kicker">SOURCE TRACE</p>
+                <h3 id="source-title">官方版本追蹤</h3>
+              </div>
+              <p>本頁為個人合規索引；主管機關個案認定與最新原文優先。</p>
+            </div>
+            <div class="source-events">
+              <a href="https://www.mohw.gov.tw/dl-98555-ce1b812f-52c5-4c3a-8bf2-0847a57505b0.html" target="_blank" rel="noreferrer"><time datetime="2025-12-31">2025.12.31</time><span>衛福部修正特管辦法</span><small>查看修正條文 ↗</small></a>
+              <a href="https://www.tmias.org.tw/upload/news/95/101.pdf" target="_blank" rel="noreferrer"><time datetime="2026-06-04">2026.06.04</time><span>衛福部釋疑PGY資格</span><small>查看函文 ↗</small></a>
+              <a href="https://dep.mohw.gov.tw/DOMA/cp-3240-86066-106.html" target="_blank" rel="noreferrer"><time datetime="2026-07-28">2026.07.28</time><span>更新認可訓練學會名單</span><small>查看公告 ↗</small></a>
+              <a href="https://www.tma.tw/CosMedCertify_2026/index02.asp" target="_blank" rel="noreferrer"><time datetime="2026-08-24">NOW</time><span>全聯會案例審查專區</span><small>查看申請進度與規範 ↗</small></a>
+            </div>
+          </section>
+        </div>
+      </section>
+
       <section class="atlas section-shell" id="atlas">
         <header class="section-heading section-heading--split reveal">
           <div>
@@ -206,25 +422,37 @@
         <div class="atlas-list reveal">
           <article class="atlas-row" data-search-item data-keywords="法規 資格 特管 PGY 案例認定">
             <div class="atlas-row__identity"><span>A</span><strong>法規與資格</strong></div>
-            <p>我具備什麼資格？需要哪些時數與案例？</p>
+            <div class="atlas-row__answer">
+              <span>先讀結論</span>
+              <p>先核對畢業時間、部定專科與院所備查。放射科可適用特定處置規則，但美容手術另有九大專科與過渡限制。</p>
+            </div>
             <div class="atlas-row__topics"><span>特管辦法</span><span>案例認定</span><span>PGY</span></div>
             <a href="https://www.tmias.org.tw/news/content.php?id=95" target="_blank" rel="noreferrer" aria-label="開啟法規與資格來源">↗</a>
           </article>
           <article class="atlas-row" data-search-item data-keywords="課程 訓練 積分 線上 實體">
             <div class="atlas-row__identity"><span>B</span><strong>訓練與課程</strong></div>
-            <p>下一門課學什麼？何時截止？能取得哪些時數？</p>
+            <div class="atlas-row__answer">
+              <span>先讀結論</span>
+              <p>報名前先看是否開放、對象門檻與特管時數是否核定；原廠證書不等於法定訓練時數。</p>
+            </div>
             <div class="atlas-row__topics"><span>線上理論</span><span>實體實操</span><span>認證積分</span></div>
             <a href="#courses" aria-label="前往訓練與課程">↓</a>
           </article>
           <article class="atlas-row" data-search-item data-keywords="技術 解剖 肉毒 玻尿酸 線材 超音波 注射">
             <div class="atlas-row__identity"><span>C</span><strong>技術與解剖</strong></div>
-            <p>治療在哪一層發生？材料與手法如何選擇？</p>
+            <div class="atlas-row__answer">
+              <span>先讀結論</span>
+              <p>操作前先理解解剖層次、針具路徑、材料特性與即時影像，避免只記注射點位卻不懂組織關係。</p>
+            </div>
             <div class="atlas-row__topics"><span>組織構造</span><span>針劑材料</span><span>即時影像</span></div>
             <a href="#curriculum" aria-label="前往技術與解剖課綱">↓</a>
           </article>
           <article class="atlas-row" data-search-item data-keywords="安全 併發症 血管 栓塞 處理">
             <div class="atlas-row__identity"><span>D</span><strong>安全與處置</strong></div>
-            <p>如何預防風險？發生併發症時怎麼辨識與處理？</p>
+            <div class="atlas-row__answer">
+              <span>先讀結論</span>
+              <p>優先建立風險辨識、栓塞警訊與緊急處置順序；安全能力應先於新技術與材料應用。</p>
+            </div>
             <div class="atlas-row__topics"><span>風險評估</span><span>併發症</span><span>緊急處置</span></div>
             <a href="#curriculum" aria-label="前往安全與處置課綱">↓</a>
           </article>
@@ -234,76 +462,67 @@
       <section class="courses section-shell" id="courses">
         <header class="section-heading section-heading--split reveal">
           <div>
-            <p class="section-kicker">COURSE TRACKER</p>
-            <h2>課程追蹤</h2>
+            <p class="section-kicker">COURSE INTELLIGENCE</p>
+            <h2>最新課程情報</h2>
+            <p class="course-freshness" role="status" aria-atomic="true" data-course-freshness>正在讀取最近查核時間……</p>
           </div>
           <div class="filter-group" aria-label="課程篩選">
             <button class="filter is-active" type="button" data-filter="all">全部</button>
+            <button class="filter" type="button" data-filter="open">可報名</button>
             <button class="filter" type="button" data-filter="online">線上</button>
-            <button class="filter" type="button" data-filter="practice">實體</button>
+            <button class="filter" type="button" data-filter="practice">實作</button>
+            <button class="filter" type="button" data-filter="conference">年會</button>
           </div>
         </header>
 
-        <article class="course-sheet reveal" data-course data-format="online practice" data-search-item data-keywords="微創 針劑 注射 線上 實體 肉毒 玻尿酸">
-          <div class="course-sheet__rail">
-            <span>OPEN</span>
-            <strong>20</strong>
-            <small>認證積分</small>
-          </div>
-          <div class="course-sheet__main">
-            <div class="course-sheet__meta">
-              <span>中華民國美容醫學醫學會</span>
-              <span>混成教學</span>
-              <span>限具西醫執照醫師</span>
-            </div>
-            <h3>微創針劑注射教育訓練課程</h3>
-            <p>從針劑趨勢、組織構造與材料應用，延伸到即時影像及微整形併發症處理。</p>
-            <div class="course-sheet__route" aria-label="課程學習路徑">
-              <div><span>第一階段</span><strong>13.5 小時</strong><small>非同步線上理論</small></div>
-              <i aria-hidden="true">→</i>
-              <div><span>第二階段</span><strong>12 小時</strong><small>實體臨床實操</small></div>
-              <i aria-hidden="true">→</i>
-              <div><span>完訓核發</span><strong>25.5 小時</strong><small>核心 4.5＋進階 21</small></div>
-            </div>
-          </div>
-          <div class="course-sheet__aside">
-            <dl>
-              <div><dt>報名截止</dt><dd>2027.10.25</dd></div>
-              <div><dt>課程截止</dt><dd>2027.12.31</dd></div>
-              <div><dt>線上費用</dt><dd>會員 NT$10,000 起</dd></div>
-            </dl>
-            <div class="course-sheet__buttons">
-              <a class="button button--primary" href="https://www.cscsm.org.tw/elearning_detail.aspx?c=aa614f4a17ea4fad92601a69ee325ee6" target="_blank" rel="noreferrer">查看課程原頁</a>
-              <button class="save-button save-button--wide" type="button" data-save="injection-course">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z" /></svg>
-                <span>收藏課程</span>
-              </button>
-            </div>
-          </div>
-        </article>
-        <div class="course-empty" data-course-empty hidden>這個篩選目前沒有獨立課程；新的上課資訊加入後會顯示在這裡。</div>
+        <div class="course-monitor reveal" aria-label="情報更新原則">
+          <div><span>更新頻率</span><strong>每週自動搜尋</strong></div>
+          <div><span>優先來源</span><strong>主管機關與專業學會</strong></div>
+          <div><span>判讀原則</span><strong>原廠證書 ≠ 特管時數</strong></div>
+          <p>所有時效資訊均附原始來源與查核日；報名前仍請回到主辦單位確認名額、資格及費用。</p>
+        </div>
+
+        <div class="course-feed" data-course-feed aria-busy="true">
+          <div class="course-loading">正在整理已查核的課程資料……</div>
+        </div>
+        <div class="course-empty" data-course-empty hidden>這個篩選目前沒有符合的課程。</div>
+        <div class="course-data-error" data-course-error hidden>
+          課程資料暫時無法載入。請以本頁連結的主辦單位公告為準，或稍後重新整理。
+        </div>
       </section>
 
       <section class="curriculum section-shell" id="curriculum">
         <header class="section-heading section-heading--split reveal">
           <div>
             <p class="section-kicker">CURRICULUM TRACE</p>
-            <h2>這門課會走過哪些知識？</h2>
+            <h2>不點進課綱，先看懂會學到什麼</h2>
           </div>
-          <p>將原課程的十四個單元重新編入四條學習線，方便之後逐項延伸筆記。</p>
+          <p>十四個單元整理成四條學習線；每一格先告訴你核心內容與學完後應能回答的問題。</p>
         </header>
         <div class="curriculum-grid reveal">
           <div class="curriculum-line curriculum-line--a">
-            <span>策略</span><strong>產業趨勢與諮商策略</strong><small>2 單元</small>
+            <div class="curriculum-line__head"><span>策略</span><small>2 單元</small></div>
+            <strong>產業趨勢與諮商策略</strong>
+            <p>從需求辨識到預期管理，建立治療前的溝通邏輯。</p>
+            <ul><li>辨識就診動機與不合理預期</li><li>將療程限制與風險說清楚</li></ul>
           </div>
           <div class="curriculum-line curriculum-line--b">
-            <span>基礎</span><strong>組織構造、尖針與鈍針技巧</strong><small>2 單元</small>
+            <div class="curriculum-line__head"><span>基礎</span><small>2 單元</small></div>
+            <strong>組織構造、尖針與鈍針技巧</strong>
+            <p>把「注射在哪裡」與「為什麼選這支針」連在一起。</p>
+            <ul><li>理解皮膚、脂肪、肌肉與血管層次</li><li>比較尖針與鈍針的路徑與風險</li></ul>
           </div>
           <div class="curriculum-line curriculum-line--c">
-            <span>材料</span><strong>肉毒、玻尿酸、PLLA、PDLLA、CaHA 與線材</strong><small>7 單元</small>
+            <div class="curriculum-line__head"><span>材料</span><small>7 單元</small></div>
+            <strong>肉毒、玻尿酸、PLLA、PDLLA、CaHA 與線材</strong>
+            <p>不只記商品，而是比較作用方式、適應症與選擇邏輯。</p>
+            <ul><li>區分肌肉放鬆、容積填充與組織刺激</li><li>依部位、層次與目標選擇材料</li></ul>
           </div>
           <div class="curriculum-line curriculum-line--d">
-            <span>安全</span><strong>即時影像與併發症處理</strong><small>3 單元</small>
+            <div class="curriculum-line__head"><span>安全</span><small>3 單元</small></div>
+            <strong>即時影像與併發症處理</strong>
+            <p>用即時影像輔助定位，並先記住發生異常時的辨識與處置順序。</p>
+            <ul><li>找到關鍵血管與高風險區域</li><li>建立異常警訊、停止與處置流程</li></ul>
           </div>
         </div>
       </section>
@@ -344,16 +563,19 @@
       <div class="search-results" data-search-results>
         <p class="search-results__hint">輸入關鍵字，或從下方開始</p>
         <a href="#pulse" data-search-entry data-keywords="法規 特管 最新 更新 合規">
-          <span>法規更新</span><strong>特管新法合規導航</strong><small>↘</small>
+          <span>法規更新</span><div><strong>特管新法合規導航</strong><p>直接看訓練時數、案例認定、過渡期限與官方來源。</p></div><small>↘</small>
         </a>
-        <a href="#courses" data-search-entry data-keywords="課程 針劑 微創 線上 實體">
-          <span>課程</span><strong>微創針劑注射教育訓練</strong><small>↘</small>
+        <a href="#regulation-radar" data-search-entry data-keywords="放射科 專科 法規 2019 PGY 32小時 案例審查 手術 雷射 針劑 FUE">
+          <span>資格工具</span><div><strong>放射科醫師法規雷達</strong><p>設定畢業時間與施作類型，直接看可施作範圍、缺口與期限。</p></div><small>↘</small>
+        </a>
+        <a href="#courses" data-search-entry data-keywords="課程 針劑 微創 線上 實體 肉毒 玻尿酸 年會 原廠">
+          <span>課程情報</span><div><strong>最新課程、期限與查核狀態</strong><p>在列表直接比較日期、地點、資格、費用與特管時數。</p></div><small>↘</small>
         </a>
         <a href="#atlas" data-search-entry data-keywords="知識 法規 課程 技術 安全 解剖">
-          <span>學習地圖</span><strong>四層知識圖譜</strong><small>↘</small>
+          <span>學習地圖</span><div><strong>四層知識圖譜</strong><p>先看法規邊界，再排訓練、技術與安全的學習順序。</p></div><small>↘</small>
         </a>
         <a href="#notes" data-search-entry data-keywords="筆記 收藏 儲存 個人">
-          <span>個人區</span><strong>研習筆記</strong><small>↘</small>
+          <span>個人區</span><div><strong>研習筆記</strong><p>記下下一個要查證的問題，內容只儲存在目前裝置。</p></div><small>↘</small>
         </a>
         <p class="search-results__empty" data-search-empty hidden>沒有符合的內容，試試「針劑」或「法規」。</p>
       </div>
