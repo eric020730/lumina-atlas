@@ -22,10 +22,280 @@ const menuTrigger = document.querySelector("[data-menu-trigger]");
 const mobileNav = document.querySelector("[data-mobile-nav]");
 const searchDialog = document.querySelector("[data-search-dialog]");
 const searchInput = document.querySelector("[data-search-input]");
-const searchEntries = [...document.querySelectorAll("[data-search-entry]")];
+const searchResults = document.querySelector("[data-search-results]");
 const searchEmpty = document.querySelector("[data-search-empty]");
+const searchCount = document.querySelector("[data-search-count]");
+const searchInterpretation = document.querySelector("[data-search-interpretation]");
+const searchFilters = [...document.querySelectorAll("[data-search-filter]")];
+const clearSearchButton = document.querySelector("[data-clear-search]");
+const recentSearches = document.querySelector("[data-recent-searches]");
+const recentSearchList = document.querySelector("[data-recent-search-list]");
+const heroSearchForm = document.querySelector("[data-hero-search]");
+const heroSearchInput = document.querySelector("[data-hero-search-input]");
 const toast = document.querySelector("[data-toast]");
 let toastTimer;
+
+const baseKnowledgeIndex = [
+  {
+    id: "regulation-guide",
+    type: "法規摘要",
+    audience: "臨床工作者",
+    intents: ["quick", "evidence"],
+    readTime: 3,
+    title: "特管新法：訓練時數、案例認定與關鍵期限",
+    scope: "一次看懂特定處置、美容手術與高風險手術的訓練規則、過渡期限與官方版本。",
+    match: "法規、特管、訓練時數與案例認定",
+    evidence: "衛福部與醫師全聯會官方來源",
+    updatedAt: "2026-08-24",
+    href: "#regulation-radar",
+    risk: "safety",
+    keywords: "法規 特管 合規 醫療法 訓練 32小時 24小時 案例 30例 PGY 過渡 期限 官方 來源",
+  },
+  {
+    id: "qualification-scan",
+    type: "資格工具",
+    audience: "醫師",
+    intents: ["quick", "evidence"],
+    readTime: 3,
+    title: "依科別切換的個人資格掃描",
+    scope: "依部定專科、畢業時間與施作類型，整理可施作範圍、缺口與應查核的期限。",
+    match: "科別、畢業時間、施作類型與法定門檻",
+    evidence: "法規條文與認可學會資料",
+    updatedAt: "2026-08-24",
+    href: "#regulation-radar",
+    risk: "safety",
+    keywords: "家庭醫學科 家醫科 放射診斷科 放射科 專科醫師 資格 可以做 醫美 光電 雷射 電波 超音波 針劑 FUE 手術",
+  },
+  {
+    id: "course-comparison",
+    type: "比較入口",
+    audience: "所有階段",
+    intents: ["compare", "course", "evidence"],
+    readTime: 3,
+    title: "比較近期課程、資格門檻與特管時數",
+    scope: "在同一頁比較日期、地點、對象、費用、報名狀態，以及課程是否明示法定時數。",
+    match: "課程、時數、費用、學分與報名期限",
+    evidence: "主辦單位原頁與最後查核日",
+    updatedAt: "2026-08-24",
+    href: "#courses",
+    risk: "standard",
+    keywords: "比較 課程 特管 時數 學分 費用 價格 報名 期限 線上 實作 年會 workshop 研討會 認證",
+  },
+  {
+    id: "learning-atlas",
+    type: "3 分鐘路徑",
+    audience: "初學者",
+    intents: ["quick"],
+    readTime: 3,
+    title: "法規、訓練、技術、安全四層學習地圖",
+    scope: "先確認法規邊界，再安排訓練、技術與安全的學習順序，避免只收藏零散資料。",
+    match: "入門、學習順序與先備知識",
+    evidence: "站內已查核內容導覽",
+    updatedAt: "2026-08-24",
+    href: "#atlas",
+    risk: "standard",
+    keywords: "零基礎 入門 三分鐘 快速 學習路徑 知識圖譜 法規 課程 技術 解剖 安全 下一步",
+  },
+  {
+    id: "safety-curriculum",
+    type: "安全主題",
+    audience: "臨床進階",
+    intents: ["safety", "quick"],
+    readTime: 3,
+    title: "把安全與併發症放在新技術之前",
+    scope: "從關鍵血管、高風險區域與異常警訊開始，建立停止、辨識與尋求支援的學習順序。",
+    match: "安全、風險、併發症與即時影像",
+    evidence: "課綱重點與來源導向學習",
+    updatedAt: "2026-08-24",
+    href: "#curriculum",
+    risk: "high",
+    keywords: "安全 併發症 風險 血管 栓塞 失明 缺血 異常 警訊 處置 即時影像 超音波 解剖",
+  },
+  {
+    id: "materials-curriculum",
+    type: "技術概覽",
+    audience: "初學至進階",
+    intents: ["quick", "compare"],
+    readTime: 3,
+    title: "肉毒、玻尿酸與膠原刺激劑的學習入口",
+    scope: "先區分肌肉放鬆、容積填充與組織刺激，再連回解剖層次、材料特性與安全主題。",
+    match: "針劑材料、作用方式與選擇邏輯",
+    evidence: "結構化課綱與學習目標",
+    updatedAt: "2026-08-24",
+    href: "#curriculum",
+    risk: "standard",
+    keywords: "肉毒 botox botulinum toxin 玻尿酸 hyaluronic acid HA PLLA PDLLA CaHA 填充劑 膠原刺激劑 線材 針劑",
+  },
+  {
+    id: "video-learning",
+    type: "學習路徑",
+    audience: "零基礎",
+    intents: ["quick"],
+    readTime: 3,
+    title: "六週零基礎影片學習路徑",
+    scope: "依皮膚基礎、光電、能量治療、針劑與安全排序，追蹤進度並為每堂課留下筆記。",
+    match: "影片、零基礎與分週學習",
+    evidence: "精選影片來源與個人進度",
+    updatedAt: "2026-08-24",
+    href: "#video-learning",
+    risk: "standard",
+    keywords: "影片 youtube 零基礎 六週 皮膚 防曬 雷射 電波 音波 肉毒 玻尿酸 安全 學習進度",
+  },
+  {
+    id: "official-source-trace",
+    type: "官方來源",
+    audience: "臨床工作者",
+    intents: ["evidence"],
+    readTime: 3,
+    title: "官方版本與修正時間軸",
+    scope: "回到衛福部、醫師全聯會與認可學會原始公告，分辨頁面更新日、法規版本與實際生效日。",
+    match: "官方公告、版本、函釋與更新日期",
+    evidence: "第一方官方來源",
+    updatedAt: "2026-08-24",
+    href: "#source-trace",
+    risk: "safety",
+    keywords: "官方 來源 證據 文獻 查核 衛福部 醫師全聯會 學會 公告 函文 版本 更新 日期",
+  },
+];
+
+let knowledgeIndex = [...baseKnowledgeIndex];
+let activeSearchFilter = "all";
+
+const searchSynonyms = [
+  ["放射科", "放射診斷科 放射科 專科醫師 資格"],
+  ["家醫科", "家庭醫學科 家醫科 專科醫師 資格"],
+  ["肉毒", "肉毒 肉毒桿菌素 botox botulinum toxin"],
+  ["玻尿酸", "玻尿酸 hyaluronic acid HA 填充劑"],
+  ["音波", "音波 超音波 HIFU 能量治療"],
+  ["電波", "電波 RF 射頻 能量治療"],
+  ["比較", "比較 差異 對照 哪個 vs"],
+  ["安全", "安全 風險 併發症 警訊 處置"],
+  ["課程", "課程 訓練 時數 學分 報名 研討會 workshop"],
+  ["法規", "法規 特管 合規 資格 備查 醫療法"],
+];
+
+const safeHTML = (value = "") =>
+  String(value).replace(/[&<>\"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '\"': "&quot;" })[character]);
+
+const normalizeSearchText = (value = "") =>
+  String(value)
+    .normalize("NFKC")
+    .toLocaleLowerCase("zh-Hant")
+    .replace(/[，。！？、；：,.!?;:()（）/\\|_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const getSearchTerms = (query) => {
+  const normalized = normalizeSearchText(query);
+  const terms = new Set(normalized.split(" ").filter((term) => term.length > 1));
+  searchSynonyms.forEach(([trigger, expansion]) => {
+    if (normalized.includes(trigger)) {
+      normalizeSearchText(expansion).split(" ").forEach((term) => terms.add(term));
+    }
+  });
+  return [...terms];
+};
+
+const detectSearchIntent = (query) => {
+  const normalized = normalizeSearchText(query);
+  if (/比較|差異|哪個|vs/.test(normalized)) return "compare";
+  if (/安全|風險|併發症|警訊|處置/.test(normalized)) return "safety";
+  if (/課程|訓練|時數|學分|報名|研討會|workshop/.test(normalized)) return "course";
+  if (/證據|來源|官方|法規|規定|資格|限制|門檻|可以做|能不能|能做/.test(normalized)) return "evidence";
+  return normalized ? "learn" : "all";
+};
+
+const intentLabels = {
+  all: "探索本站已整理內容",
+  learn: "快速了解",
+  compare: "比較資料",
+  safety: "安全與併發症",
+  evidence: "官方來源與法規",
+  course: "課程與訓練",
+};
+
+const getRecentSearchValues = () => {
+  try {
+    return JSON.parse(localStorage.getItem("lumina-recent-searches") || "[]");
+  } catch {
+    localStorage.removeItem("lumina-recent-searches");
+    return [];
+  }
+};
+
+const renderRecentSearches = () => {
+  if (!recentSearches || !recentSearchList) return;
+  const values = getRecentSearchValues();
+  recentSearches.hidden = values.length === 0;
+  recentSearchList.innerHTML = values
+    .map((value) => `<button type="button" data-search-query="${safeHTML(value)}">${safeHTML(value)}</button>`)
+    .join("");
+};
+
+const rememberSearch = (query) => {
+  const value = query.trim();
+  if (value.length < 2) return;
+  const values = [value, ...getRecentSearchValues().filter((item) => item !== value)].slice(0, 5);
+  localStorage.setItem("lumina-recent-searches", JSON.stringify(values));
+  renderRecentSearches();
+};
+
+const resultCardTemplate = (item) => `
+  <a class="search-result-card" href="${safeHTML(item.href)}" data-search-result>
+    <div class="search-result-card__topline">
+      <span>${safeHTML(item.type)}</span>
+      <span>${safeHTML(item.audience)}</span>
+      ${item.risk === "high" ? '<span class="is-risk">安全主題</span>' : ""}
+    </div>
+    <div class="search-result-card__body">
+      <h3>${safeHTML(item.title)}</h3>
+      <p>${safeHTML(item.scope)}</p>
+      <span class="search-result-card__match">符合：${safeHTML(item.match)}</span>
+    </div>
+    <div class="search-result-card__footer">
+      <span>${safeHTML(item.evidence)}</span>
+      <span>最後查核 ${safeHTML(item.updatedAt)}</span>
+      <strong>${safeHTML(item.readTime)} 分鐘 <i aria-hidden="true">↘</i></strong>
+    </div>
+  </a>`;
+
+const renderSearchResults = () => {
+  if (!searchResults || !searchInput) return;
+  const query = searchInput.value.trim();
+  const normalizedQuery = normalizeSearchText(query);
+  const compactQuery = normalizedQuery.replace(/\s/g, "");
+  const terms = getSearchTerms(query);
+  const intent = detectSearchIntent(query);
+
+  const scored = knowledgeIndex
+    .filter((item) => activeSearchFilter === "all" || item.intents.includes(activeSearchFilter))
+    .map((item, index) => {
+      const haystack = normalizeSearchText(`${item.title} ${item.scope} ${item.match} ${item.keywords} ${item.type} ${item.audience}`);
+      const compactHaystack = haystack.replace(/\s/g, "");
+      let score = query ? 0 : Math.max(0, 20 - index);
+      if (compactQuery && compactHaystack.includes(compactQuery)) score += 30;
+      terms.forEach((term) => {
+        if (haystack.includes(term)) score += term.length >= 4 ? 6 : 3;
+      });
+      if (intent !== "all" && intent !== "learn" && item.intents.includes(intent)) score += 7;
+      return { item, score };
+    })
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map(({ item }) => item);
+
+  searchResults.innerHTML = scored.map(resultCardTemplate).join("");
+  searchEmpty.hidden = scored.length !== 0;
+  searchCount.textContent = query
+    ? `${scored.length} 個符合「${query}」的入口`
+    : activeSearchFilter === "all"
+      ? "推薦入口"
+      : `${scored.length} 個${searchFilters.find((item) => item.dataset.searchFilter === activeSearchFilter)?.textContent || ""}入口`;
+  clearSearchButton.hidden = !query && activeSearchFilter === "all";
+  searchInterpretation.innerHTML = query
+    ? `<span>查詢解讀</span><p>目前依「${safeHTML(intentLabels[intent])}」尋找；結果按關鍵概念、內容範圍與查核完整度排列。</p>`
+    : '<span>搜尋提示</span><p>可輸入「放射科可以做醫美嗎」或「比較近期特管課程」。</p>';
+};
 
 const showToast = (message) => {
   toast.textContent = message;
@@ -51,20 +321,20 @@ mobileNav?.querySelectorAll("a").forEach((link) => {
   });
 });
 
-const openSearch = () => {
+const openSearch = (query = "") => {
   if (!searchDialog.open) searchDialog.showModal();
+  if (query) searchInput.value = query;
+  renderSearchResults();
+  renderRecentSearches();
   window.setTimeout(() => searchInput.focus(), 30);
 };
 
 const closeSearch = () => {
-  searchDialog.close();
-  searchInput.value = "";
-  searchEntries.forEach((entry) => (entry.hidden = false));
-  searchEmpty.hidden = true;
+  if (searchDialog.open) searchDialog.close();
 };
 
 document.querySelectorAll("[data-open-search]").forEach((button) => {
-  button.addEventListener("click", openSearch);
+  button.addEventListener("click", () => openSearch());
 });
 
 document.querySelector("[data-close-search]")?.addEventListener("click", closeSearch);
@@ -72,8 +342,6 @@ document.querySelector("[data-close-search]")?.addEventListener("click", closeSe
 searchDialog?.addEventListener("click", (event) => {
   if (event.target === searchDialog) closeSearch();
 });
-
-searchEntries.forEach((entry) => entry.addEventListener("click", closeSearch));
 
 document.addEventListener("keydown", (event) => {
   const target = event.target;
@@ -84,17 +352,63 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-searchInput?.addEventListener("input", () => {
-  const query = searchInput.value.trim().toLocaleLowerCase("zh-Hant");
-  let matches = 0;
-  searchEntries.forEach((entry) => {
-    const text = `${entry.textContent} ${entry.dataset.keywords}`.toLocaleLowerCase("zh-Hant");
-    const visible = !query || text.includes(query);
-    entry.hidden = !visible;
-    if (visible) matches += 1;
-  });
-  searchEmpty.hidden = matches !== 0;
+searchInput?.addEventListener("input", renderSearchResults);
+
+searchInput?.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    rememberSearch(searchInput.value);
+    renderSearchResults();
+  }
 });
+
+searchFilters.forEach((filter) => {
+  filter.addEventListener("click", () => {
+    activeSearchFilter = filter.dataset.searchFilter;
+    searchFilters.forEach((item) => {
+      const isActive = item === filter;
+      item.classList.toggle("is-active", isActive);
+      item.setAttribute("aria-pressed", String(isActive));
+    });
+    renderSearchResults();
+  });
+});
+
+clearSearchButton?.addEventListener("click", () => {
+  searchInput.value = "";
+  activeSearchFilter = "all";
+  searchFilters.forEach((item) => {
+    const isActive = item.dataset.searchFilter === "all";
+    item.classList.toggle("is-active", isActive);
+    item.setAttribute("aria-pressed", String(isActive));
+  });
+  renderSearchResults();
+  searchInput.focus();
+});
+
+document.addEventListener("click", (event) => {
+  const queryButton = event.target.closest("[data-search-query]");
+  if (queryButton) {
+    openSearch(queryButton.dataset.searchQuery);
+    rememberSearch(queryButton.dataset.searchQuery);
+  }
+
+  const result = event.target.closest("[data-search-result]");
+  if (result) {
+    rememberSearch(searchInput.value);
+    closeSearch();
+  }
+});
+
+heroSearchForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const query = heroSearchInput.value.trim();
+  openSearch(query);
+  rememberSearch(query);
+});
+
+renderSearchResults();
+renderRecentSearches();
 
 document.querySelectorAll("[data-layer]").forEach((layer) => {
   layer.addEventListener("click", () => {
@@ -167,6 +481,11 @@ filters.forEach((filter) => {
 const courseFeed = document.querySelector("[data-course-feed]");
 const courseError = document.querySelector("[data-course-error]");
 const courseFreshness = document.querySelector("[data-course-freshness]");
+const courseTimeline = document.querySelector("[data-course-timeline]");
+const timelineTrack = document.querySelector("[data-timeline-track]");
+const timelineViewport = document.querySelector("[data-timeline-viewport]");
+const timelineSummary = document.querySelector("[data-timeline-summary]");
+const timelineRange = document.querySelector("[data-timeline-range]");
 const verifiedCount = document.querySelector("[data-verified-count]");
 const deadlineDate = document.querySelector("[data-deadline-date]");
 const deadlineTitle = document.querySelector("[data-deadline-title]");
@@ -178,6 +497,329 @@ const escapeHTML = (value = "") =>
     (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[character],
   );
 
+const videoLessons = [
+  {
+    id: "zRjTkEIjEM8",
+    week: 1,
+    category: "foundation",
+    categoryLabel: "皮膚基礎",
+    title: "探索皮膚的奧秘",
+    source: "美肌教主 DR. 王朝輝",
+    duration: "03:03",
+    objective: "先建立表皮、真皮與皮下組織的基本地圖，之後才知道不同療程大致作用在哪一層。",
+    takeaway: "表皮、真皮與皮下組織各自扮演什麼角色？",
+  },
+  {
+    id: "Zfv5MbPIgFA",
+    week: 1,
+    category: "foundation",
+    categoryLabel: "皮膚基礎",
+    title: "什麼是皮膚障壁功能？",
+    source: "美上美皮膚科・莊盈彥醫師",
+    duration: "07:31",
+    objective: "理解皮膚屏障、保濕與刺激反應，建立先處理皮膚健康、再考慮醫美療程的順序。",
+    takeaway: "皮膚屏障受損時，為什麼不適合急著增加刺激性療程？",
+  },
+  {
+    id: "9sBS8C-R6gs",
+    week: 2,
+    category: "foundation",
+    categoryLabel: "保養與防曬",
+    title: "如何閱讀防曬標示",
+    source: "American Academy of Dermatology",
+    duration: "02:23",
+    objective: "學會從標示理解廣效防護、防曬係數與使用情境；影片為英文，可開啟 YouTube 字幕。",
+    takeaway: "一款防曬產品的標示，至少應該看懂哪些資訊？",
+  },
+  {
+    id: "pLHo2b4B108",
+    week: 2,
+    category: "safety",
+    categoryLabel: "廣告判讀",
+    title: "保養品話術與迷思破解",
+    source: "志祺七七 × 邱品齊醫師",
+    duration: "21:11",
+    objective: "練習辨認敏感肌、淡斑、抗老等常見宣稱，分開產品行銷語言與可以驗證的效果。",
+    takeaway: "影片中的哪一種宣稱需要更多證據才能成立？",
+  },
+  {
+    id: "jIkNbX37wBQ",
+    week: 3,
+    category: "energy",
+    categoryLabel: "療程總覽",
+    title: "雷射、肉毒、電波、音波一次搞懂",
+    source: "蒼藍鴿的醫學天地",
+    duration: "10:17",
+    objective: "先從全貌區分光電、能量與注射治療，避免把不同機轉的療程放在同一個價格表比較。",
+    takeaway: "色素、肌肉、容量流失與鬆弛，各自對應哪一類治療邏輯？",
+  },
+  {
+    id: "LR6g-xYnJlU",
+    week: 3,
+    category: "safety",
+    categoryLabel: "術後照護",
+    title: "雷射術後照護七大問題",
+    source: "ME Media 美醫誌・鄒承軒醫師",
+    duration: "11:04",
+    objective: "理解雷射後的清潔、防曬、傷口照護與異常警訊，知道哪些狀況需要回診。",
+    takeaway: "正常恢復反應與需要立即聯絡醫療院所的警訊有何不同？",
+  },
+  {
+    id: "CbGUqnc4jf8",
+    week: 4,
+    category: "energy",
+    categoryLabel: "音波與電波",
+    title: "電波和音波有什麼不同？",
+    source: "美上美皮膚科・莊盈彥醫師",
+    duration: "10:29",
+    objective: "比較兩類能量的作用方式、深度與預期限制，不用品牌名稱代替治療評估。",
+    takeaway: "電波與音波的主要差異是什麼？哪些結構問題不是它們能解決的？",
+  },
+  {
+    id: "mD1GRDPzZdA",
+    week: 4,
+    category: "energy",
+    categoryLabel: "埋線拉提",
+    title: "想對抗鬆弛，不可不知的埋線",
+    source: "中華民國美容醫學醫學會・曾繁聞醫師",
+    duration: "04:15",
+    objective: "認識埋線的機械性支撐、適用限制與常見風險，和非侵入性能量療程分開比較。",
+    takeaway: "埋線、電波與音波在機轉和可逆性上有什麼不同？",
+  },
+  {
+    id: "Gj-FpR9IPcY",
+    week: 5,
+    category: "injection",
+    categoryLabel: "肉毒桿菌素",
+    title: "肉毒桿菌素必備知識",
+    source: "MedPartner 美的好朋友",
+    duration: "04:51",
+    objective: "理解肉毒桿菌素是暫時降低肌肉收縮，不是填補凹陷，也不是所有皺紋的通用答案。",
+    takeaway: "動態紋和靜態紋為什麼不能用同一套思路處理？",
+  },
+  {
+    id: "wPkwOUuwEks",
+    week: 5,
+    category: "injection",
+    categoryLabel: "填充與刺激劑",
+    title: "玻尿酸、肉毒與膠原刺激劑比較",
+    source: "ME Media 美醫誌・邱軍棠醫師",
+    duration: "09:27",
+    objective: "比較肌肉放鬆、立即填充與膠原刺激三種不同目的，建立材料選擇的基本語言。",
+    takeaway: "玻尿酸、肉毒與膠原刺激劑分別改變了什麼？",
+  },
+  {
+    id: "SLTmAvB6nlo",
+    week: 5,
+    category: "safety",
+    categoryLabel: "注射安全",
+    title: "玻尿酸注射與失明風險",
+    source: "ME Media 美醫誌・王正坤醫師",
+    duration: "02:31",
+    objective: "認識填充劑血管栓塞的嚴重性與緊急警訊；風險很低不等於沒有風險。",
+    takeaway: "注射後出現哪些視覺或皮膚變化，不能在家等待觀察？",
+  },
+  {
+    id: "bqcVD3jaaqc",
+    week: 6,
+    category: "safety",
+    categoryLabel: "診所選擇",
+    title: "如何選擇安全的醫美診所",
+    source: "財團法人醫院評鑑暨醫療品質策進會",
+    duration: "04:27",
+    objective: "學會核對機構、醫師、設備、麻醉與緊急後送資訊，把安全條件放在價格之前。",
+    takeaway: "預約療程前，至少要向醫師或院所確認哪五件事？",
+  },
+];
+
+const videoPlaylist = document.querySelector("[data-video-playlist]");
+const videoIframe = document.querySelector("[data-video-iframe]");
+const videoWeek = document.querySelector("[data-video-week]");
+const videoCategory = document.querySelector("[data-video-category]");
+const videoDuration = document.querySelector("[data-video-duration]");
+const videoSource = document.querySelector("[data-video-source]");
+const videoTitle = document.querySelector("[data-video-title]");
+const videoObjective = document.querySelector("[data-video-objective]");
+const videoTakeaway = document.querySelector("[data-video-takeaway]");
+const videoYoutube = document.querySelector("[data-video-youtube]");
+const videoCompleteButton = document.querySelector("[data-video-complete]");
+const videoCompletedCount = document.querySelector("[data-video-completed]");
+const videoTotal = document.querySelector("[data-video-total]");
+const videoProgressTrack = document.querySelector("[data-video-progress-track]");
+const videoProgressBar = document.querySelector("[data-video-progress-bar]");
+const videoProgressCopy = document.querySelector("[data-video-progress-copy]");
+const videoEmpty = document.querySelector("[data-video-empty]");
+const videoFilters = [...document.querySelectorAll("[data-video-filter]")];
+const videoNoteForm = document.querySelector("[data-video-note-form]");
+const videoNoteInput = document.querySelector("[data-video-note-input]");
+const videoNoteStatus = document.querySelector("[data-video-note-status]");
+let activeVideoFilter = "all";
+let completedVideos = new Set();
+let videoNotes = {};
+
+try {
+  completedVideos = new Set(JSON.parse(localStorage.getItem("lumina-video-completed") || "[]"));
+  videoNotes = JSON.parse(localStorage.getItem("lumina-video-notes") || "{}") || {};
+} catch {
+  localStorage.removeItem("lumina-video-completed");
+  localStorage.removeItem("lumina-video-notes");
+}
+
+const storedVideoId = localStorage.getItem("lumina-video-current");
+let activeVideoId = videoLessons.some((lesson) => lesson.id === storedVideoId)
+  ? storedVideoId
+  : videoLessons[0].id;
+
+const getActiveVideo = () => videoLessons.find((lesson) => lesson.id === activeVideoId) || videoLessons[0];
+
+const videoMatchesFilter = (lesson) => {
+  if (activeVideoFilter === "all") return true;
+  if (activeVideoFilter === "pending") return !completedVideos.has(lesson.id);
+  return lesson.category === activeVideoFilter;
+};
+
+const renderVideoProgress = () => {
+  const complete = completedVideos.size;
+  const total = videoLessons.length;
+  const percent = total ? Math.round((complete / total) * 100) : 0;
+  if (videoCompletedCount) videoCompletedCount.textContent = String(complete);
+  if (videoTotal) videoTotal.textContent = String(total);
+  if (videoProgressTrack) {
+    videoProgressTrack.setAttribute("aria-valuenow", String(complete));
+    videoProgressTrack.setAttribute("aria-valuemax", String(total));
+  }
+  if (videoProgressBar) videoProgressBar.style.width = `${percent}%`;
+  if (videoProgressCopy) {
+    videoProgressCopy.textContent = complete === total
+      ? "六週核心課程已完成。接下來用諮詢問題與官方資料持續交叉查證。"
+      : complete === 0
+        ? "從第一堂開始，建立自己的醫美判讀框架。"
+        : `已完成 ${percent}%，下一堂繼續沿著六週路徑前進。`;
+  }
+};
+
+const videoPlaylistItemTemplate = (lesson, index) => {
+  const isActive = lesson.id === activeVideoId;
+  const isComplete = completedVideos.has(lesson.id);
+  return `
+    <li class="video-lesson${isActive ? " is-active" : ""}${isComplete ? " is-complete" : ""}">
+      <button
+        type="button"
+        data-video-id="${escapeHTML(lesson.id)}"
+        ${isActive ? 'aria-current="true"' : ""}
+        aria-label="第 ${lesson.week} 週，${escapeHTML(lesson.title)}，${isComplete ? "已完成" : "未完成"}"
+      >
+        <span class="video-lesson__index">${String(index + 1).padStart(2, "0")}</span>
+        <span class="video-lesson__content">
+          <small>第 ${lesson.week} 週・${escapeHTML(lesson.categoryLabel)}</small>
+          <strong>${escapeHTML(lesson.title)}</strong>
+          <span>${escapeHTML(lesson.source)}・${escapeHTML(lesson.duration)}</span>
+        </span>
+        <span class="video-lesson__status" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg>
+        </span>
+      </button>
+    </li>`;
+};
+
+const renderVideoPlaylist = () => {
+  if (!videoPlaylist) return;
+  const visibleLessons = videoLessons.filter(videoMatchesFilter);
+  videoPlaylist.innerHTML = visibleLessons
+    .map((lesson) => videoPlaylistItemTemplate(lesson, videoLessons.indexOf(lesson)))
+    .join("");
+  if (videoEmpty) videoEmpty.hidden = visibleLessons.length !== 0;
+
+  videoPlaylist.querySelectorAll("[data-video-id]").forEach((button) => {
+    button.addEventListener("click", () => {
+      activeVideoId = button.dataset.videoId;
+      localStorage.setItem("lumina-video-current", activeVideoId);
+      renderActiveVideo();
+      renderVideoPlaylist();
+    });
+  });
+};
+
+const renderActiveVideo = () => {
+  const lesson = getActiveVideo();
+  const isComplete = completedVideos.has(lesson.id);
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${lesson.id}?rel=0`;
+  if (videoIframe && videoIframe.src !== embedUrl) {
+    videoIframe.src = embedUrl;
+    videoIframe.title = `${lesson.title}｜影片學習播放器`;
+  }
+  if (videoWeek) videoWeek.textContent = `第 ${lesson.week} 週`;
+  if (videoCategory) videoCategory.textContent = lesson.categoryLabel;
+  if (videoDuration) videoDuration.textContent = lesson.duration;
+  if (videoSource) videoSource.textContent = lesson.source;
+  if (videoTitle) videoTitle.textContent = lesson.title;
+  if (videoObjective) videoObjective.textContent = lesson.objective;
+  if (videoTakeaway) videoTakeaway.textContent = lesson.takeaway;
+  if (videoYoutube) videoYoutube.href = `https://www.youtube.com/watch?v=${lesson.id}`;
+  if (videoCompleteButton) {
+    videoCompleteButton.classList.toggle("is-complete", isComplete);
+    videoCompleteButton.setAttribute("aria-pressed", String(isComplete));
+    videoCompleteButton.querySelector("span").textContent = isComplete ? "已完成這堂" : "標示完成";
+  }
+  if (videoNoteInput) videoNoteInput.value = videoNotes[lesson.id] || "";
+  if (videoNoteStatus) {
+    videoNoteStatus.textContent = videoNotes[lesson.id] ? "已載入這堂課的筆記" : "筆記會依影片分別儲存";
+  }
+};
+
+videoCompleteButton?.addEventListener("click", () => {
+  const lesson = getActiveVideo();
+  if (completedVideos.has(lesson.id)) {
+    completedVideos.delete(lesson.id);
+    showToast("已將這堂課改為未完成");
+  } else {
+    completedVideos.add(lesson.id);
+    showToast("完成進度已儲存");
+  }
+  localStorage.setItem("lumina-video-completed", JSON.stringify([...completedVideos]));
+  renderVideoProgress();
+  renderActiveVideo();
+  renderVideoPlaylist();
+});
+
+videoFilters.forEach((filter) => {
+  filter.addEventListener("click", () => {
+    activeVideoFilter = filter.dataset.videoFilter;
+    videoFilters.forEach((item) => {
+      const isActive = item === filter;
+      item.classList.toggle("is-active", isActive);
+      item.setAttribute("aria-pressed", String(isActive));
+    });
+    const firstVisibleLesson = videoLessons.find(videoMatchesFilter);
+    if (firstVisibleLesson && !videoMatchesFilter(getActiveVideo())) {
+      activeVideoId = firstVisibleLesson.id;
+      localStorage.setItem("lumina-video-current", activeVideoId);
+      renderActiveVideo();
+    }
+    renderVideoPlaylist();
+  });
+});
+
+videoNoteInput?.addEventListener("input", () => {
+  if (videoNoteStatus) videoNoteStatus.textContent = "有尚未儲存的變更";
+});
+
+videoNoteForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const lesson = getActiveVideo();
+  const note = videoNoteInput.value.trim();
+  if (note) videoNotes[lesson.id] = note;
+  else delete videoNotes[lesson.id];
+  localStorage.setItem("lumina-video-notes", JSON.stringify(videoNotes));
+  const now = new Date().toLocaleTimeString("zh-TW", { hour: "2-digit", minute: "2-digit" });
+  if (videoNoteStatus) videoNoteStatus.textContent = note ? `已於 ${now} 儲存` : "已清除這堂課的筆記";
+  showToast(note ? "這堂課的筆記已儲存" : "這堂課的筆記已清除");
+});
+
+renderVideoProgress();
+renderActiveVideo();
+renderVideoPlaylist();
+
 const parseTaiwanDate = (date) => new Date(`${date}T12:00:00+08:00`);
 const formatShortDate = (date) =>
   parseTaiwanDate(date).toLocaleDateString("zh-TW", { month: "2-digit", day: "2-digit" });
@@ -187,6 +829,119 @@ const formatFullDate = (date) =>
 const formatDateRange = (startDate, endDate) => {
   if (startDate === endDate) return formatFullDate(startDate);
   return `${formatFullDate(startDate)}–${formatShortDate(endDate)}`;
+};
+
+const formatTimelineDate = (startDate, endDate) => {
+  const start = formatShortDate(startDate);
+  if (startDate === endDate) return start;
+  return `${start}–${formatShortDate(endDate)}`;
+};
+
+const creditStatusLabels = {
+  confirmed: "已明示學分／時數",
+  expected: "預計／待核定",
+  unverified: "報名前確認",
+};
+
+const courseFormatLabels = {
+  online: "線上",
+  practice: "實作",
+  conference: "年會／研討會",
+};
+
+const courseTimelineItemTemplate = (course, index, today) => {
+  const start = parseTaiwanDate(course.startDate);
+  const end = parseTaiwanDate(course.endDate);
+  const timing = end < today ? "past" : start <= today ? "current" : "upcoming";
+  const format = course.formats
+    .filter((item) => courseFormatLabels[item])
+    .map((item) => courseFormatLabels[item])
+    .join("＋");
+
+  return `
+    <li class="course-timeline__item is-${timing}" data-credit-status="${escapeHTML(course.creditStatus)}">
+      <div class="course-timeline__node" aria-hidden="true"><span>${index + 1}</span></div>
+      <article class="timeline-course-card">
+        <div class="timeline-course-card__topline">
+          <time datetime="${escapeHTML(course.startDate)}">${escapeHTML(formatTimelineDate(course.startDate, course.endDate))}</time>
+          <span class="timeline-credit timeline-credit--${escapeHTML(course.creditStatus)}">${escapeHTML(creditStatusLabels[course.creditStatus])}</span>
+        </div>
+        <h4>${escapeHTML(course.title)}</h4>
+        <p class="timeline-course-card__status">${escapeHTML(course.statusLabel)}</p>
+        <dl>
+          <div><dt>形式</dt><dd>${escapeHTML(format || "依主辦公告")}</dd></div>
+          <div><dt>地點</dt><dd>${escapeHTML(course.location)}</dd></div>
+          <div><dt>學分／時數</dt><dd>${escapeHTML(course.regulatoryHours)}</dd></div>
+        </dl>
+        <a href="#course-${escapeHTML(course.id)}">查看完整資訊 <span aria-hidden="true">↓</span></a>
+      </article>
+    </li>`;
+};
+
+const renderCourseTimeline = (courses) => {
+  if (!courseTimeline || !timelineTrack) return;
+
+  const sortedCourses = [...courses].sort((a, b) =>
+    a.startDate.localeCompare(b.startDate) || a.endDate.localeCompare(b.endDate),
+  );
+
+  if (sortedCourses.length === 0) {
+    timelineTrack.innerHTML = '<li class="course-timeline__loading">目前沒有可排列的課程。</li>';
+    timelineSummary.textContent = "尚無課程資料";
+    timelineRange.textContent = "新增課程後會自動出現在這裡";
+    courseTimeline.setAttribute("aria-busy", "false");
+    return;
+  }
+
+  const taiwanToday = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Taipei",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+  const today = parseTaiwanDate(taiwanToday);
+  const firstStart = parseTaiwanDate(sortedCourses[0].startDate);
+  const lastStart = parseTaiwanDate(sortedCourses.at(-1).startDate);
+  const totalSpan = Math.max(1, lastStart - firstStart);
+  const dateProgress = Math.min(1, Math.max(0, (today - firstStart) / totalSpan));
+  const timelineEdge = 100 / (sortedCourses.length * 2);
+  const progressPosition = timelineEdge + dateProgress * (100 - timelineEdge * 2);
+  const nextCourse = sortedCourses.find((course) => parseTaiwanDate(course.startDate) >= today);
+  const longestEnd = sortedCourses.reduce(
+    (latest, course) => (course.endDate > latest ? course.endDate : latest),
+    sortedCourses[0].endDate,
+  );
+
+  const courseItems = sortedCourses
+    .map((course, index) => courseTimelineItemTemplate(course, index, today))
+    .join("");
+  timelineTrack.innerHTML = `
+    <li class="course-timeline__today" aria-label="今天 ${escapeHTML(formatShortDate(taiwanToday))}">
+      <span>今天</span><time datetime="${escapeHTML(taiwanToday)}">${escapeHTML(formatShortDate(taiwanToday))}</time>
+    </li>
+    ${courseItems}`;
+  timelineTrack.style.setProperty("--timeline-count", sortedCourses.length);
+  timelineTrack.style.setProperty("--timeline-edge", `${timelineEdge}%`);
+  timelineTrack.style.setProperty("--timeline-progress", `${progressPosition}%`);
+  timelineTrack.style.setProperty("--timeline-progress-width", `${Math.max(0, progressPosition - timelineEdge)}%`);
+
+  if (nextCourse) {
+    const daysUntil = Math.max(0, Math.ceil((parseTaiwanDate(nextCourse.startDate) - today) / 86_400_000));
+    const timingLabel = daysUntil === 0 ? "今天" : `${daysUntil} 天後`;
+    timelineSummary.textContent = `下一站 ${formatShortDate(nextCourse.startDate)}・${nextCourse.title}（${timingLabel}）`;
+  } else {
+    timelineSummary.textContent = "目前列表中的課程皆已開始，請留意下一次資料更新";
+  }
+
+  const startRange = formatFullDate(sortedCourses[0].startDate);
+  const finalStart = formatFullDate(sortedCourses.at(-1).startDate);
+  const extendedRange = longestEnd > sortedCourses.at(-1).startDate
+    ? `・最長課程開放至 ${formatFullDate(longestEnd)}`
+    : "";
+  timelineRange.textContent = `開課日 ${startRange}—${finalStart}・共 ${sortedCourses.length} 門${extendedRange}`;
+  courseTimeline.setAttribute("aria-busy", "false");
+
+  if (timelineViewport) timelineViewport.scrollLeft = 0;
 };
 
 const courseCardTemplate = (course) => {
@@ -211,7 +966,7 @@ const courseCardTemplate = (course) => {
   })();
 
   return `
-    <article class="course-card course-card--${escapeHTML(course.status)}" data-course data-format="${escapeHTML(course.formats.join(" "))}" data-search-item data-keywords="${escapeHTML([course.title, course.organizer, ...course.tags].join(" "))}">
+    <article id="course-${escapeHTML(course.id)}" class="course-card course-card--${escapeHTML(course.status)}" data-course data-format="${escapeHTML(course.formats.join(" "))}" data-search-item data-keywords="${escapeHTML([course.title, course.organizer, ...course.tags].join(" "))}">
       <header class="course-card__header">
         <time datetime="${escapeHTML(course.startDate)}"><span>${escapeHTML(month)}</span><strong>${escapeHTML(day)}</strong></time>
         <div class="course-card__badges">
@@ -267,6 +1022,35 @@ const updateNextDeadline = (courses) => {
   daysLabel.textContent = daysLeft === 0 ? "今天截止" : `距截止還有 ${daysLeft} 天`;
 };
 
+const registerCourseSearchItems = (courses) => {
+  const courseItems = courses.map((course) => ({
+    id: `search-course-${course.id}`,
+    type: "近期課程",
+    audience: course.audience,
+    intents: ["course"],
+    readTime: 3,
+    title: course.title,
+    scope: course.summary,
+    match: `${course.location}、${course.regulatoryHours}、${course.statusLabel}`,
+    evidence: course.verificationLabel,
+    updatedAt: course.checkedAt,
+    href: `#course-${course.id}`,
+    risk: course.creditStatus === "unverified" ? "safety" : "standard",
+    keywords: [
+      course.organizer,
+      course.location,
+      course.audience,
+      course.regulatoryHours,
+      course.price,
+      course.statusLabel,
+      ...course.tags,
+      ...course.formats,
+    ].join(" "),
+  }));
+  knowledgeIndex = [...baseKnowledgeIndex, ...courseItems];
+  renderSearchResults();
+};
+
 const loadCourseIntelligence = async () => {
   try {
     const response = await fetch("./data/course-intelligence.json", { cache: "no-store" });
@@ -278,12 +1062,15 @@ const loadCourseIntelligence = async () => {
     verifiedCount.textContent = `已查核 ${payload.courses.length} 門課`;
     wireSaveButtons(courseFeed);
     applyCourseFilter();
+    renderCourseTimeline(payload.courses);
     updateNextDeadline(payload.courses);
+    registerCourseSearchItems(payload.courses);
   } catch (error) {
     console.error("課程情報載入失敗", error);
     courseFeed.hidden = true;
     courseError.hidden = false;
     courseFreshness.textContent = "課程資料暫時無法載入";
+    if (courseTimeline) courseTimeline.hidden = true;
     verifiedCount.textContent = "查核資料載入失敗";
     deadlineDate.textContent = "請稍後再試";
     deadlineTitle.textContent = "無法讀取課程資料";

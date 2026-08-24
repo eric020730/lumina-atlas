@@ -25,9 +25,9 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260824-typography" />
-    <link rel="stylesheet" href="./taste.css?v=20260824-typography" />
-    <script src="./app.js" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=20260824-search-mvp" />
+    <link rel="stylesheet" href="./taste.css?v=20260824-search-mvp" />
+    <script src="./app.js?v=20260824-search-mvp" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
@@ -49,6 +49,7 @@
         <a href="#pulse">本週重點</a>
         <a href="#regulation-radar">法規雷達</a>
         <a href="#atlas">知識圖譜</a>
+        <a href="#video-learning">影片課程</a>
         <a href="#courses">課程情報</a>
         <a href="#notes">研習筆記</a>
       </nav>
@@ -70,6 +71,7 @@
         <a href="#pulse">本週重點</a>
         <a href="#regulation-radar">法規雷達</a>
         <a href="#atlas">知識圖譜</a>
+        <a href="#video-learning">影片課程</a>
         <a href="#courses">課程情報</a>
         <a href="#notes">研習筆記</a>
       </nav>
@@ -78,14 +80,33 @@
     <main id="main-content">
       <section class="hero" id="top">
         <div class="hero__copy reveal">
-          <p class="eyebrow"><span>PERSONAL INDEX</span> 台灣醫美學習情報</p>
-          <h1>把零散資訊，<br />整理成<span>可前進</span>的<br />學習路徑。</h1>
+          <p class="eyebrow"><span>EVIDENCE FIRST</span> 台灣醫美學習情報</p>
+          <h1>先找到<span>可靠答案</span>，<br />再決定下一步<br />怎麼學。</h1>
           <p class="hero__intro">
-            一處追蹤學會消息、課程期限與合規更新。從知道發生什麼，到知道下一步要學什麼。
+            用自然語言搜尋法規、課程、技術與安全資訊。先看三分鐘重點，再回到官方來源確認版本與適用範圍。
           </p>
-          <div class="hero__actions">
-            <a class="button button--primary" href="#pulse">查看本週重點</a>
-            <button class="text-action" type="button" data-open-search>搜尋學習資料 <span>↗</span></button>
+          <form class="hero-search" data-hero-search role="search">
+            <label class="sr-only" for="hero-search-input">搜尋醫美學習資訊</label>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4 4" /></svg>
+            <input
+              id="hero-search-input"
+              type="search"
+              placeholder="例如：放射科可以做哪些醫美處置？"
+              autocomplete="off"
+              data-hero-search-input
+            />
+            <button type="submit">搜尋</button>
+          </form>
+          <div class="hero-search__examples" aria-label="常用搜尋">
+            <span>快速開始</span>
+            <button type="button" data-search-query="比較近期特管課程與時數">比較課程</button>
+            <button type="button" data-search-query="放射診斷科醫師資格與限制">資格限制</button>
+            <button type="button" data-search-query="安全與併發症學習">安全優先</button>
+          </div>
+          <div class="hero-trust" aria-label="內容可信度原則">
+            <span><i aria-hidden="true"></i> 官方來源可追溯</span>
+            <span>最後查核日清楚標示</span>
+            <span>查不到時不生成答案</span>
           </div>
           <div class="deadline-strip" aria-label="近期截止資訊">
             <div class="deadline-strip__date">
@@ -141,6 +162,42 @@
             <p data-layer-description>追蹤特管辦法、訓練資格與案例認定，是所有學習路徑的基底。</p>
           </div>
         </figure>
+      </section>
+
+      <section class="discovery-strip section-shell reveal" aria-labelledby="discovery-title">
+        <header class="discovery-strip__intro">
+          <p class="section-kicker">FIND YOUR ENTRY POINT</p>
+          <h2 id="discovery-title">不知道術語，也能開始找</h2>
+          <p>先說你想完成什麼；系統再把問題對應到法規、課程、技術與安全資料。</p>
+        </header>
+        <div class="discovery-axis discovery-axis--goal">
+          <span>01 / 學習目標</span>
+          <strong>我想完成什麼？</strong>
+          <div>
+            <button type="button" data-search-query="取得醫美處置資格">取得資格</button>
+            <button type="button" data-search-query="補足特管訓練時數">補足時數</button>
+            <button type="button" data-search-query="三分鐘了解醫美學習路徑">快速了解</button>
+          </div>
+        </div>
+        <div class="discovery-axis discovery-axis--topic">
+          <span>02 / 知識主題</span>
+          <strong>我正在查什麼？</strong>
+          <div>
+            <button type="button" data-search-query="法規與資格">法規</button>
+            <button type="button" data-search-query="近期課程">課程</button>
+            <button type="button" data-search-query="解剖與技術">技術</button>
+            <button type="button" data-search-query="併發症與安全">安全</button>
+          </div>
+        </div>
+        <div class="discovery-axis discovery-axis--intervention">
+          <span>03 / 介入方式</span>
+          <strong>我想學哪一類？</strong>
+          <div>
+            <button type="button" data-search-query="雷射 電波 超音波 光電">光電</button>
+            <button type="button" data-search-query="肉毒 玻尿酸 針劑">針劑</button>
+            <button type="button" data-search-query="FUE 植髮">FUE</button>
+          </div>
+        </div>
       </section>
 
       <section class="pulse section-shell" id="pulse">
@@ -440,7 +497,7 @@
             </details>
           </div>
 
-          <section class="source-timeline reveal" aria-labelledby="source-title">
+          <section class="source-timeline reveal" id="source-trace" aria-labelledby="source-title">
             <div class="source-timeline__head">
               <div>
                 <p class="section-kicker">SOURCE TRACE</p>
@@ -507,6 +564,108 @@
         </div>
       </section>
 
+      <section
+        class="video-learning section-shell"
+        id="video-learning"
+        data-search-item
+        data-keywords="影片 YouTube 零基礎 皮膚 防曬 雷射 電波 音波 肉毒 玻尿酸 醫美 安全"
+      >
+        <header class="section-heading section-heading--split reveal">
+          <div>
+            <p class="section-kicker">VIDEO LEARNING PATH</p>
+            <h2>從零開始的影片學習室</h2>
+          </div>
+          <p>十二堂核心影片排成六週路徑。先理解皮膚與保養，再進入能量、注射與安全判讀。</p>
+        </header>
+
+        <div class="video-progress reveal" aria-label="影片課程進度">
+          <div class="video-progress__summary">
+            <span>YOUR PROGRESS</span>
+            <strong><b data-video-completed>0</b> / <b data-video-total>12</b> 堂完成</strong>
+          </div>
+          <div
+            class="video-progress__track"
+            role="progressbar"
+            aria-label="影片課程完成進度"
+            aria-valuemin="0"
+            aria-valuemax="12"
+            aria-valuenow="0"
+            data-video-progress-track
+          >
+            <span data-video-progress-bar></span>
+          </div>
+          <p data-video-progress-copy>從第一堂開始，建立自己的醫美判讀框架。</p>
+        </div>
+
+        <div class="video-filter-bar reveal" aria-label="篩選影片主題">
+          <button class="video-filter is-active" type="button" data-video-filter="all" aria-pressed="true">全部</button>
+          <button class="video-filter" type="button" data-video-filter="foundation" aria-pressed="false">皮膚基礎</button>
+          <button class="video-filter" type="button" data-video-filter="energy" aria-pressed="false">光電與拉提</button>
+          <button class="video-filter" type="button" data-video-filter="injection" aria-pressed="false">注射治療</button>
+          <button class="video-filter" type="button" data-video-filter="safety" aria-pressed="false">安全判讀</button>
+          <button class="video-filter video-filter--pending" type="button" data-video-filter="pending" aria-pressed="false">只看未完成</button>
+        </div>
+
+        <div class="video-classroom reveal">
+          <article class="video-stage" aria-live="polite">
+            <div class="video-stage__frame" data-video-frame>
+              <iframe
+                title="醫美影片學習播放器"
+                src="https://www.youtube-nocookie.com/embed/zRjTkEIjEM8?rel=0"
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                data-video-iframe
+              ></iframe>
+            </div>
+            <div class="video-stage__body">
+              <div class="video-stage__meta">
+                <span data-video-week>第 1 週</span>
+                <span data-video-category>皮膚基礎</span>
+                <span data-video-duration>03:03</span>
+              </div>
+              <p class="video-stage__source" data-video-source>美肌教主 DR. 王朝輝</p>
+              <h3 data-video-title>探索皮膚的奧秘</h3>
+              <p data-video-objective>先建立表皮、真皮與皮下組織的基本地圖，之後才知道不同療程大致作用在哪一層。</p>
+              <div class="video-stage__takeaway">
+                <span>看完要能回答</span>
+                <p data-video-takeaway>表皮、真皮與皮下組織各自扮演什麼角色？</p>
+              </div>
+              <div class="video-stage__actions">
+                <button class="video-complete-button" type="button" data-video-complete aria-pressed="false">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6" /></svg>
+                  <span>標示完成</span>
+                </button>
+                <a href="https://www.youtube.com/watch?v=zRjTkEIjEM8" target="_blank" rel="noreferrer" data-video-youtube>在 YouTube 開啟 <span aria-hidden="true">↗</span></a>
+              </div>
+              <form class="video-note" data-video-note-form>
+                <label for="video-note-input">這堂課我的一句重點</label>
+                <textarea id="video-note-input" rows="3" maxlength="400" placeholder="例如：雷射不是治療名稱，要先知道目標組織……" data-video-note-input></textarea>
+                <div>
+                  <span data-video-note-status>筆記會依影片分別儲存</span>
+                  <button type="submit">儲存這堂筆記</button>
+                </div>
+              </form>
+            </div>
+          </article>
+
+          <aside class="video-playlist" aria-labelledby="video-playlist-title">
+            <header class="video-playlist__header">
+              <div><span>6-WEEK ROUTE</span><h3 id="video-playlist-title">核心播放清單</h3></div>
+              <small>點選課程切換影片</small>
+            </header>
+            <ol class="video-playlist__list" data-video-playlist></ol>
+            <p class="video-playlist__empty" data-video-empty hidden>這個篩選目前沒有影片。</p>
+          </aside>
+        </div>
+
+        <div class="video-safety-note reveal">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3.5 7v5.5c0 4.5 3.1 7.3 8.5 8.5 5.4-1.2 8.5-4 8.5-8.5V7z" /><path d="M12 8v5m0 3h.01" /></svg>
+          <div><strong>學習界線</strong><p>本區用於理解原理、風險與諮詢問題，不提供注射點位、雷射參數、換膚濃度等臨床操作指引。影片可能帶有商業利益，重要結論請再以主管機關、醫學會或不同來源交叉查證。</p></div>
+        </div>
+      </section>
+
       <section class="courses section-shell" id="courses">
         <header class="section-heading section-heading--split reveal">
           <div>
@@ -529,6 +688,39 @@
           <div><span>判讀原則</span><strong>原廠證書 ≠ 特管時數</strong></div>
           <p>所有時效資訊均附原始來源與查核日；報名前仍請回到主辦單位確認名額、資格及費用。</p>
         </div>
+
+        <section class="course-timeline reveal" data-course-timeline aria-labelledby="course-timeline-title" aria-busy="true">
+          <header class="course-timeline__header">
+            <div>
+              <span class="course-timeline__kicker">CREDIT ROUTE</span>
+              <h3 id="course-timeline-title">學分課程時間軸</h3>
+            </div>
+            <p data-timeline-summary>正在排列課程先後順序……</p>
+          </header>
+
+          <div class="course-timeline__legend" aria-label="學分狀態圖例">
+            <span><i class="is-confirmed"></i>已明示學分／時數</span>
+            <span><i class="is-expected"></i>預計或待核定</span>
+            <span><i class="is-unverified"></i>報名前需確認</span>
+          </div>
+
+          <div
+            class="course-timeline__viewport"
+            data-timeline-viewport
+            tabindex="0"
+            role="region"
+            aria-label="可左右捲動的學分課程時間軸"
+          >
+            <ol class="course-timeline__track" data-timeline-track>
+              <li class="course-timeline__loading">正在讀取課程資料……</li>
+            </ol>
+          </div>
+
+          <footer class="course-timeline__footer">
+            <p data-timeline-range>時間範圍載入中</p>
+            <span>左右滑動查看全部課程</span>
+          </footer>
+        </section>
 
         <div class="course-feed" data-course-feed aria-busy="true">
           <div class="course-loading">正在整理已查核的課程資料……</div>
@@ -602,31 +794,56 @@
       <a href="#top">回到頂端 ↑</a>
     </footer>
 
-    <dialog class="search-dialog" data-search-dialog>
+    <dialog class="search-dialog" data-search-dialog aria-labelledby="search-dialog-title">
       <div class="search-dialog__header">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4 4" /></svg>
-        <input type="search" placeholder="搜尋法規、課程、技術……" aria-label="搜尋網站內容" data-search-input />
-        <button type="button" data-close-search>ESC</button>
+        <div>
+          <span id="search-dialog-title">搜尋微光研習所</span>
+          <input type="search" placeholder="直接描述問題、比較意圖或想學的內容" aria-label="搜尋網站內容" autocomplete="off" data-search-input />
+        </div>
+        <button type="button" data-close-search aria-label="關閉搜尋">ESC</button>
       </div>
-      <div class="search-results" data-search-results>
-        <p class="search-results__hint">輸入關鍵字，或從下方開始</p>
-        <a href="#pulse" data-search-entry data-keywords="法規 特管 最新 更新 合規">
-          <span>法規更新</span><div><strong>特管新法合規導航</strong><p>直接看訓練時數、案例認定、過渡期限與官方來源。</p></div><small>↘</small>
-        </a>
-        <a href="#regulation-radar" data-search-entry data-keywords="家庭醫學科 家醫科 放射診斷科 科別 專科 法規 2019 PGY 32小時 案例審查 手術 雷射 針劑 FUE">
-          <span>資格工具</span><div><strong>依科別切換的法規雷達</strong><p>設定科別、畢業時間與施作類型，直接看可施作範圍、缺口與期限。</p></div><small>↘</small>
-        </a>
-        <a href="#courses" data-search-entry data-keywords="課程 針劑 微創 線上 實體 肉毒 玻尿酸 年會 原廠">
-          <span>課程情報</span><div><strong>最新課程、期限與查核狀態</strong><p>在列表直接比較日期、地點、資格、費用與特管時數。</p></div><small>↘</small>
-        </a>
-        <a href="#atlas" data-search-entry data-keywords="知識 法規 課程 技術 安全 解剖">
-          <span>學習地圖</span><div><strong>四層知識圖譜</strong><p>先看法規邊界，再排訓練、技術與安全的學習順序。</p></div><small>↘</small>
-        </a>
-        <a href="#notes" data-search-entry data-keywords="筆記 收藏 儲存 個人">
-          <span>個人區</span><div><strong>研習筆記</strong><p>記下下一個要查證的問題，內容只儲存在目前裝置。</p></div><small>↘</small>
-        </a>
-        <p class="search-results__empty" data-search-empty hidden>沒有符合的內容，試試「針劑」或「法規」。</p>
+      <div class="search-workspace">
+        <aside class="search-filters" aria-label="快速篩選">
+          <span>快速篩選</span>
+          <div role="group" aria-label="搜尋意圖">
+            <button class="is-active" type="button" data-search-filter="all" aria-pressed="true">全部內容</button>
+            <button type="button" data-search-filter="quick" aria-pressed="false">3 分鐘內</button>
+            <button type="button" data-search-filter="compare" aria-pressed="false">比較</button>
+            <button type="button" data-search-filter="safety" aria-pressed="false">安全／併發症</button>
+            <button type="button" data-search-filter="evidence" aria-pressed="false">官方來源</button>
+            <button type="button" data-search-filter="course" aria-pressed="false">近期課程</button>
+          </div>
+          <div class="recent-searches" data-recent-searches hidden>
+            <span>最近搜尋</span>
+            <div data-recent-search-list></div>
+          </div>
+          <p>請勿輸入姓名、病歷號或其他可識別資料。</p>
+        </aside>
+        <section class="search-result-panel" aria-live="polite" aria-busy="false">
+          <div class="search-interpretation" data-search-interpretation>
+            <span>搜尋提示</span>
+            <p>可輸入「放射科可以做醫美嗎」或「比較近期特管課程」。</p>
+          </div>
+          <div class="search-result-summary">
+            <strong data-search-count>推薦入口</strong>
+            <button type="button" data-clear-search hidden>清除搜尋</button>
+          </div>
+          <div class="search-results" data-search-results></div>
+          <div class="search-results__empty" data-search-empty hidden>
+            <strong>本站目前沒有符合條件的收錄內容</strong>
+            <p>這不代表沒有證據。可移除篩選、改用較廣的主題，或回到官方來源查核。</p>
+            <div>
+              <button type="button" data-search-query="法規與資格">改查法規與資格</button>
+              <button type="button" data-search-query="近期課程">改查近期課程</button>
+            </div>
+          </div>
+        </section>
       </div>
+      <footer class="search-dialog__footer">
+        <span><i aria-hidden="true"></i> 搜尋只比對本站已整理內容</span>
+        <span>按 <kbd>/</kbd> 隨時開啟</span>
+      </footer>
     </dialog>
 
     <div class="toast" role="status" aria-live="polite" data-toast></div>
