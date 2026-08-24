@@ -1,4 +1,6 @@
-const SITE_PREFIX = "/lumina-atlas";
+const SITE_PREFIX = "/beauty";
+const LEGACY_SITE_PREFIX = "/lumina-atlas";
+const UPSTREAM_SITE_PREFIX = "/lumina-atlas";
 const UPSTREAM_ORIGIN = "https://eric020730.github.io";
 
 const FORWARDED_REQUEST_HEADERS = [
@@ -15,11 +17,20 @@ export default {
     const isSitePath =
       incomingUrl.pathname === SITE_PREFIX ||
       incomingUrl.pathname.startsWith(`${SITE_PREFIX}/`);
+    const isLegacySitePath =
+      incomingUrl.pathname === LEGACY_SITE_PREFIX ||
+      incomingUrl.pathname.startsWith(`${LEGACY_SITE_PREFIX}/`);
 
     // The route pattern ends in a wildcard so it also matches query strings.
     // Preserve any similarly named path on the existing root application.
-    if (!isSitePath) {
+    if (!isSitePath && !isLegacySitePath) {
       return fetch(request);
+    }
+
+    if (isLegacySitePath) {
+      const legacySuffix = incomingUrl.pathname.slice(LEGACY_SITE_PREFIX.length);
+      incomingUrl.pathname = `${SITE_PREFIX}${legacySuffix || "/"}`;
+      return Response.redirect(incomingUrl.toString(), 308);
     }
 
     if (incomingUrl.pathname === SITE_PREFIX) {
@@ -34,8 +45,9 @@ export default {
       });
     }
 
+    const siteSuffix = incomingUrl.pathname.slice(SITE_PREFIX.length);
     const upstreamUrl = new URL(
-      `${incomingUrl.pathname}${incomingUrl.search}`,
+      `${UPSTREAM_SITE_PREFIX}${siteSuffix}${incomingUrl.search}`,
       UPSTREAM_ORIGIN,
     );
     const upstreamHeaders = new Headers();

@@ -2,7 +2,7 @@
 
 個人的台灣醫美課程、法規與臨床知識學習索引。
 
-網站：<https://eric020730.com/lumina-atlas/>
+網站：<https://eric020730.com/beauty/>
 
 ## 功能
 
@@ -24,7 +24,7 @@ python3 -m http.server 4173
 
 ## Cloudflare 路由
 
-`worker/` 內的 Cloudflare Worker 只接管 `eric020730.com/lumina-atlas*`，並以串流方式代理 GitHub Pages 的已發布內容。根網站與其他既有路由不受影響。
+`worker/` 內的 Cloudflare Worker 接管 `eric020730.com/beauty*`，並以串流方式代理 GitHub Pages 上的已發布內容。舊網址 `eric020730.com/lumina-atlas*` 會保留為永久導向，根網站與其他既有路由不受影響。
 
 ```bash
 npm run cf:types
