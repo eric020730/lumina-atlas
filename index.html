@@ -47,10 +47,10 @@
 
       <nav class="desktop-nav" aria-label="主要導覽">
         <a href="#pulse">本週重點</a>
+        <a href="#courses">課程情報</a>
+        <a href="#video-learning">影片課程</a>
         <a href="#regulation-radar">法規雷達</a>
         <a href="#atlas">知識圖譜</a>
-        <a href="#video-learning">影片課程</a>
-        <a href="#courses">課程情報</a>
         <a href="#life-os">2031 路徑</a>
       </nav>
 
@@ -69,40 +69,47 @@
 
       <nav class="mobile-nav" data-mobile-nav aria-label="行動版導覽">
         <a href="#pulse">本週重點</a>
+        <a href="#courses">課程情報</a>
+        <a href="#video-learning">影片課程</a>
         <a href="#regulation-radar">法規雷達</a>
         <a href="#atlas">知識圖譜</a>
-        <a href="#video-learning">影片課程</a>
-        <a href="#courses">課程情報</a>
         <a href="#life-os">2031 路徑</a>
       </nav>
     </header>
 
     <main id="main-content">
       <section class="hero" id="top">
-        <div class="hero__copy reveal">
-          <p class="eyebrow"><span>EVIDENCE FIRST</span> 台灣醫美學習情報</p>
+        <section class="hero__copy hero-brief reveal" aria-labelledby="hero-brief-title">
           <h1 class="sr-only">微光研習所 LUMINA ATLAS</h1>
-          <p class="hero__intro">
-            整理法規、課程、技術與安全資訊。先看三分鐘重點，再回到官方來源確認版本與適用範圍。
-          </p>
-          <div class="hero-trust" aria-label="內容可信度原則">
+          <header class="hero-brief__header">
+            <div>
+              <p class="hero-brief__eyebrow"><span>WEEKLY BRIEF</span><span>台灣醫美學習情報</span></p>
+              <h2 id="hero-brief-title">近期學習與報名動態</h2>
+              <p>依日期整理已查核活動；點選項目即可查看資格、時數、報名狀態與來源。</p>
+            </div>
+            <div class="hero-brief__count" aria-label="目前顯示的近期活動數量">
+              <strong data-upcoming-count>—</strong>
+              <span>筆近期活動</span>
+            </div>
+          </header>
+          <div class="hero-brief__meta" aria-label="內容可信度原則">
             <span><i aria-hidden="true"></i> 官方來源可追溯</span>
-            <span>最後查核日清楚標示</span>
-            <span>查不到時不生成答案</span>
+            <span>每週更新</span>
+            <span>依日期排序</span>
           </div>
           <section class="upcoming-events" aria-labelledby="upcoming-events-title">
             <header class="upcoming-events__header">
               <div>
-                <span>UPCOMING</span>
-                <strong id="upcoming-events-title">近期活動</strong>
+                <span>DATE / STATUS</span>
+                <strong id="upcoming-events-title">活動清單</strong>
               </div>
-              <a href="#courses">查看全部 <span aria-hidden="true">↓</span></a>
+              <a href="#courses">完整課程情報 <span aria-hidden="true">↓</span></a>
             </header>
             <div class="upcoming-events__list" data-upcoming-events aria-live="polite">
               <p class="upcoming-events__loading">正在讀取最新活動</p>
             </div>
           </section>
-        </div>
+        </section>
 
         <aside class="depth-map reveal" aria-labelledby="depth-map-title">
           <header class="depth-map__header">

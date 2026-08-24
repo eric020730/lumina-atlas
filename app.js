@@ -465,6 +465,7 @@ const timelineSummary = document.querySelector("[data-timeline-summary]");
 const timelineRange = document.querySelector("[data-timeline-range]");
 const verifiedCount = document.querySelector("[data-verified-count]");
 const upcomingEvents = document.querySelector("[data-upcoming-events]");
+const upcomingCount = document.querySelector("[data-upcoming-count]");
 
 const escapeHTML = (value = "") =>
   String(value).replace(
@@ -1035,10 +1036,12 @@ const updateUpcomingEvents = (courses) => {
   if (!upcomingEvents) return;
 
   if (!upcoming.length) {
+    if (upcomingCount) upcomingCount.textContent = "0";
     upcomingEvents.innerHTML = '<p class="upcoming-events__loading">目前沒有已核實的近期活動，請查看完整課程情報。</p>';
     return;
   }
 
+  if (upcomingCount) upcomingCount.textContent = String(upcoming.length).padStart(2, "0");
   upcomingEvents.innerHTML = upcoming.map(upcomingEventTemplate).join("");
 };
 
@@ -1095,6 +1098,7 @@ const loadCourseIntelligence = async () => {
     if (upcomingEvents) {
       upcomingEvents.innerHTML = '<p class="upcoming-events__loading">無法讀取近期活動，請稍後再試。</p>';
     }
+    if (upcomingCount) upcomingCount.textContent = "—";
   }
 };
 
