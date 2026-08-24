@@ -537,3 +537,36 @@ reveals.forEach((item, index) => {
   item.style.transitionDelay = `${Math.min(index % 3, 2) * 70}ms`;
   observer.observe(item);
 });
+
+const sectionLinks = [...document.querySelectorAll('.desktop-nav a[href^="#"], .mobile-nav a[href^="#"]')];
+const observedSections = [...new Set(sectionLinks.map((link) => document.querySelector(link.hash)).filter(Boolean))];
+
+const setCurrentSection = (sectionId) => {
+  sectionLinks.forEach((link) => {
+    const isCurrent = link.hash === `#${sectionId}`;
+    link.classList.toggle("is-current", isCurrent);
+    if (isCurrent) link.setAttribute("aria-current", "location");
+    else link.removeAttribute("aria-current");
+  });
+};
+
+let sectionFrame;
+const updateCurrentSection = () => {
+  const readingLine = window.scrollY + Math.min(window.innerHeight * 0.28, 260);
+  const currentSection = observedSections
+    .filter((section) => section.offsetTop <= readingLine)
+    .at(-1);
+
+  if (currentSection) setCurrentSection(currentSection.id);
+  else sectionLinks.forEach((link) => {
+    link.classList.remove("is-current");
+    link.removeAttribute("aria-current");
+  });
+};
+
+window.addEventListener("scroll", () => {
+  window.cancelAnimationFrame(sectionFrame);
+  sectionFrame = window.requestAnimationFrame(updateCurrentSection);
+}, { passive: true });
+
+window.addEventListener("load", updateCurrentSection);

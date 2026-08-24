@@ -8,6 +8,8 @@ const assetPaths = [
   "index.html",
   "app.js",
   "styles.css",
+  "taste.css",
+  "assets/favicon.svg",
   "data/course-intelligence.json",
 ];
 
