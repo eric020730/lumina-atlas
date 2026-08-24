@@ -81,31 +81,10 @@
       <section class="hero" id="top">
         <div class="hero__copy reveal">
           <p class="eyebrow"><span>EVIDENCE FIRST</span> 台灣醫美學習情報</p>
-          <h1>
-            <span class="hero-title__line">先找到可靠答案，</span>
-            <span class="hero-title__line">再決定下一步怎麼學。</span>
-          </h1>
+          <h1 class="sr-only">微光研習所 LUMINA ATLAS</h1>
           <p class="hero__intro">
-            用自然語言搜尋法規、課程、技術與安全資訊。先看三分鐘重點，再回到官方來源確認版本與適用範圍。
+            整理法規、課程、技術與安全資訊。先看三分鐘重點，再回到官方來源確認版本與適用範圍。
           </p>
-          <form class="hero-search" data-hero-search role="search">
-            <label class="sr-only" for="hero-search-input">搜尋醫美學習資訊</label>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4 4" /></svg>
-            <input
-              id="hero-search-input"
-              type="search"
-              placeholder="例如：放射科可以做哪些醫美處置？"
-              autocomplete="off"
-              data-hero-search-input
-            />
-            <button type="submit">搜尋</button>
-          </form>
-          <div class="hero-search__examples" aria-label="常用搜尋">
-            <span>快速開始</span>
-            <button type="button" data-search-query="比較近期特管課程與時數">比較課程</button>
-            <button type="button" data-search-query="放射診斷科醫師資格與限制">資格限制</button>
-            <button type="button" data-search-query="安全與併發症學習">安全優先</button>
-          </div>
           <div class="hero-trust" aria-label="內容可信度原則">
             <span><i aria-hidden="true"></i> 官方來源可追溯</span>
             <span>最後查核日清楚標示</span>
@@ -125,44 +104,43 @@
           </section>
         </div>
 
-        <figure class="depth-map reveal" aria-labelledby="depth-map-title">
-          <figcaption class="depth-map__header">
+        <aside class="depth-map reveal" aria-labelledby="depth-map-title">
+          <header class="depth-map__header">
             <div>
-              <span>HOW TO USE THIS SITE</span>
-              <strong id="depth-map-title">四步找到學習方向</strong>
-              <p>依序點選每個步驟，看看現在該先處理什麼。</p>
+              <span>QUICK START</span>
+              <strong id="depth-map-title">你現在想做什麼？</strong>
+              <p>選一個目標，直接前往對應的工具或學習內容。</p>
             </div>
             <span class="depth-map__status"><i></i> <span data-verified-count>正在載入查核資料</span></span>
-          </figcaption>
+          </header>
 
-          <div class="layers" data-layers>
-            <button class="layer layer--regulation is-active" type="button" data-layer="regulation" aria-pressed="true">
+          <nav class="layers" aria-label="快速前往網站內容">
+            <a class="layer layer--regulation" href="#regulation-radar">
               <span class="layer__code">01</span>
-              <strong>法規與資格</strong>
-              <small>先確認可以做什麼</small>
-            </button>
-            <button class="layer layer--course" type="button" data-layer="course" aria-pressed="false">
+              <strong>確認我能做什麼</strong>
+              <small>依科別與資格檢查法規範圍</small>
+              <span class="layer__action">資格工具 <b aria-hidden="true">↘</b></span>
+            </a>
+            <a class="layer layer--course" href="#courses">
               <span class="layer__code">02</span>
-              <strong>訓練與課程</strong>
-              <small>建立合格學習紀錄</small>
-            </button>
-            <button class="layer layer--technique" type="button" data-layer="technique" aria-pressed="false">
+              <strong>找近期課程</strong>
+              <small>比較日期、資格、時數與報名狀態</small>
+              <span class="layer__action">課程情報 <b aria-hidden="true">↘</b></span>
+            </a>
+            <a class="layer layer--technique" href="#video-learning">
               <span class="layer__code">03</span>
-              <strong>技術與解剖</strong>
-              <small>理解層次與操作</small>
-            </button>
-            <button class="layer layer--safety" type="button" data-layer="safety" aria-pressed="false">
+              <strong>開始看影片課程</strong>
+              <small>依主題安排基礎到臨床的觀看順序</small>
+              <span class="layer__action">影片課程 <b aria-hidden="true">↘</b></span>
+            </a>
+            <a class="layer layer--safety" href="#atlas-safety">
               <span class="layer__code">04</span>
-              <strong>安全與處置</strong>
-              <small>把併發症放在前面</small>
-            </button>
-          </div>
-
-          <div class="depth-map__readout" aria-live="polite">
-            <span data-layer-label>第 1 步・法規與資格</span>
-            <p data-layer-description>追蹤特管辦法、訓練資格與案例認定，是所有學習路徑的基底。</p>
-          </div>
-        </figure>
+              <strong>查安全與併發症</strong>
+              <small>先掌握風險警訊與緊急處置</small>
+              <span class="layer__action">安全資料 <b aria-hidden="true">↘</b></span>
+            </a>
+          </nav>
+        </aside>
       </section>
 
       <section class="discovery-strip section-shell reveal" aria-labelledby="discovery-title">
@@ -553,7 +531,7 @@
             <div class="atlas-row__topics"><span>組織構造</span><span>針劑材料</span><span>即時影像</span></div>
             <a href="#curriculum" aria-label="前往技術與解剖課綱">↓</a>
           </article>
-          <article class="atlas-row" data-search-item data-keywords="安全 併發症 血管 栓塞 處理">
+          <article class="atlas-row" id="atlas-safety" data-search-item data-keywords="安全 併發症 血管 栓塞 處理">
             <div class="atlas-row__identity"><span>D</span><strong>安全與處置</strong></div>
             <div class="atlas-row__answer">
               <span>先讀結論</span>

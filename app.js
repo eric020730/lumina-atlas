@@ -1,22 +1,3 @@
-const layerContent = {
-  regulation: {
-    label: "第 1 步・法規與資格",
-    description: "追蹤特管辦法、訓練資格與案例認定，是所有學習路徑的基底。",
-  },
-  course: {
-    label: "第 2 步・訓練與課程",
-    description: "整理課程資格、時數、費用與截止日，把零散報名資訊變成清楚路徑。",
-  },
-  technique: {
-    label: "第 3 步・技術與解剖",
-    description: "從組織層次、針具選擇到材料特性，建立操作之前必須理解的地圖。",
-  },
-  safety: {
-    label: "第 4 步・安全與處置",
-    description: "預先學習風險辨識與併發症處理，讓安全不是課程最後才出現的附註。",
-  },
-};
-
 const header = document.querySelector("[data-header]");
 const menuTrigger = document.querySelector("[data-menu-trigger]");
 const mobileNav = document.querySelector("[data-mobile-nav]");
@@ -30,8 +11,6 @@ const searchFilters = [...document.querySelectorAll("[data-search-filter]")];
 const clearSearchButton = document.querySelector("[data-clear-search]");
 const recentSearches = document.querySelector("[data-recent-searches]");
 const recentSearchList = document.querySelector("[data-recent-search-list]");
-const heroSearchForm = document.querySelector("[data-hero-search]");
-const heroSearchInput = document.querySelector("[data-hero-search-input]");
 const toast = document.querySelector("[data-toast]");
 let toastTimer;
 
@@ -415,29 +394,8 @@ document.addEventListener("click", (event) => {
   }
 });
 
-heroSearchForm?.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const query = heroSearchInput.value.trim();
-  openSearch(query);
-  rememberSearch(query);
-});
-
 renderSearchResults();
 renderRecentSearches();
-
-document.querySelectorAll("[data-layer]").forEach((layer) => {
-  layer.addEventListener("click", () => {
-    document.querySelectorAll("[data-layer]").forEach((item) => {
-      item.classList.remove("is-active");
-      item.setAttribute("aria-pressed", "false");
-    });
-    layer.classList.add("is-active");
-    layer.setAttribute("aria-pressed", "true");
-    const content = layerContent[layer.dataset.layer];
-    document.querySelector("[data-layer-label]").textContent = content.label;
-    document.querySelector("[data-layer-description]").textContent = content.description;
-  });
-});
 
 const savedItems = new Set(JSON.parse(localStorage.getItem("lumina-saved") || "[]"));
 
@@ -1072,7 +1030,7 @@ const updateUpcomingEvents = (courses) => {
   const upcoming = courses
     .filter((course) => course.startDate && parseTaiwanDate(course.startDate) >= now)
     .sort((a, b) => a.startDate.localeCompare(b.startDate))
-    .slice(0, 3);
+    .slice(0, 5);
 
   if (!upcomingEvents) return;
 
@@ -1121,7 +1079,7 @@ const loadCourseIntelligence = async () => {
     courseFeed.innerHTML = payload.courses.map(courseCardTemplate).join("");
     courseFeed.setAttribute("aria-busy", "false");
     courseFreshness.textContent = `最後查核 ${new Date(payload.lastUpdated).toLocaleString("zh-TW", { timeZone: "Asia/Taipei", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" })}・${payload.sourceCount} 個來源・${payload.courses.length} 門課`;
-    verifiedCount.textContent = `已查核 ${payload.courses.length} 門課`;
+    verifiedCount.textContent = `${payload.courses.length} 門課已查核`;
     wireSaveButtons(courseFeed);
     applyCourseFilter();
     renderCourseTimeline(payload.courses);
