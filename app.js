@@ -315,9 +315,15 @@ const showToast = (message) => {
   toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 2200);
 };
 
-window.addEventListener("scroll", () => {
-  header.classList.toggle("is-scrolled", window.scrollY > 8);
-});
+const scrollSentinel = document.querySelector("[data-scroll-sentinel]");
+
+if (scrollSentinel && header) {
+  const headerObserver = new IntersectionObserver(
+    ([entry]) => header.classList.toggle("is-scrolled", !entry.isIntersecting),
+    { threshold: 0 },
+  );
+  headerObserver.observe(scrollSentinel);
+}
 
 menuTrigger?.addEventListener("click", () => {
   const isOpen = menuTrigger.getAttribute("aria-expanded") === "true";
@@ -858,13 +864,13 @@ const formatFullDate = (date) =>
 
 const formatDateRange = (startDate, endDate) => {
   if (startDate === endDate) return formatFullDate(startDate);
-  return `${formatFullDate(startDate)}–${formatShortDate(endDate)}`;
+  return `${formatFullDate(startDate)}-${formatShortDate(endDate)}`;
 };
 
 const formatTimelineDate = (startDate, endDate) => {
   const start = formatShortDate(startDate);
   if (startDate === endDate) return start;
-  return `${start}–${formatShortDate(endDate)}`;
+  return `${start}-${formatShortDate(endDate)}`;
 };
 
 const creditStatusLabels = {
@@ -968,7 +974,7 @@ const renderCourseTimeline = (courses) => {
   const extendedRange = longestEnd > sortedCourses.at(-1).startDate
     ? `・最長課程開放至 ${formatFullDate(longestEnd)}`
     : "";
-  timelineRange.textContent = `開課日 ${startRange}—${finalStart}・共 ${sortedCourses.length} 門${extendedRange}`;
+  timelineRange.textContent = `開課日 ${startRange}-${finalStart}，共 ${sortedCourses.length} 門${extendedRange}`;
   courseTimeline.setAttribute("aria-busy", "false");
 
   if (timelineViewport) timelineViewport.scrollLeft = 0;
@@ -1099,11 +1105,16 @@ const renderPulseCoursePicks = (courses) => {
 };
 
 const updateUpcomingEvents = (courses) => {
-  const now = new Date();
+  const taiwanToday = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Taipei",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+  const today = parseTaiwanDate(taiwanToday);
   const upcoming = courses
-    .filter((course) => course.startDate && parseTaiwanDate(course.startDate) >= now)
-    .sort((a, b) => a.startDate.localeCompare(b.startDate))
-    .slice(0, 5);
+    .filter((course) => course.startDate && course.endDate && parseTaiwanDate(course.endDate) >= today)
+    .sort((a, b) => a.startDate.localeCompare(b.startDate) || a.endDate.localeCompare(b.endDate));
 
   if (!upcomingEvents) return;
 
@@ -1171,7 +1182,7 @@ const loadCourseIntelligence = async () => {
     if (upcomingEvents) {
       upcomingEvents.innerHTML = '<p class="upcoming-events__loading">無法讀取近期活動，請稍後再試。</p>';
     }
-    if (upcomingCount) upcomingCount.textContent = "—";
+    if (upcomingCount) upcomingCount.textContent = "...";
     renderPulseCoursePicks([]);
   }
 };
@@ -1557,7 +1568,7 @@ const renderLifePathTabs = () => {
         >
           <span class="life-path-tab__code">${safeHTML(path.code)}</span>
           <span class="life-path-tab__title">${safeHTML(path.shortTitle)}</span>
-          <span class="life-path-tab__score">${score === null ? "—" : `${score}`}</span>
+          <span class="life-path-tab__score">${score === null ? "..." : `${score}`}</span>
         </button>`;
     })
     .join("");
@@ -1654,7 +1665,7 @@ const renderLifeRanking = () => {
           <strong>${safeHTML(path.shortTitle)}</strong>
           <span class="life-ranking__track"><i style="width:${score === null ? 0 : score}%"></i></span>
         </div>
-        <b>${score === null ? "—" : score}</b>
+        <b>${score === null ? "..." : score}</b>
       </li>`)
     .join("");
 
@@ -1823,31 +1834,22 @@ const setCurrentSection = (sectionId) => {
   });
 };
 
-let sectionFrame;
-const updateCurrentSection = () => {
-  const readingLine = window.scrollY + Math.min(window.innerHeight * 0.28, 260);
-  const currentSection = observedSections
-    .filter((section) => section.offsetTop <= readingLine)
-    .at(-1);
+const sectionObserver = new IntersectionObserver(
+  (entries) => {
+    const current = entries
+      .filter((entry) => entry.isIntersecting)
+      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (current) setCurrentSection(current.target.id);
+  },
+  { rootMargin: "-18% 0px -68% 0px", threshold: [0, 0.2, 0.55] },
+);
 
-  if (currentSection) setCurrentSection(currentSection.id);
-  else sectionLinks.forEach((link) => {
-    link.classList.remove("is-current");
-    link.removeAttribute("aria-current");
-  });
-};
-
-window.addEventListener("scroll", () => {
-  window.cancelAnimationFrame(sectionFrame);
-  sectionFrame = window.requestAnimationFrame(updateCurrentSection);
-}, { passive: true });
-
-window.addEventListener("load", updateCurrentSection);
+observedSections.forEach((section) => sectionObserver.observe(section));
 
 Promise.allSettled([videoLoadTask, courseLoadTask, lifeOsLoadTask]).then(() => {
   const hashTarget = location.hash ? document.querySelector(location.hash) : null;
   window.requestAnimationFrame(() => {
     if (hashTarget) hashTarget.scrollIntoView({ block: "start" });
-    updateCurrentSection();
+    if (hashTarget?.id) setCurrentSection(hashTarget.id);
   });
 });

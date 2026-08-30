@@ -10,6 +10,8 @@ const assetPaths = [
   "styles.css",
   "taste.css",
   "assets/favicon.svg",
+  "assets/lumina-hero-v2.webp",
+  "assets/lumina-source-map-v2.webp",
   "data/course-intelligence.json",
   "data/life-os.json",
   "data/video-learning.json",

@@ -47,7 +47,7 @@
       "shortTitle": "旗艦診所",
       "title": "證據導向的醫美診所創辦人",
       "tagline": "把臨床品質、患者教育與 outcome tracking 做成一間可信任的旗艦診所。",
-      "weeklyHours": "38–50 小時",
+      "weeklyHours": "38-50 小時",
       "incomeShape": "臨床現金流高；資產流動性低",
       "certainty": "中高",
       "reversibility": "低",
@@ -96,7 +96,7 @@
       "shortTitle": "醫療 AI 公司",
       "title": "醫療 AI 垂直軟體公司創辦人",
       "tagline": "不做泛用聊天機器人；專注可追溯知識、工作流程或 AI 治理的窄型產品。",
-      "weeklyHours": "40–60 小時",
+      "weeklyHours": "40-60 小時",
       "incomeShape": "現金不確定；股權上限最高",
       "certainty": "低",
       "reversibility": "低",
@@ -145,7 +145,7 @@
       "shortTitle": "學術 AI 權威",
       "title": "放射醫學 × 醫療 AI 的臨床學術權威",
       "tagline": "讓一套真正改善影像工作流程、而且安全可驗證的 AI 系統進入臨床常規。",
-      "weeklyHours": "45–55 小時",
+      "weeklyHours": "45-55 小時",
       "incomeShape": "現金穩定；商業上限較低",
       "certainty": "高",
       "reversibility": "中",
@@ -194,7 +194,7 @@
       "shortTitle": "組合型建造者",
       "title": "組合型 Physician-Builder",
       "tagline": "刻意只保留兩個經濟引擎：一個高價值臨床身份，加上一項可擴張的數位資產。",
-      "weeklyHours": "32–40 小時",
+      "weeklyHours": "32-40 小時",
       "incomeShape": "臨床保底；數位資產提供上行",
       "certainty": "中高",
       "reversibility": "極高",
@@ -216,7 +216,7 @@
       "roadmap": [
         { "year": "2026", "text": "凍結專案數量，只留一條臨床線與一個付費產品。" },
         { "year": "2027", "text": "建立穩定臨床角色與首批付費專業使用者。" },
-        { "year": "2028", "text": "數位產品年收入達 200–300 萬，否則結束或改題。" },
+        { "year": "2028", "text": "數位產品年收入達 200-300 萬，否則結束或改題。" },
         { "year": "2029", "text": "集中唯一有效的數位資產，停止其他實驗。" },
         { "year": "2030", "text": "聘用營運或內容負責人，移除日常依賴。" },
         { "year": "2031", "text": "一週約四天工作，臨床與產品都不需要你每天在線。" }
@@ -243,7 +243,7 @@
       "shortTitle": "時間富足",
       "title": "時間富足的醫師創作者",
       "tagline": "不追求最大規模；用部分財務獨立換回家庭、身體、旅行與真正完成作品的時間。",
-      "weeklyHours": "20–30 小時",
+      "weeklyHours": "20-30 小時",
       "incomeShape": "收入夠用；長期財富上限較低",
       "certainty": "中",
       "reversibility": "高",
@@ -258,9 +258,9 @@
         "creativity": 5
       },
       "weekShape": [
-        { "label": "2–3 天", "value": "高價值臨床" },
+        { "label": "2-3 天", "value": "高價值臨床" },
         { "label": "1 天", "value": "創作與學習" },
-        { "label": "10–14 週／年", "value": "旅行或長住" }
+        { "label": "10-14 週／年", "value": "旅行或長住" }
       ],
       "roadmap": [
         { "year": "2026", "text": "算出家庭的夠用金額，而不是模糊追求更多收入。" },

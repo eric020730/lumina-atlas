@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="微光研習所 LUMINA ATLAS——個人的台灣醫美課程、法規與臨床知識學習索引。"
+      content="微光研習所 LUMINA ATLAS，個人的台灣醫美課程、法規與臨床知識學習索引。"
     />
-    <meta name="theme-color" content="#f2f7f7" />
+    <meta name="theme-color" content="#edf4f3" />
     <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href="https://eric020730.com/beauty/" />
     <meta property="og:type" content="website" />
@@ -18,7 +18,9 @@
       content="個人的台灣醫美課程、法規與臨床知識學習索引。"
     />
     <meta property="og:url" content="https://eric020730.com/beauty/" />
+    <meta property="og:image" content="https://eric020730.com/beauty/assets/lumina-hero-v2.webp" />
     <title>微光研習所 LUMINA ATLAS</title>
+    <link rel="preload" href="./assets/lumina-hero-v2.webp" as="image" type="image/webp" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -26,11 +28,12 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css?v=20260824-no-notes" />
-    <link rel="stylesheet" href="./taste.css?v=20260824-auto-picks" />
-    <script src="./app.js?v=20260824-auto-picks" defer></script>
+    <link rel="stylesheet" href="./taste.css?v=20260830-course-large-type" />
+    <script src="./app.js?v=20260830-timeline" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
+    <span class="scroll-sentinel" data-scroll-sentinel aria-hidden="true"></span>
 
     <header class="site-header" data-header>
       <a class="brand" href="#top" aria-label="回到微光研習所首頁">
@@ -42,7 +45,7 @@
         </svg>
         <span class="brand__name">微光研習所</span>
         <span class="brand__en">LUMINA ATLAS</span>
-        <span class="brand__edition">Taste study</span>
+        <span class="brand__edition">Evidence study</span>
       </a>
 
       <nav class="desktop-nav" aria-label="主要導覽">
@@ -78,86 +81,140 @@
     </header>
 
     <main id="main-content">
-      <section class="hero" id="top">
-        <section class="hero__copy hero-brief reveal" aria-labelledby="hero-brief-title">
-          <h1 class="sr-only">微光研習所 LUMINA ATLAS</h1>
-          <header class="hero-brief__header">
-            <div>
-              <p class="hero-brief__eyebrow"><span>WEEKLY BRIEF</span><span>台灣醫美學習情報</span></p>
-              <h2 id="hero-brief-title">近期學習與報名動態</h2>
-              <p>依日期整理已查核活動；點選項目即可查看資格、時數、報名狀態與來源。</p>
-            </div>
-            <div class="hero-brief__count" aria-label="目前顯示的近期活動數量">
-              <strong data-upcoming-count>—</strong>
-              <span>筆近期活動</span>
-            </div>
-          </header>
-          <div class="hero-brief__meta" aria-label="內容可信度原則">
-            <span><i aria-hidden="true"></i> 官方來源可追溯</span>
-            <span>每週更新</span>
-            <span>依日期排序</span>
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero__copy reveal">
+          <p class="hero__eyebrow">台灣醫美學習與法規索引</p>
+          <h1 id="hero-title">讓醫美學習，每一步都可查證。</h1>
+          <p class="hero__intro">從資格、課程到安全資料，先看結論，再回到官方來源。</p>
+          <div class="hero__actions">
+            <button class="button button--primary" type="button" data-open-search>搜尋本站</button>
+            <a class="hero__text-link" href="#regulation-radar">檢查資格 <span aria-hidden="true">↘</span></a>
           </div>
-          <section class="upcoming-events" aria-labelledby="upcoming-events-title">
+        </div>
+
+        <figure class="hero__visual reveal">
+          <img
+            src="./assets/lumina-hero-v2.webp"
+            width="1122"
+            height="1402"
+            fetchpriority="high"
+            alt="半透明臨床圖譜、皮膚組織示意與醫學資料層疊成學習地圖"
+          />
+          <figcaption>
+            <strong>Evidence first</strong>
+            <span>先確認來源，再決定下一步</span>
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="briefing section-shell" aria-labelledby="briefing-title">
+        <header class="briefing__intro reveal">
+          <div>
+            <p>本週學習與報名動態</p>
+            <h2 id="briefing-title">先處理有時效的事</h2>
+            <span>依日期整理已查核活動，直接查看資格、時數、報名狀態與來源。</span>
+          </div>
+          <div class="briefing__count" aria-label="目前顯示的近期活動數量">
+            <strong data-upcoming-count>-</strong>
+            <span>筆近期活動</span>
+          </div>
+        </header>
+
+        <section class="course-timeline briefing__timeline reveal" data-course-timeline aria-labelledby="course-timeline-title" aria-busy="true">
+          <header class="course-timeline__header">
+            <div>
+              <span class="course-timeline__kicker">RECENT ROUTE</span>
+              <h3 id="course-timeline-title">近期活動時程</h3>
+            </div>
+            <p data-timeline-summary>正在排列活動先後順序……</p>
+          </header>
+
+          <div class="course-timeline__legend" aria-label="活動學分狀態圖例">
+            <span><i class="is-confirmed"></i>已明示學分／時數</span>
+            <span><i class="is-expected"></i>預計或待核定</span>
+            <span><i class="is-unverified"></i>報名前需確認</span>
+          </div>
+
+          <div
+            class="course-timeline__viewport"
+            data-timeline-viewport
+            tabindex="0"
+            role="region"
+            aria-label="可左右捲動的近期活動時間軸"
+          >
+            <ol class="course-timeline__track" data-timeline-track>
+              <li class="course-timeline__loading">正在讀取近期活動……</li>
+            </ol>
+          </div>
+
+          <footer class="course-timeline__footer">
+            <p data-timeline-range>時間範圍載入中</p>
+            <span>左右滑動查看完整時程</span>
+          </footer>
+        </section>
+
+        <div class="briefing__grid">
+          <section class="hero-brief reveal" aria-labelledby="upcoming-events-title">
             <header class="upcoming-events__header">
               <div>
-                <span>DATE / STATUS</span>
-                <strong id="upcoming-events-title">活動清單</strong>
+                <span>依日期與狀態排序</span>
+                <strong id="upcoming-events-title">近期活動</strong>
               </div>
-              <a href="#courses">完整課程情報 <span aria-hidden="true">↓</span></a>
+              <a href="#courses">查看全部 <span aria-hidden="true">↓</span></a>
             </header>
             <div class="upcoming-events__list" data-upcoming-events aria-live="polite">
               <p class="upcoming-events__loading">正在讀取最新活動</p>
             </div>
           </section>
-        </section>
 
-        <aside class="depth-map reveal" aria-labelledby="depth-map-title">
-          <header class="depth-map__header">
-            <div>
-              <span>QUICK START</span>
-              <strong id="depth-map-title">你現在想做什麼？</strong>
-              <p>選一個目標，直接前往對應的工具或學習內容。</p>
-            </div>
-            <span class="depth-map__status"><i></i> <span data-verified-count>正在載入查核資料</span></span>
-          </header>
+          <aside class="depth-map reveal" aria-labelledby="depth-map-title">
+            <header class="depth-map__header">
+              <div>
+                <span>快速入口</span>
+                <strong id="depth-map-title">你現在想完成什麼？</strong>
+                <p>選一個目標，直接前往對應工具或學習內容。</p>
+              </div>
+              <span class="depth-map__status"><i aria-hidden="true"></i> <span data-verified-count>正在載入查核資料</span></span>
+            </header>
 
-          <nav class="layers" aria-label="快速前往網站內容">
-            <a class="layer layer--regulation" href="#regulation-radar">
-              <span class="layer__code">01</span>
-              <strong>確認我能做什麼</strong>
-              <small>依科別與資格檢查法規範圍</small>
-              <span class="layer__action">資格工具 <b aria-hidden="true">↘</b></span>
-            </a>
-            <a class="layer layer--course" href="#courses">
-              <span class="layer__code">02</span>
-              <strong>找近期課程</strong>
-              <small>比較日期、資格、時數與報名狀態</small>
-              <span class="layer__action">課程情報 <b aria-hidden="true">↘</b></span>
-            </a>
-            <a class="layer layer--technique" href="#video-learning">
-              <span class="layer__code">03</span>
-              <strong>開始看影片課程</strong>
-              <small>依主題安排基礎到臨床的觀看順序</small>
-              <span class="layer__action">影片課程 <b aria-hidden="true">↘</b></span>
-            </a>
-            <a class="layer layer--safety" href="#atlas-safety">
-              <span class="layer__code">04</span>
-              <strong>查安全與併發症</strong>
-              <small>先掌握風險警訊與緊急處置</small>
-              <span class="layer__action">安全資料 <b aria-hidden="true">↘</b></span>
-            </a>
-          </nav>
-        </aside>
+            <nav class="layers" aria-label="快速前往網站內容">
+              <a class="layer layer--regulation" href="#regulation-radar">
+                <span class="layer__code" aria-hidden="true">法</span>
+                <strong>確認我能做什麼</strong>
+                <small>依科別與資格檢查法規範圍</small>
+                <span class="layer__action">資格工具 <b aria-hidden="true">↘</b></span>
+              </a>
+              <a class="layer layer--course" href="#courses">
+                <span class="layer__code" aria-hidden="true">課</span>
+                <strong>找近期課程</strong>
+                <small>比較日期、資格、時數與報名狀態</small>
+                <span class="layer__action">課程情報 <b aria-hidden="true">↘</b></span>
+              </a>
+              <a class="layer layer--technique" href="#video-learning">
+                <span class="layer__code" aria-hidden="true">學</span>
+                <strong>開始看影片課程</strong>
+                <small>依主題安排基礎到臨床的觀看順序</small>
+                <span class="layer__action">影片課程 <b aria-hidden="true">↘</b></span>
+              </a>
+              <a class="layer layer--safety" href="#atlas-safety">
+                <span class="layer__code" aria-hidden="true">安</span>
+                <strong>查安全與併發症</strong>
+                <small>先掌握風險警訊與緊急處置</small>
+                <span class="layer__action">安全資料 <b aria-hidden="true">↘</b></span>
+              </a>
+            </nav>
+          </aside>
+        </div>
       </section>
 
       <section class="discovery-strip section-shell reveal" aria-labelledby="discovery-title">
         <header class="discovery-strip__intro">
-          <p class="section-kicker">FIND YOUR ENTRY POINT</p>
+          <p class="section-kicker">從問題開始</p>
           <h2 id="discovery-title">不知道術語，也能開始找</h2>
           <p>先說你想完成什麼；系統再把問題對應到法規、課程、技術與安全資料。</p>
         </header>
         <div class="discovery-axis discovery-axis--goal">
-          <span>01 / 學習目標</span>
+          <span>從目標開始</span>
           <strong>我想完成什麼？</strong>
           <div>
             <button type="button" data-search-query="取得醫美處置資格">取得資格</button>
@@ -166,7 +223,7 @@
           </div>
         </div>
         <div class="discovery-axis discovery-axis--topic">
-          <span>02 / 知識主題</span>
+          <span>依主題查找</span>
           <strong>我正在查什麼？</strong>
           <div>
             <button type="button" data-search-query="法規與資格">法規</button>
@@ -176,7 +233,7 @@
           </div>
         </div>
         <div class="discovery-axis discovery-axis--intervention">
-          <span>03 / 介入方式</span>
+          <span>依介入方式</span>
           <strong>我想學哪一類？</strong>
           <div>
             <button type="button" data-search-query="雷射 電波 超音波 光電">光電</button>
@@ -188,7 +245,7 @@
 
       <section class="pulse section-shell" id="pulse">
         <header class="section-heading reveal">
-          <p class="section-kicker">WEEKLY PULSE · 2026/08</p>
+          <p class="section-kicker">每週整理</p>
           <h2>這週先看這些</h2>
           <p>依時效與學習價值排序，不讓收藏夾變成資料墳場。</p>
         </header>
@@ -236,7 +293,7 @@
         <div class="regulation-radar__inner">
           <header class="section-heading section-heading--split reveal">
             <div>
-              <p class="section-kicker">REGULATION RADAR · BY SPECIALTY</p>
+              <p class="section-kicker">法規版本 2026.08.24</p>
               <h2>依科別切換的法規雷達</h2>
             </div>
             <div class="regulation-version" aria-label="法規資料版本">
@@ -385,8 +442,8 @@
               <ul class="result-requirements" data-result-requirements></ul>
               <div class="result-deadline" data-result-deadline hidden>
                 <span>最接近期限</span>
-                <strong data-result-days>—</strong>
-                <small data-result-date>—</small>
+                <strong data-result-days>...</strong>
+                <small data-result-date>...</small>
               </div>
               <p class="result-caveat" data-result-caveat>仍須每3年完成24小時繼續教育，並由醫療機構向地方衛生局完成項目及醫師資格備查。</p>
             </section>
@@ -396,7 +453,7 @@
             <section class="compliance-tracker" aria-labelledby="compliance-title">
               <div class="tracker-heading">
                 <div>
-                  <p class="section-kicker">LOCAL CHECKLIST</p>
+                  <p class="section-kicker">本機檢核</p>
                   <h3 id="compliance-title">我的合規進度</h3>
                 </div>
                 <span data-compliance-progress>0 / 5 完成</span>
@@ -417,7 +474,7 @@
             <aside class="deadline-board" aria-labelledby="deadline-title">
               <div class="tracker-heading">
                 <div>
-                  <p class="section-kicker">DEADLINE BOARD</p>
+                  <p class="section-kicker">關鍵期限</p>
                   <h3 id="deadline-title">關鍵期限</h3>
                 </div>
                 <span data-regulation-clock>計算中</span>
@@ -476,7 +533,7 @@
           <section class="source-timeline reveal" id="source-trace" aria-labelledby="source-title">
             <div class="source-timeline__head">
               <div>
-                <p class="section-kicker">SOURCE TRACE</p>
+                <p class="section-kicker">來源追蹤</p>
                 <h3 id="source-title">官方版本追蹤</h3>
               </div>
               <p>本頁為個人合規索引；主管機關個案認定與最新原文優先。</p>
@@ -494,11 +551,25 @@
       <section class="atlas section-shell" id="atlas">
         <header class="section-heading section-heading--split reveal">
           <div>
-            <p class="section-kicker">LEARNING ATLAS</p>
+            <p class="section-kicker">學習地圖</p>
             <h2>不只收集，還要形成結構</h2>
           </div>
           <p>每一筆資料依照它回答的問題歸位。法規是邊界、課程是路徑、技術是方法、安全是底線。</p>
         </header>
+
+        <figure class="atlas-visual reveal">
+          <img
+            src="./assets/lumina-source-map-v2.webp"
+            width="1586"
+            height="992"
+            loading="lazy"
+            alt="放大鏡、透明文件與索引片組成可追溯的知識來源地圖"
+          />
+          <figcaption>
+            <strong>每一個結論，都保留回到來源的路。</strong>
+            <span>法規、課程、技術與安全資料採同一套整理原則。</span>
+          </figcaption>
+        </figure>
 
         <div class="atlas-list reveal">
           <article class="atlas-row" data-search-item data-keywords="法規 資格 特管 PGY 案例認定">
@@ -548,7 +619,7 @@
       >
         <header class="section-heading section-heading--split reveal">
           <div>
-            <p class="section-kicker">VIDEO LEARNING PATH</p>
+            <p class="section-kicker">六週影片路徑</p>
             <h2>從零開始的影片學習室</h2>
             <p class="course-freshness" role="status" aria-atomic="true" data-video-freshness>正在讀取最近查核時間……</p>
           </div>
@@ -646,7 +717,7 @@
       <section class="courses section-shell" id="courses">
         <header class="section-heading section-heading--split reveal">
           <div>
-            <p class="section-kicker">COURSE INTELLIGENCE</p>
+            <p class="section-kicker">持續更新</p>
             <h2>最新課程情報</h2>
             <p class="course-freshness" role="status" aria-atomic="true" data-course-freshness>正在讀取最近查核時間……</p>
           </div>
@@ -666,39 +737,6 @@
           <p>所有時效資訊均附原始來源與查核日；報名前仍請回到主辦單位確認名額、資格及費用。</p>
         </div>
 
-        <section class="course-timeline reveal" data-course-timeline aria-labelledby="course-timeline-title" aria-busy="true">
-          <header class="course-timeline__header">
-            <div>
-              <span class="course-timeline__kicker">CREDIT ROUTE</span>
-              <h3 id="course-timeline-title">學分課程時間軸</h3>
-            </div>
-            <p data-timeline-summary>正在排列課程先後順序……</p>
-          </header>
-
-          <div class="course-timeline__legend" aria-label="學分狀態圖例">
-            <span><i class="is-confirmed"></i>已明示學分／時數</span>
-            <span><i class="is-expected"></i>預計或待核定</span>
-            <span><i class="is-unverified"></i>報名前需確認</span>
-          </div>
-
-          <div
-            class="course-timeline__viewport"
-            data-timeline-viewport
-            tabindex="0"
-            role="region"
-            aria-label="可左右捲動的學分課程時間軸"
-          >
-            <ol class="course-timeline__track" data-timeline-track>
-              <li class="course-timeline__loading">正在讀取課程資料……</li>
-            </ol>
-          </div>
-
-          <footer class="course-timeline__footer">
-            <p data-timeline-range>時間範圍載入中</p>
-            <span>左右滑動查看全部課程</span>
-          </footer>
-        </section>
-
         <div class="course-feed" data-course-feed aria-busy="true">
           <div class="course-loading">正在整理已查核的課程資料……</div>
         </div>
@@ -711,7 +749,7 @@
       <section class="curriculum section-shell" id="curriculum">
         <header class="section-heading section-heading--split reveal">
           <div>
-            <p class="section-kicker">CURRICULUM TRACE</p>
+            <p class="section-kicker">課綱預讀</p>
             <h2>不點進課綱，先看懂會學到什麼</h2>
           </div>
           <p>十四個單元整理成四條學習線；每一格先告訴你核心內容與學完後應能回答的問題。</p>
@@ -747,7 +785,7 @@
       <section class="life-os section-shell" id="life-os" aria-labelledby="life-os-title">
         <header class="section-heading section-heading--split reveal">
           <div>
-            <p class="section-kicker">2031 LIFE OS · PRIVATE DECISION LAB</p>
+            <p class="section-kicker">2031 路徑模擬</p>
             <h2 id="life-os-title">不要預測人生，<br />讓證據替你分流</h2>
           </div>
           <p>五條路徑不是答案，而是互相競爭的假設。調整真正重要的價值，查看排序，然後只用九十天蒐集足以改變決定的證據。</p>
@@ -779,7 +817,7 @@
 
           <article class="life-path-detail" id="life-path-detail" role="tabpanel" tabindex="0" data-life-path-detail>
             <header class="life-path-detail__header">
-              <span data-life-code>—</span>
+              <span data-life-code>...</span>
               <div>
                 <p data-life-short-title>載入路徑資料</p>
                 <h3 data-life-title>正在建立決策畫面</h3>
@@ -788,10 +826,10 @@
             </header>
 
             <div class="life-path-metrics" aria-label="路徑摘要指標">
-              <div><span>每週工時</span><strong data-life-hours>—</strong></div>
-              <div><span>收入結構</span><strong data-life-income>—</strong></div>
-              <div><span>現金確定</span><strong data-life-certainty>—</strong></div>
-              <div><span>可逆程度</span><strong data-life-reversibility>—</strong></div>
+              <div><span>每週工時</span><strong data-life-hours>...</strong></div>
+              <div><span>收入結構</span><strong data-life-income>...</strong></div>
+              <div><span>現金確定</span><strong data-life-certainty>...</strong></div>
+              <div><span>可逆程度</span><strong data-life-reversibility>...</strong></div>
             </div>
 
             <div class="life-path-narrative">
@@ -860,7 +898,7 @@
         <section class="life-experiment-lab reveal" aria-labelledby="experiment-title">
           <header class="life-experiment-lab__header">
             <div>
-              <p class="section-kicker">90-DAY FIELD TEST</p>
+              <p class="section-kicker">九十天實驗</p>
               <h3 id="experiment-title">先取得證據，不急著選終身身份</h3>
               <p>完成狀態只保存在本機。勾選的不是待辦，而是能讓答案逐漸浮現的實驗。</p>
             </div>
