@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="微光研習所 LUMINA ATLAS，個人的台灣醫美課程、法規與臨床知識學習索引。"
+      content="微光研習所 LUMINA ATLAS，依住院醫師訓練基準動態安排的皮膚科門診、醫美課程與法規學習索引。"
     />
     <meta name="theme-color" content="#edf4f3" />
     <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
@@ -15,7 +15,7 @@
     <meta property="og:title" content="微光研習所 LUMINA ATLAS" />
     <meta
       property="og:description"
-      content="個人的台灣醫美課程、法規與臨床知識學習索引。"
+      content="依住院醫師訓練基準動態安排的皮膚科門診、醫美課程與法規學習索引。"
     />
     <meta property="og:url" content="https://eric020730.com/beauty/" />
     <meta property="og:image" content="https://eric020730.com/beauty/assets/lumina-hero-v2.webp" />
@@ -28,8 +28,8 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css?v=20260824-no-notes" />
-    <link rel="stylesheet" href="./taste.css?v=20260830-course-large-type" />
-    <script src="./app.js?v=20260830-timeline" defer></script>
+    <link rel="stylesheet" href="./taste.css?v=20260830-clinic-route-2" />
+    <script src="./app.js?v=20260830-clinic-route" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
@@ -50,8 +50,8 @@
 
       <nav class="desktop-nav" aria-label="主要導覽">
         <a href="#pulse">本週重點</a>
+        <a href="#clinic-learning">門診課程</a>
         <a href="#courses">課程情報</a>
-        <a href="#video-learning">影片課程</a>
         <a href="#regulation-radar">法規雷達</a>
         <a href="#atlas">知識圖譜</a>
         <a href="#life-os">2031 路徑</a>
@@ -72,6 +72,7 @@
 
       <nav class="mobile-nav" data-mobile-nav aria-label="行動版導覽">
         <a href="#pulse">本週重點</a>
+        <a href="#clinic-learning">門診課程</a>
         <a href="#courses">課程情報</a>
         <a href="#video-learning">影片課程</a>
         <a href="#regulation-radar">法規雷達</a>
@@ -83,11 +84,11 @@
     <main id="main-content">
       <section class="hero" id="top" aria-labelledby="hero-title">
         <div class="hero__copy reveal">
-          <p class="hero__eyebrow">台灣醫美學習與法規索引</p>
-          <h1 id="hero-title">讓醫美學習，每一步都可查證。</h1>
-          <p class="hero__intro">從資格、課程到安全資料，先看結論，再回到官方來源。</p>
+          <p class="hero__eyebrow">台灣皮膚與醫美臨床學習索引</p>
+          <h1 id="hero-title">今天，先練最會改變處置的事。</h1>
+          <p class="hero__intro">依官方住院醫師訓練基準重排門診能力；根據答題與複習紀錄，每天只推最需要的一步。</p>
           <div class="hero__actions">
-            <button class="button button--primary" type="button" data-open-search>搜尋本站</button>
+            <a class="button button--primary" href="#clinic-learning">開始今日課程</a>
             <a class="hero__text-link" href="#regulation-radar">檢查資格 <span aria-hidden="true">↘</span></a>
           </div>
         </div>
@@ -608,6 +609,90 @@
             <div class="atlas-row__topics"><span>風險評估</span><span>併發症</span><span>緊急處置</span></div>
             <a href="#curriculum" aria-label="前往安全與處置課綱">↓</a>
           </article>
+        </div>
+      </section>
+
+      <section
+        class="clinic-learning section-shell"
+        id="clinic-learning"
+        data-clinic-learning
+        data-search-item
+        data-keywords="皮膚科 住院醫師 動態課程 門診 病例 鑑別診斷 皮疹 急症 KOH 藥疹 腫瘤 兒童 掉髮 水疱"
+        aria-labelledby="clinic-learning-title"
+        aria-busy="true"
+      >
+        <header class="section-heading section-heading--split reveal">
+          <div>
+            <p class="section-kicker">ADAPTIVE CLINIC ROUTE</p>
+            <h2 id="clinic-learning-title">用門診問題，重排四年訓練骨架</h2>
+            <p class="course-freshness" role="status" aria-atomic="true" data-clinic-freshness>正在載入住院醫師基準與課表……</p>
+          </div>
+          <p>先練危險分流與高頻主訴，再補病理、兒童、毛髮與系統性疾病。答錯隔天回鍋；答對後逐步拉長複習間隔。</p>
+        </header>
+
+        <aside class="clinic-boundary reveal" aria-label="課程使用界線">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6.6v5.5c0 4.2 2.8 7 8 8.2 5.2-1.2 8-4 8-8.2V6.6z" /><path d="m8.5 12 2.2 2.2 4.8-5" /></svg>
+          <div>
+            <strong>目標是更快進入安全的督導門診，不是用網頁取代四年專科訓練。</strong>
+            <p data-clinic-basis-note>本版依官方訓練基準建立；模擬病例不計入學習護照，也不能單獨證明獨立執業能力。</p>
+          </div>
+          <div class="clinic-boundary__sources" data-clinic-basis-sources></div>
+        </aside>
+
+        <div class="clinic-console reveal">
+          <aside class="clinic-today" aria-labelledby="clinic-today-title">
+            <header class="clinic-today__header">
+              <div>
+                <span data-clinic-date>今日</span>
+                <h3 id="clinic-today-title">今日處方</h3>
+              </div>
+              <div class="clinic-time" aria-label="每日可用學習時間">
+                <span>可用時間</span>
+                <div role="group" aria-label="選擇每日學習時間">
+                  <button type="button" data-clinic-minutes="25" aria-pressed="false">25</button>
+                  <button type="button" data-clinic-minutes="45" aria-pressed="true">45</button>
+                  <button type="button" data-clinic-minutes="75" aria-pressed="false">75 分</button>
+                </div>
+              </div>
+            </header>
+
+            <div class="clinic-evidence" aria-label="個人學習證據">
+              <div><span>已練單元</span><strong data-clinic-completed>0 / 15</strong></div>
+              <div><span>模擬正確率</span><strong data-clinic-accuracy>尚無</strong></div>
+              <div><span>今日到期</span><strong data-clinic-due>0</strong></div>
+            </div>
+
+            <ol class="clinic-prescription" data-clinic-prescription>
+              <li class="clinic-prescription__loading">正在計算今天最值得先學的內容……</li>
+            </ol>
+            <p class="clinic-today__logic" data-clinic-plan-logic>依危險性、先修關係、答題結果與複習日期排序。</p>
+          </aside>
+
+          <article class="clinic-workbench" data-clinic-workbench aria-live="polite">
+            <div class="clinic-workbench__loading">正在準備第一個病例……</div>
+          </article>
+        </div>
+
+        <section class="clinic-route reveal" aria-labelledby="clinic-route-title">
+          <header class="clinic-route__header">
+            <div><span>COMPETENCY MAP</span><h3 id="clinic-route-title">完整能力路徑</h3></div>
+            <p>鎖定表示先修證據尚未完成；你仍可查看名稱，但今日課表只會推送已解鎖的單元。</p>
+          </header>
+          <div class="clinic-route__phases" data-clinic-route></div>
+        </section>
+
+        <section class="clinic-passport reveal" aria-labelledby="clinic-passport-title">
+          <div class="clinic-passport__intro">
+            <span>OFFICIAL PASSPORT DOMAINS</span>
+            <h3 id="clinic-passport-title">官方學習護照的六個病症領域</h3>
+            <p>下列數字是評核表的「病症種類」門檻，不是本網站模擬題進度。真正能力仍需足夠病人、直接照護、教師評核與完整紀錄。</p>
+          </div>
+          <div class="clinic-passport__grid" data-clinic-passport></div>
+        </section>
+
+        <div class="clinic-data-error" role="status" data-clinic-error hidden>
+          <strong>動態課程暫時無法載入</strong>
+          <p>請重新整理頁面；既有影片課程與法規資料仍可使用。</p>
         </div>
       </section>
 

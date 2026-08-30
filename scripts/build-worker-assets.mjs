@@ -13,6 +13,7 @@ const assetPaths = [
   "assets/lumina-hero-v2.webp",
   "assets/lumina-source-map-v2.webp",
   "data/course-intelligence.json",
+  "data/clinical-learning.json",
   "data/life-os.json",
   "data/video-learning.json",
 ];

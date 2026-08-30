@@ -1,6 +1,7 @@
 const mainContent = document.querySelector("#main-content");
 const contentSectionOrder = [
   "pulse",
+  "clinic-learning",
   "courses",
   "video-learning",
   "curriculum",
@@ -32,6 +33,21 @@ const toast = document.querySelector("[data-toast]");
 let toastTimer;
 
 const baseKnowledgeIndex = [
+  {
+    id: "adaptive-clinic-route",
+    type: "動態門診課程",
+    audience: "醫師",
+    intents: ["quick", "safety", "evidence"],
+    readTime: 25,
+    title: "依住院醫師訓練基準重排的門診上手路徑",
+    scope: "依危險性、先修關係、病例答題與間隔複習，每天推送最需要的皮膚科門診單元。",
+    match: "皮疹描述、鑑別診斷、急症分流、檢查、追蹤與教師督導",
+    evidence: "衛福部訓練基準與臺灣皮膚科醫學會評核領域",
+    updatedAt: "2026-08-30",
+    href: "#clinic-learning",
+    risk: "safety",
+    keywords: "皮膚科 住院醫師 手冊 動態 課程 門診 病例 鑑別診斷 急症 KOH 藥疹 腫瘤 兒童 掉髮 水疱 複習",
+  },
   {
     id: "regulation-guide",
     type: "法規摘要",
@@ -495,6 +511,480 @@ const escapeHTML = (value = "") =>
     /[&<>"]/g,
     (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[character],
   );
+
+const clinicRoot = document.querySelector("[data-clinic-learning]");
+const clinicFreshness = document.querySelector("[data-clinic-freshness]");
+const clinicBasisNote = document.querySelector("[data-clinic-basis-note]");
+const clinicBasisSources = document.querySelector("[data-clinic-basis-sources]");
+const clinicDate = document.querySelector("[data-clinic-date]");
+const clinicTimeButtons = [...document.querySelectorAll("[data-clinic-minutes]")];
+const clinicCompleted = document.querySelector("[data-clinic-completed]");
+const clinicAccuracy = document.querySelector("[data-clinic-accuracy]");
+const clinicDue = document.querySelector("[data-clinic-due]");
+const clinicPrescription = document.querySelector("[data-clinic-prescription]");
+const clinicPlanLogic = document.querySelector("[data-clinic-plan-logic]");
+const clinicWorkbench = document.querySelector("[data-clinic-workbench]");
+const clinicRoute = document.querySelector("[data-clinic-route]");
+const clinicPassport = document.querySelector("[data-clinic-passport]");
+const clinicError = document.querySelector("[data-clinic-error]");
+
+const emptyClinicalState = {
+  dailyMinutes: 45,
+  attempts: {},
+};
+
+const readClinicalState = () => {
+  try {
+    const stored = JSON.parse(localStorage.getItem("lumina-clinical-state") || "null");
+    if (!stored || typeof stored !== "object") return structuredClone(emptyClinicalState);
+    return {
+      dailyMinutes: [25, 45, 75].includes(stored.dailyMinutes) ? stored.dailyMinutes : 45,
+      attempts: stored.attempts && typeof stored.attempts === "object" ? stored.attempts : {},
+    };
+  } catch {
+    return structuredClone(emptyClinicalState);
+  }
+};
+
+let clinicalData = null;
+let clinicalState = readClinicalState();
+let activeClinicModuleId = localStorage.getItem("lumina-clinical-current");
+let clinicalLastFeedback = null;
+
+const saveClinicalState = () => {
+  localStorage.setItem("lumina-clinical-state", JSON.stringify(clinicalState));
+};
+
+const clinicalTodayKey = () =>
+  new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Taipei",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+
+const addClinicalDays = (days) => {
+  const date = new Date(`${clinicalTodayKey()}T12:00:00+08:00`);
+  date.setDate(date.getDate() + days);
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Taipei",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+};
+
+const formatClinicalDate = (dateKey, options = { month: "numeric", day: "numeric" }) =>
+  new Date(`${dateKey}T12:00:00+08:00`).toLocaleDateString("zh-TW", {
+    timeZone: "Asia/Taipei",
+    ...options,
+  });
+
+const getClinicalModule = (moduleId) => clinicalData?.modules.find((module) => module.id === moduleId);
+const getClinicalAttempt = (moduleId) => clinicalState.attempts[moduleId] || null;
+const hasClinicalEvidence = (moduleId) => (getClinicalAttempt(moduleId)?.level || 0) >= 1;
+const isClinicalUnlocked = (module) => module.prerequisites.every(hasClinicalEvidence);
+const isClinicalDue = (moduleId) => {
+  const attempt = getClinicalAttempt(moduleId);
+  return Boolean(attempt?.nextReview && attempt.nextReview <= clinicalTodayKey());
+};
+
+const clinicalTaskModeLabel = {
+  review: "到期複習",
+  new: "新單元",
+  reinforce: "補強",
+  upcoming: "下一次複習",
+};
+
+const buildClinicalPlan = () => {
+  if (!clinicalData) return [];
+  const modules = [...clinicalData.modules].sort((a, b) => b.priority - a.priority);
+  const due = modules
+    .filter((module) => getClinicalAttempt(module.id) && isClinicalDue(module.id))
+    .map((module) => ({ module, mode: "review", minutes: 12 }));
+  const fresh = modules
+    .filter((module) => !getClinicalAttempt(module.id) && isClinicalUnlocked(module))
+    .map((module) => ({ module, mode: "new", minutes: module.durationMinutes }));
+  const weak = modules
+    .filter((module) => {
+      const attempt = getClinicalAttempt(module.id);
+      return attempt && attempt.level === 0 && !isClinicalDue(module.id) && isClinicalUnlocked(module);
+    })
+    .map((module) => ({ module, mode: "reinforce", minutes: 12 }));
+
+  const candidates = [...due, ...fresh, ...weak];
+  const plan = [];
+  let usedMinutes = 0;
+  for (const task of candidates) {
+    if (plan.some((item) => item.module.id === task.module.id)) continue;
+    if (plan.length >= 3) break;
+    if (plan.length === 0 || usedMinutes + task.minutes <= clinicalState.dailyMinutes) {
+      plan.push(task);
+      usedMinutes += task.minutes;
+    }
+  }
+
+  if (plan.length === 0) {
+    const nextReview = modules
+      .filter((module) => getClinicalAttempt(module.id)?.nextReview)
+      .sort((a, b) => getClinicalAttempt(a.id).nextReview.localeCompare(getClinicalAttempt(b.id).nextReview))[0];
+    if (nextReview) plan.push({ module: nextReview, mode: "upcoming", minutes: 12 });
+  }
+  return plan;
+};
+
+const clinicalMasteryDots = (level = 0) =>
+  Array.from({ length: 4 }, (_, index) => `<i class="${index < level ? "is-filled" : ""}"></i>`).join("");
+
+const renderClinicalMetrics = () => {
+  if (!clinicalData) return;
+  const attempts = Object.values(clinicalState.attempts).filter((attempt) => attempt?.attempts > 0);
+  const totalAttempts = attempts.reduce((sum, attempt) => sum + attempt.attempts, 0);
+  const totalCorrect = attempts.reduce((sum, attempt) => sum + (attempt.correctAnswers || 0), 0);
+  const dueCount = clinicalData.modules.filter((module) => isClinicalDue(module.id)).length;
+  if (clinicCompleted) clinicCompleted.textContent = `${attempts.length} / ${clinicalData.modules.length}`;
+  if (clinicAccuracy) clinicAccuracy.textContent = totalAttempts ? `${Math.round((totalCorrect / totalAttempts) * 100)}%` : "尚無";
+  if (clinicDue) clinicDue.textContent = String(dueCount);
+  clinicTimeButtons.forEach((button) => {
+    const isActive = Number(button.dataset.clinicMinutes) === clinicalState.dailyMinutes;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+};
+
+const renderClinicalPrescription = () => {
+  if (!clinicPrescription || !clinicalData) return;
+  const plan = buildClinicalPlan();
+  clinicPrescription.innerHTML = plan.length
+    ? plan
+        .map(({ module, mode, minutes }, index) => {
+          const attempt = getClinicalAttempt(module.id);
+          const isActive = module.id === activeClinicModuleId;
+          const reason = mode === "review"
+            ? `複習日 ${formatClinicalDate(attempt.nextReview)} 已到`
+            : mode === "reinforce"
+              ? "上次尚未建立正確證據"
+              : mode === "upcoming"
+                ? `${formatClinicalDate(attempt.nextReview)} 到期，可先預習`
+                : module.prerequisites.length
+                  ? "先修證據已完成，依風險與頻率排序"
+                  : "所有診斷與病歷的共同起點";
+          return `
+            <li class="clinic-prescription__item${isActive ? " is-active" : ""}">
+              <button type="button" data-clinic-open="${escapeHTML(module.id)}" ${isActive ? 'aria-current="true"' : ""}>
+                <span class="clinic-prescription__index">${String(index + 1).padStart(2, "0")}</span>
+                <span class="clinic-prescription__body">
+                  <small>${escapeHTML(clinicalTaskModeLabel[mode])}・約 ${minutes} 分</small>
+                  <strong>${escapeHTML(module.title)}</strong>
+                  <span>${escapeHTML(reason)}</span>
+                </span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+              </button>
+            </li>`;
+        })
+        .join("")
+    : '<li class="clinic-prescription__empty"><strong>今天沒有到期任務</strong><span>所有單元都已完成，等下一個複習日再回來。</span></li>';
+
+  if (clinicPlanLogic) {
+    const used = plan.reduce((sum, task) => sum + task.minutes, 0);
+    const reviewCount = plan.filter((task) => task.mode === "review" || task.mode === "reinforce").length;
+    clinicPlanLogic.textContent = plan.length
+      ? `今天排入 ${plan.length} 項，約 ${used} 分鐘${reviewCount ? `；其中 ${reviewCount} 項用來補強或複習` : ""}。完成病例後會立即重算。`
+      : "目前沒有新單元或到期複習；你的紀錄仍保留在這台裝置。";
+  }
+};
+
+const clinicalStatus = (module) => {
+  const attempt = getClinicalAttempt(module.id);
+  if (isClinicalDue(module.id)) return { label: "到期複習", className: "is-due" };
+  if ((attempt?.level || 0) >= 1) return { label: `證據 L${attempt.level}`, className: "is-passed" };
+  if (attempt) return { label: "待補強", className: "is-weak" };
+  if (isClinicalUnlocked(module)) return { label: "可開始", className: "is-ready" };
+  return { label: `尚缺 ${module.prerequisites.filter((id) => !hasClinicalEvidence(id)).length} 項先修`, className: "is-locked" };
+};
+
+const renderClinicalRoute = () => {
+  if (!clinicRoute || !clinicalData) return;
+  const phases = [...new Set(clinicalData.modules.map((module) => module.phase))].sort();
+  clinicRoute.innerHTML = phases
+    .map((phase) => {
+      const modules = clinicalData.modules.filter((module) => module.phase === phase).sort((a, b) => b.priority - a.priority);
+      return `
+        <section class="clinic-phase" aria-labelledby="clinic-phase-${phase}">
+          <header><span>0${phase}</span><div><small>PHASE ${phase}</small><h4 id="clinic-phase-${phase}">${escapeHTML(modules[0].phaseLabel)}</h4></div></header>
+          <div>
+            ${modules
+              .map((module) => {
+                const status = clinicalStatus(module);
+                const unlocked = isClinicalUnlocked(module);
+                const attempt = getClinicalAttempt(module.id);
+                return `
+                  <button
+                    type="button"
+                    class="clinic-module ${status.className}${module.id === activeClinicModuleId ? " is-active" : ""}"
+                    data-clinic-open="${escapeHTML(module.id)}"
+                    ${unlocked ? "" : "disabled"}
+                    aria-label="${escapeHTML(module.title)}，${escapeHTML(status.label)}"
+                  >
+                    <span class="clinic-module__meta">${escapeHTML(module.handbookYear)}・${module.durationMinutes} 分</span>
+                    <strong>${escapeHTML(module.title)}</strong>
+                    <span class="clinic-module__footer"><b>${escapeHTML(status.label)}</b><i class="clinic-module__mastery" aria-label="熟練證據 ${attempt?.level || 0} / 4">${clinicalMasteryDots(attempt?.level || 0)}</i></span>
+                  </button>`;
+              })
+              .join("")}
+          </div>
+        </section>`;
+    })
+    .join("");
+};
+
+const renderClinicalPassport = () => {
+  if (!clinicPassport || !clinicalData) return;
+  clinicPassport.innerHTML = clinicalData.passportDomains
+    .map((domain) => {
+      const coverage = clinicalData.modules.filter((module) => module.domains.includes(domain.id)).length;
+      return `
+        <article>
+          <span>${escapeHTML(domain.label)}</span>
+          <strong>${domain.threshold}</strong>
+          <small>${escapeHTML(domain.unit)}門檻・本路徑 ${coverage} 個單元涵蓋</small>
+        </article>`;
+    })
+    .join("");
+};
+
+const clinicSourceLinks = (module) => {
+  const sourceMap = new Map(clinicalData.sources.map((source) => [source.id, source]));
+  return module.sourceIds
+    .map((sourceId) => sourceMap.get(sourceId))
+    .filter(Boolean)
+    .map((source) => `<a href="${escapeHTML(source.url)}" target="_blank" rel="noreferrer">${escapeHTML(source.label)} <span aria-hidden="true">↗</span></a>`)
+    .join("");
+};
+
+const getNextClinicalModuleId = () => {
+  const plan = buildClinicalPlan();
+  const currentIndex = plan.findIndex((task) => task.module.id === activeClinicModuleId);
+  return plan[currentIndex + 1]?.module.id || plan.find((task) => task.module.id !== activeClinicModuleId)?.module.id || null;
+};
+
+const renderClinicalWorkbench = () => {
+  if (!clinicWorkbench || !clinicalData) return;
+  let module = getClinicalModule(activeClinicModuleId);
+  if (!module || !isClinicalUnlocked(module)) {
+    module = buildClinicalPlan()[0]?.module || clinicalData.modules.find(isClinicalUnlocked) || clinicalData.modules[0];
+    activeClinicModuleId = module.id;
+  }
+  localStorage.setItem("lumina-clinical-current", activeClinicModuleId);
+  const attempt = getClinicalAttempt(module.id);
+  const status = clinicalStatus(module);
+  const nextModuleId = getNextClinicalModuleId();
+  const feedback = clinicalLastFeedback?.moduleId === module.id ? clinicalLastFeedback : null;
+  const feedbackMarkup = feedback
+    ? `<div class="clinic-feedback ${feedback.correct ? "is-correct" : "is-incorrect"}" tabindex="-1" data-clinic-feedback>
+        <strong>${feedback.correct ? "判斷正確，已拉長複習間隔" : "這題需要補強，明天會再次排入"}</strong>
+        <p>${escapeHTML(module.case.rationale)}</p>
+        <span>下次複習 ${escapeHTML(formatClinicalDate(feedback.nextReview, { year: "numeric", month: "numeric", day: "numeric" }))}</span>
+      </div>`
+    : attempt
+      ? `<div class="clinic-feedback is-history"><strong>上次作答${attempt.lastCorrect ? "正確" : "需補強"}</strong><p>下次排程：${escapeHTML(formatClinicalDate(attempt.nextReview, { year: "numeric", month: "numeric", day: "numeric" }))}。可再次作答更新熟練證據。</p></div>`
+      : "";
+
+  clinicWorkbench.innerHTML = `
+    <header class="clinic-workbench__header">
+      <div class="clinic-workbench__tags">
+        <span>PHASE ${module.phase}・${escapeHTML(module.phaseLabel)}</span>
+        <span>${escapeHTML(module.handbookYear)} 對應</span>
+        <span class="${status.className}">${escapeHTML(status.label)}</span>
+      </div>
+      <p>CLINIC QUESTION</p>
+      <h3>${escapeHTML(module.title)}</h3>
+      <strong>${escapeHTML(module.clinicPrompt)}</strong>
+      <p>${escapeHTML(module.summary)}</p>
+    </header>
+
+    <div class="clinic-workbench__grid">
+      <section aria-labelledby="clinic-objectives-title">
+        <span>學完要能做到</span>
+        <h4 id="clinic-objectives-title">今日能力目標</h4>
+        <ol>${module.objectives.map((objective) => `<li>${escapeHTML(objective)}</li>`).join("")}</ol>
+      </section>
+      <section aria-labelledby="clinic-checklist-title">
+        <span>進診間照這個順序</span>
+        <h4 id="clinic-checklist-title">診間檢核</h4>
+        <ul>${module.clinicChecklist.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
+      </section>
+    </div>
+
+    <aside class="clinic-red-flags">
+      <div><span>STOP / ESCALATE</span><strong>這些情況不能照一般門診節奏走</strong></div>
+      <ul>${module.redFlags.map((flag) => `<li>${escapeHTML(flag)}</li>`).join("")}</ul>
+    </aside>
+
+    <form class="clinic-case" data-clinic-quiz="${escapeHTML(module.id)}">
+      <header><span>CASE CHECK</span><small>約 3 分鐘・作答後自動安排複習</small></header>
+      <p class="clinic-case__stem">${escapeHTML(module.case.stem)}</p>
+      <fieldset>
+        <legend>${escapeHTML(module.case.question)}</legend>
+        ${module.case.options
+          .map(
+            (option, index) => `
+              <label>
+                <input type="radio" name="clinic-answer-${escapeHTML(module.id)}" value="${index}" />
+                <span><b>${String.fromCharCode(65 + index)}</b>${escapeHTML(option)}</span>
+              </label>`,
+          )
+          .join("")}
+      </fieldset>
+      <button type="submit" disabled data-clinic-submit>提交判斷</button>
+    </form>
+
+    ${feedbackMarkup}
+
+    <footer class="clinic-workbench__footer">
+      <div><span>督導界線</span><p>${escapeHTML(module.supervision)}</p></div>
+      <div class="clinic-workbench__sources"><span>回到來源</span>${clinicSourceLinks(module)}</div>
+      ${nextModuleId ? `<button type="button" data-clinic-next="${escapeHTML(nextModuleId)}">前往今日下一項 <span aria-hidden="true">→</span></button>` : ""}
+    </footer>`;
+};
+
+const renderClinicalLearning = () => {
+  renderClinicalMetrics();
+  renderClinicalPrescription();
+  renderClinicalRoute();
+  renderClinicalPassport();
+  renderClinicalWorkbench();
+};
+
+const openClinicalModule = (moduleId) => {
+  const module = getClinicalModule(moduleId);
+  if (!module || !isClinicalUnlocked(module)) return;
+  activeClinicModuleId = moduleId;
+  clinicalLastFeedback = null;
+  localStorage.setItem("lumina-clinical-current", moduleId);
+  renderClinicalPrescription();
+  renderClinicalRoute();
+  renderClinicalWorkbench();
+  clinicWorkbench?.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
+clinicTimeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    clinicalState.dailyMinutes = Number(button.dataset.clinicMinutes);
+    saveClinicalState();
+    renderClinicalMetrics();
+    renderClinicalPrescription();
+    showToast(`今日課表已改為 ${clinicalState.dailyMinutes} 分鐘`);
+  });
+});
+
+clinicPrescription?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-clinic-open]");
+  if (button) openClinicalModule(button.dataset.clinicOpen);
+});
+
+clinicRoute?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-clinic-open]");
+  if (button) openClinicalModule(button.dataset.clinicOpen);
+});
+
+clinicWorkbench?.addEventListener("change", (event) => {
+  if (!event.target.matches('input[type="radio"]')) return;
+  const form = event.target.closest("[data-clinic-quiz]");
+  const submit = form?.querySelector("[data-clinic-submit]");
+  if (submit) submit.disabled = false;
+});
+
+clinicWorkbench?.addEventListener("click", (event) => {
+  const nextButton = event.target.closest("[data-clinic-next]");
+  if (nextButton) openClinicalModule(nextButton.dataset.clinicNext);
+});
+
+clinicWorkbench?.addEventListener("submit", (event) => {
+  const form = event.target.closest("[data-clinic-quiz]");
+  if (!form || !clinicalData) return;
+  event.preventDefault();
+  const module = getClinicalModule(form.dataset.clinicQuiz);
+  const selected = form.querySelector('input[type="radio"]:checked');
+  if (!module || !selected) return;
+  const isCorrect = Number(selected.value) === module.case.correctIndex;
+  const previous = getClinicalAttempt(module.id) || {
+    attempts: 0,
+    correctAnswers: 0,
+    level: 0,
+  };
+  const level = isCorrect ? Math.min(4, previous.level + 1) : Math.max(0, previous.level - 1);
+  const intervalIndex = isCorrect ? Math.min(level, clinicalData.reviewIntervalsDays.length - 1) : 0;
+  const nextReview = addClinicalDays(clinicalData.reviewIntervalsDays[intervalIndex]);
+  clinicalState.attempts[module.id] = {
+    attempts: previous.attempts + 1,
+    correctAnswers: previous.correctAnswers + (isCorrect ? 1 : 0),
+    level,
+    lastCorrect: isCorrect,
+    lastAttempt: new Date().toISOString(),
+    nextReview,
+  };
+  clinicalLastFeedback = { moduleId: module.id, correct: isCorrect, nextReview };
+  saveClinicalState();
+  renderClinicalLearning();
+  window.requestAnimationFrame(() => clinicWorkbench.querySelector("[data-clinic-feedback]")?.focus());
+  showToast(isCorrect ? "已建立正確證據並安排下次複習" : "已加入明日補強課表");
+});
+
+const loadClinicalLearning = async () => {
+  if (!clinicRoot) return;
+  try {
+    const response = await fetch("./data/clinical-learning.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    clinicalData = await response.json();
+    if (!Array.isArray(clinicalData.modules) || clinicalData.modules.length === 0) throw new Error("臨床課程資料為空");
+    if (![25, 45, 75].includes(clinicalState.dailyMinutes)) clinicalState.dailyMinutes = clinicalData.defaultDailyMinutes;
+    if (clinicDate) {
+      clinicDate.textContent = new Date().toLocaleDateString("zh-TW", {
+        timeZone: "Asia/Taipei",
+        month: "numeric",
+        day: "numeric",
+        weekday: "short",
+      });
+    }
+    const reviewedAt = new Date(clinicalData.lastReviewed).toLocaleDateString("zh-TW", {
+      timeZone: "Asia/Taipei",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    if (clinicFreshness) clinicFreshness.textContent = `基準查核 ${reviewedAt}・${clinicalData.modules.length} 個動態單元・進度只存這台裝置`;
+    if (clinicBasisNote) clinicBasisNote.textContent = clinicalData.basis.note;
+    if (clinicBasisSources) {
+      const sourceMap = new Map(clinicalData.sources.map((source) => [source.id, source]));
+      clinicBasisSources.innerHTML = clinicalData.basis.sources
+        .map((id) => sourceMap.get(id))
+        .filter(Boolean)
+        .map((source) => `<a href="${escapeHTML(source.url)}" target="_blank" rel="noreferrer">${escapeHTML(source.label)} <span aria-hidden="true">↗</span></a>`)
+        .join("");
+    }
+    const plan = buildClinicalPlan();
+    const storedModule = getClinicalModule(activeClinicModuleId);
+    activeClinicModuleId = storedModule && isClinicalUnlocked(storedModule)
+      ? storedModule.id
+      : plan[0]?.module.id || clinicalData.modules[0].id;
+    renderClinicalLearning();
+    clinicRoot.setAttribute("aria-busy", "false");
+  } catch (error) {
+    console.error("臨床動態課程載入失敗", error);
+    if (clinicError) clinicError.hidden = false;
+    if (clinicFreshness) clinicFreshness.textContent = "動態課程資料暫時無法載入";
+    const consoleElement = clinicRoot.querySelector(".clinic-console");
+    const routeElement = clinicRoot.querySelector(".clinic-route");
+    const passportElement = clinicRoot.querySelector(".clinic-passport");
+    if (consoleElement) consoleElement.hidden = true;
+    if (routeElement) routeElement.hidden = true;
+    if (passportElement) passportElement.hidden = true;
+    clinicRoot.setAttribute("aria-busy", "false");
+  }
+};
+
+const clinicalLoadTask = loadClinicalLearning();
 
 const fallbackVideoLessons = [
   {
@@ -1846,7 +2336,7 @@ const sectionObserver = new IntersectionObserver(
 
 observedSections.forEach((section) => sectionObserver.observe(section));
 
-Promise.allSettled([videoLoadTask, courseLoadTask, lifeOsLoadTask]).then(() => {
+Promise.allSettled([clinicalLoadTask, videoLoadTask, courseLoadTask, lifeOsLoadTask]).then(() => {
   const hashTarget = location.hash ? document.querySelector(location.hash) : null;
   window.requestAnimationFrame(() => {
     if (hashTarget) hashTarget.scrollIntoView({ block: "start" });

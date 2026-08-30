@@ -1,0 +1,571 @@
+{
+  "schemaVersion": 1,
+  "lastReviewed": "2026-08-30T11:30:00+08:00",
+  "defaultDailyMinutes": 45,
+  "reviewIntervalsDays": [1, 3, 7, 14, 30],
+  "basis": {
+    "title": "皮膚科住院醫師訓練基準導向的門診上手路徑",
+    "note": "依衛福部皮膚科專科醫師訓練課程基準與訓練計畫認定基準重排。工作區尚未提供院內住院醫師手冊，因此本版不是特定醫院手冊的逐章轉錄。",
+    "sources": ["mohw-curriculum", "mohw-program", "tda-evaluation"]
+  },
+  "sources": [
+    {
+      "id": "mohw-curriculum",
+      "label": "衛福部｜皮膚科專科醫師訓練課程基準（108）",
+      "url": "https://www.mohw.gov.tw/dl-86774-14e93ccb-489c-4137-a087-e090b2364184.html",
+      "type": "official"
+    },
+    {
+      "id": "mohw-program",
+      "label": "衛福部｜皮膚科專科醫師訓練計畫認定基準（114）",
+      "url": "https://www.mohw.gov.tw/dl-87650-e3880c9e-9124-46ef-9db7-99616f89cab9.html",
+      "type": "official"
+    },
+    {
+      "id": "tda-evaluation",
+      "label": "臺灣皮膚科醫學會｜訓練計畫評核標準（114）",
+      "url": "https://www.derma.org.tw/hospital/qualification_standard.php",
+      "type": "official"
+    },
+    {
+      "id": "aad-guidelines",
+      "label": "American Academy of Dermatology｜Clinical guidelines",
+      "url": "https://www.aad.org/member/clinical-quality/guidelines",
+      "type": "clinical-guideline"
+    },
+    {
+      "id": "dermnet-terminology",
+      "label": "DermNet｜Terminology in dermatology",
+      "url": "https://dermnetnz.org/topics/terminology",
+      "type": "clinical-reference"
+    },
+    {
+      "id": "dermnet-emergencies",
+      "label": "DermNet｜Dermatological emergencies",
+      "url": "https://dermnetnz.org/topics/dermatological-emergencies",
+      "type": "clinical-reference"
+    }
+  ],
+  "passportDomains": [
+    { "id": "general", "label": "一般皮膚學", "threshold": 20, "unit": "病症種類" },
+    { "id": "infectious", "label": "感染性疾病", "threshold": 10, "unit": "病症種類" },
+    { "id": "tumor-surgery", "label": "皮膚腫瘤及外科", "threshold": 8, "unit": "病症種類" },
+    { "id": "keratinization", "label": "角化異常", "threshold": 8, "unit": "病症種類" },
+    { "id": "bullous", "label": "水疱病", "threshold": 6, "unit": "病症種類" },
+    { "id": "systemic", "label": "系統性疾病", "threshold": 6, "unit": "病症種類" }
+  ],
+  "modules": [
+    {
+      "id": "morphology-first",
+      "phase": 1,
+      "phaseLabel": "診間生存",
+      "handbookYear": "R1",
+      "priority": 100,
+      "durationMinutes": 22,
+      "title": "先描述，再命名：皮疹形態與分布",
+      "clinicPrompt": "病人說「皮膚紅又癢」時，你能在 60 秒內把主訴轉成可用的皮膚科描述嗎？",
+      "summary": "先建立原發疹、次發變化、分布與時間軸的共同語言。沒有這一步，鑑別診斷與病歷都容易被直覺帶走。",
+      "prerequisites": [],
+      "domains": ["general"],
+      "objectives": [
+        "用部位、對稱性、排列、邊界與表面變化描述病灶",
+        "區分斑、丘疹、斑塊、水疱、膿疱、結節與風團",
+        "先記錄形態再提出 3 個鑑別診斷"
+      ],
+      "clinicChecklist": [
+        "發作時間、演變速度、症狀與曾用藥",
+        "原發病灶、顏色、邊界、表面與觸感",
+        "分布、排列、黏膜、頭皮、指甲與全身症狀",
+        "必要時在同意與去識別前提下建立標準化照片"
+      ],
+      "redFlags": ["快速擴散合併發燒或低血壓", "黏膜侵犯", "紫斑、皮膚疼痛、壞死或大片表皮脫落"],
+      "supervision": "先以教師複核描述與鑑別診斷，尚不等於可獨立處置。",
+      "sourceIds": ["mohw-curriculum", "dermnet-terminology"],
+      "case": {
+        "stem": "28 歲病人右前臂出現一處 3 公分、邊界清楚、表面有鱗屑、中央較淡的環狀病灶，逐日向外擴大且搔癢。",
+        "question": "哪一段是最有鑑別價值的形態描述？",
+        "options": ["右前臂很癢", "紅疹看起來像過敏", "邊界清楚、邊緣有鱗屑、中央較淡且向外擴大", "病人擔心會傳染"],
+        "correctIndex": 2,
+        "rationale": "形態、邊界、表面與演變方向能直接縮小鑑別診斷；症狀與病人擔心仍重要，但不能取代病灶描述。"
+      }
+    },
+    {
+      "id": "dangerous-rash",
+      "phase": 1,
+      "phaseLabel": "診間生存",
+      "handbookYear": "R4",
+      "priority": 98,
+      "durationMinutes": 24,
+      "title": "先排危險：全身紅疹與皮膚急症",
+      "clinicPrompt": "你能在談診斷前，先辨認需要急診、住院或立即會診的病人嗎？",
+      "summary": "用生命徵象、皮膚疼痛、黏膜、紫斑、壞死、表皮剝離與器官症狀建立急症篩檢。",
+      "prerequisites": ["morphology-first"],
+      "domains": ["systemic", "bullous"],
+      "objectives": [
+        "辨認 SJS/TEN、DRESS、壞死性軟組織感染與嚴重感染的警訊",
+        "先做嚴重度與器官侵犯評估，再處理皮疹名稱",
+        "說出立即停損、會診與轉送的時機"
+      ],
+      "clinicChecklist": [
+        "生命徵象、疼痛程度、進展速度與近期新藥",
+        "口、眼、生殖器黏膜與表皮剝離面積",
+        "臉部水腫、淋巴結、黃疸、呼吸或腎臟症狀",
+        "紀錄疑似藥物、首劑日期、末劑日期與時間關係"
+      ],
+      "redFlags": ["皮膚疼痛大於外觀所見", "黏膜糜爛或表皮剝離", "紫斑壞死、低血壓或意識改變"],
+      "supervision": "任何疑似皮膚急症皆應立即依院內流程升級處理。",
+      "sourceIds": ["mohw-curriculum", "mohw-program", "dermnet-emergencies"],
+      "case": {
+        "stem": "病人開始服用新藥 10 天後發燒，出現疼痛性廣泛紅疹、口腔糜爛與眼睛刺痛。",
+        "question": "最適當的下一步是？",
+        "options": ["先開一週外用藥後門診追蹤", "視為皮膚急症，立即停用可疑藥物並安排急診／住院評估", "先做過敏原抽血再決定", "建議拍照觀察是否自行消退"],
+        "correctIndex": 1,
+        "rationale": "發燒、皮膚疼痛與多處黏膜侵犯是嚴重藥物反應警訊；處置優先於精確命名，不能延後到一般門診追蹤。"
+      }
+    },
+    {
+      "id": "eczema-contact",
+      "phase": 1,
+      "phaseLabel": "診間生存",
+      "handbookYear": "R1",
+      "priority": 94,
+      "durationMinutes": 24,
+      "title": "濕疹不是一個答案：異位性、刺激性與接觸性",
+      "clinicPrompt": "面對反覆搔癢脫屑，你能找出暴露、部位與病程的線索，而不是只換一條藥膏嗎？",
+      "summary": "以年齡、分布、職業與產品暴露拆開常見濕疹，並建立皮膚屏障與追蹤框架。",
+      "prerequisites": ["morphology-first"],
+      "domains": ["general"],
+      "objectives": [
+        "區分異位性皮膚炎、刺激性與過敏性接觸皮膚炎的線索",
+        "系統性盤點清潔、保養、工作與配戴物暴露",
+        "設定治療目標、停損點與貼布試驗轉介時機"
+      ],
+      "clinicChecklist": [
+        "部位與接觸物是否吻合；工作日與假日是否不同",
+        "清潔頻率、濕工作、保養品、藥膏與金屬／黏著劑",
+        "抓痕、滲液、苔癬化與續發感染跡象",
+        "把避免暴露、屏障照護與藥物計畫分開說明"
+      ],
+      "redFlags": ["眼周或全身迅速腫脹", "廣泛滲液合併發燒", "治療後惡化且需排除感染或藥物過敏"],
+      "supervision": "處方選擇需依部位、年齡、孕哺狀態與診斷由臨床教師複核。",
+      "sourceIds": ["mohw-curriculum", "aad-guidelines"],
+      "case": {
+        "stem": "護理師雙手背反覆紅、裂、癢，連續上班時加重，休假改善；每天多次洗手並使用酒精。",
+        "question": "下一段病史最能改變判斷的是？",
+        "options": ["最喜歡的食物", "工作中的濕暴露、手套材質、清潔產品與改善時段", "是否曾做過醫美", "家中樓層"],
+        "correctIndex": 1,
+        "rationale": "部位與職業暴露的時間關係能區分刺激性與過敏性接觸皮膚炎，並直接影響介入方式。"
+      }
+    },
+    {
+      "id": "fungal-infection",
+      "phase": 1,
+      "phaseLabel": "診間生存",
+      "handbookYear": "R1",
+      "priority": 92,
+      "durationMinutes": 26,
+      "title": "紅、圓、脫屑：先排黴菌再談類固醇",
+      "clinicPrompt": "環狀或單側脫屑病灶，你會在何時做 KOH，而不是憑外觀試藥？",
+      "summary": "把體癬、股癬、足癬、念珠菌與濕疹／乾癬放在同一張鑑別圖，練習正確取材觀念。",
+      "prerequisites": ["morphology-first"],
+      "domains": ["infectious"],
+      "objectives": [
+        "辨認活動性邊緣、單側分布與衛星病灶等線索",
+        "知道 KOH 取材位置、陰性結果限制與何時培養／轉介",
+        "避免未排感染便長期單獨使用類固醇"
+      ],
+      "clinicChecklist": [
+        "檢查足底、趾縫、腹股溝、頭皮與指甲等感染來源",
+        "從活動性鱗屑邊緣取材，註明先前用藥",
+        "詢問家人、寵物、運動場館與免疫抑制狀態",
+        "廣泛、毛髮／指甲侵犯或反覆失敗時重新確認診斷"
+      ],
+      "redFlags": ["免疫低下合併快速擴散", "頭皮膿腫性病灶或明顯掉髮", "繼發蜂窩性組織炎徵象"],
+      "supervision": "KOH 與培養判讀需以實際檢體在合格訓練環境中驗證。",
+      "sourceIds": ["mohw-curriculum", "mohw-program"],
+      "case": {
+        "stem": "病人單側腹股溝有向外擴大的紅色斑塊，外緣隆起脫屑，已自行擦複方藥膏兩週後外觀變得不典型。",
+        "question": "最能降低誤診的下一步是？",
+        "options": ["直接加強外用類固醇", "從仍有活動性的鱗屑邊緣做 KOH，並記錄先前用藥", "只依照片判斷", "先安排美容雷射"],
+        "correctIndex": 1,
+        "rationale": "局部類固醇可能改變黴菌感染外觀；在活動性邊緣取材並保留先前用藥資訊，比繼續經驗性加藥更能修正診斷。"
+      }
+    },
+    {
+      "id": "itch-urticaria-scabies",
+      "phase": 1,
+      "phaseLabel": "診間生存",
+      "handbookYear": "R1/R4",
+      "priority": 90,
+      "durationMinutes": 24,
+      "title": "癢的時間軸：蕁麻疹、疥瘡與全身性原因",
+      "clinicPrompt": "同樣是癢，你能用單一病灶持續時間、同住者症狀與全身線索快速分流嗎？",
+      "summary": "把『每顆多久消失』放進病史核心，並先排呼吸道、循環與感染風險。",
+      "prerequisites": ["morphology-first"],
+      "domains": ["general", "infectious", "systemic"],
+      "objectives": [
+        "以單一病灶是否在 24 小時內消退區分常見路徑",
+        "詢問夜間搔癢、接觸史與同住者症狀",
+        "辨認血管性水腫、呼吸循環異常與紫斑等急症線索"
+      ],
+      "clinicChecklist": [
+        "請病人描述同一顆病灶的持續時間與是否留痕",
+        "檢查指縫、手腕、腋下、腰腹與生殖區等分布",
+        "詢問新藥、感染、食物與物理誘因，但避免無方向廣泛檢驗",
+        "慢性全身搔癢需依病史考慮系統性原因"
+      ],
+      "redFlags": ["喘鳴、喉頭緊、低血壓或暈厥", "非壓退性紫斑或病灶疼痛", "高齡者新發全身搔癢合併體重下降"],
+      "supervision": "疑似過敏性休克須立即依急救流程處理，不等待皮膚科確診。",
+      "sourceIds": ["mohw-curriculum", "dermnet-emergencies", "aad-guidelines"],
+      "case": {
+        "stem": "病人全身反覆隆起搔癢病灶，每顆通常數小時內消失、不留痕；今天合併嘴唇腫與喉頭緊。",
+        "question": "最優先的判斷是？",
+        "options": ["慢性濕疹，安排一個月後回診", "先評估氣道、呼吸與循環，依急症流程處理", "先做貼布試驗", "只要病灶會消失就不危險"],
+        "correctIndex": 1,
+        "rationale": "風團短暫消退支持蕁麻疹，但嘴唇腫與喉頭緊使氣道評估成為第一優先。"
+      }
+    },
+    {
+      "id": "acne-rosacea",
+      "phase": 2,
+      "phaseLabel": "高頻門診",
+      "handbookYear": "R1",
+      "priority": 86,
+      "durationMinutes": 24,
+      "title": "臉部丘疹不是都叫痘痘：痤瘡與玫瑰斑",
+      "clinicPrompt": "你能用粉刺、潮紅、血管擴張與分布來避免錯把玫瑰斑當痤瘡嗎？",
+      "summary": "先分類病灶、嚴重度與疤痕風險，再把孕哺、藥物與期待納入共同決策。",
+      "prerequisites": ["eczema-contact"],
+      "domains": ["general"],
+      "objectives": [
+        "以粉刺有無、中央臉分布與潮紅症狀建立鑑別",
+        "記錄發炎、結節、疤痕與色素沉著負擔",
+        "在處方前確認孕哺可能性、既往治療與依從性"
+      ],
+      "clinicChecklist": [
+        "數粉刺、發炎丘疹／膿疱、結節與疤痕",
+        "詢問潮紅、灼熱、眼部症狀與類固醇使用",
+        "了解經期、藥物、保養品與心理影響",
+        "設定 8 至 12 週的客觀追蹤指標而非短期換藥"
+      ],
+      "redFlags": ["眼痛、畏光或視力改變", "快速形成結節與疤痕", "嚴重心理困擾或自傷風險"],
+      "supervision": "全身性用藥與生育風險管理須遵循最新指引及院內流程。",
+      "sourceIds": ["mohw-curriculum", "aad-guidelines"],
+      "case": {
+        "stem": "42 歲病人中央臉反覆潮紅、灼熱並有丘疹膿疱，找不到粉刺，喝熱飲時惡化。",
+        "question": "哪個線索最支持玫瑰斑而非典型痤瘡？",
+        "options": ["臉上有丘疹", "中央臉潮紅與灼熱、沒有粉刺", "病人超過 20 歲", "曾使用洗面乳"],
+        "correctIndex": 1,
+        "rationale": "持續或陣發性中央臉潮紅、灼熱及缺乏粉刺，是區分玫瑰斑與典型痤瘡的重要線索。"
+      }
+    },
+    {
+      "id": "bacterial-viral-infection",
+      "phase": 2,
+      "phaseLabel": "高頻門診",
+      "handbookYear": "R1/R4",
+      "priority": 84,
+      "durationMinutes": 28,
+      "title": "感染分流：膿痂疹、蜂窩性組織炎、疱疹與帶狀疱疹",
+      "clinicPrompt": "你能分出適合門診追蹤、需要培養，以及眼周或全身風險必須升級的感染嗎？",
+      "summary": "以深度、分布、疼痛、全身症狀與宿主風險決定檢查與照護層級。",
+      "prerequisites": ["fungal-infection", "dangerous-rash"],
+      "domains": ["infectious"],
+      "objectives": [
+        "區分表淺感染、深部軟組織感染與群聚水疱",
+        "辨認眼周、耳部、免疫低下與播散性風險",
+        "知道何時需要培養、影像、急診或跨科照護"
+      ],
+      "clinicChecklist": [
+        "發燒、疼痛、進展速度、外傷與近期處置",
+        "界線、熱、腫、膿、波動感與淋巴管炎",
+        "病灶是否沿皮節、靠近眼鼻或跨多個皮節",
+        "糖尿病、免疫抑制、腎病與藥物過敏"
+      ],
+      "redFlags": ["眼周病灶合併視覺症狀", "疼痛劇烈或快速惡化", "低血壓、意識變化或免疫低下的播散病灶"],
+      "supervision": "抗微生物藥物選擇應依在地抗藥性、器官功能與院內指引複核。",
+      "sourceIds": ["mohw-curriculum", "dermnet-emergencies"],
+      "case": {
+        "stem": "68 歲免疫抑制病人額頭與鼻尖出現單側疼痛性群聚水疱，合併眼睛紅與畏光。",
+        "question": "最適當的照護層級是？",
+        "options": ["一般保濕後觀察", "視為眼部受累高風險，立即啟動緊急眼科／相關專科評估", "等水疱結痂後再處理", "先安排美容換膚"],
+        "correctIndex": 1,
+        "rationale": "眼部症狀、鼻尖病灶與免疫抑制使眼部帶狀疱疹及併發症風險升高，需即時跨科評估。"
+      }
+    },
+    {
+      "id": "drug-eruption",
+      "phase": 2,
+      "phaseLabel": "高頻門診",
+      "handbookYear": "R4",
+      "priority": 82,
+      "durationMinutes": 28,
+      "title": "藥疹時間線：從常見斑丘疹到 DRESS／SJS-TEN",
+      "clinicPrompt": "你能把所有藥物排成時間線，並用器官症狀決定誰不能回家觀察嗎？",
+      "summary": "用用藥起訖、過去暴露、黏膜與全身器官線索建立因果與嚴重度框架。",
+      "prerequisites": ["dangerous-rash"],
+      "domains": ["systemic", "bullous"],
+      "objectives": [
+        "建立包含處方藥、成藥、保健品與注射品的完整時間線",
+        "區分單純斑丘疹與嚴重皮膚不良反應警訊",
+        "完整記錄可疑藥物與避免籠統標示『所有藥都過敏』"
+      ],
+      "clinicChecklist": [
+        "每一種藥的首劑、末劑、停藥後變化與過去暴露",
+        "發燒、臉腫、淋巴結、黏膜、疼痛與水疱",
+        "依嚴重度評估血球、肝腎與其他器官症狀",
+        "提供明確的用藥禁忌紀錄、衛教與回診／急診條件"
+      ],
+      "redFlags": ["高燒、臉部水腫或淋巴結腫大", "黏膜侵犯、皮膚疼痛或剝離", "黃疸、呼吸困難、少尿或血球異常"],
+      "supervision": "疑似嚴重皮膚藥物不良反應需住院團隊與相關專科共同照護。",
+      "sourceIds": ["mohw-curriculum", "dermnet-emergencies"],
+      "case": {
+        "stem": "病人服用新藥三週後出現廣泛斑丘疹、高燒、臉腫、淋巴結腫大與深色尿。",
+        "question": "哪個做法最不適當？",
+        "options": ["建立完整用藥時間線", "評估肝腎、血球與其他器官侵犯", "只開止癢藥並安排一個月後回診", "立即停止可疑藥物並升級照護"],
+        "correctIndex": 2,
+        "rationale": "高燒、臉腫、淋巴結與器官症狀提示嚴重藥物反應，不能以單純門診止癢延後評估。"
+      }
+    },
+    {
+      "id": "pigmented-tumor",
+      "phase": 2,
+      "phaseLabel": "高頻門診",
+      "handbookYear": "R2",
+      "priority": 80,
+      "durationMinutes": 28,
+      "title": "先排惡性再美容：色素病灶與皮膚腫瘤",
+      "clinicPrompt": "面對『想把痣打掉』，你能先完成全病灶風險評估並保留病理診斷機會嗎？",
+      "summary": "把變化史、全身比較、皮膚鏡與切片決策放在雷射或移除之前。",
+      "prerequisites": ["morphology-first"],
+      "domains": ["tumor-surgery"],
+      "objectives": [
+        "運用變化史、ABCDE 與 ugly duckling 找出需要進一步評估的病灶",
+        "知道皮膚鏡是輔助工具，不取代組織診斷",
+        "避免在診斷未明的色素病灶上先做破壞性美容處置"
+      ],
+      "clinicChecklist": [
+        "詢問新生、變大、變色、出血、潰瘍與個人／家族史",
+        "比較全身其他痣，檢查頭皮、掌蹠與指甲",
+        "記錄尺寸、位置、標準化照片與皮膚鏡所見",
+        "需要組織診斷時規劃合適切片並確保追蹤結果"
+      ],
+      "redFlags": ["快速變化或自發出血", "不癒合潰瘍", "指甲色素帶變寬或延伸至甲周皮膚"],
+      "supervision": "皮膚鏡與切片方式需在皮膚科或外科教師督導下累積實例。",
+      "sourceIds": ["mohw-curriculum", "mohw-program", "aad-guidelines"],
+      "case": {
+        "stem": "病人要求雷射去除一顆近半年變大、顏色不均且偶爾出血的黑色病灶。",
+        "question": "最適當的下一步是？",
+        "options": ["直接雷射以免留疤", "先完成惡性風險評估，必要時以可取得病理的方式切片", "只拍照，兩年後追蹤", "擦美白產品觀察"],
+        "correctIndex": 1,
+        "rationale": "有變化、色澤不均與出血的病灶需先排除惡性；破壞性處置可能失去病理診斷機會。"
+      }
+    },
+    {
+      "id": "psoriasis-keratinization",
+      "phase": 2,
+      "phaseLabel": "高頻門診",
+      "handbookYear": "R1/R3",
+      "priority": 76,
+      "durationMinutes": 26,
+      "title": "鱗屑的全身觀：乾癬、脂漏與角化異常",
+      "clinicPrompt": "你會看頭皮、肚臍、臀溝與指甲，也會主動問關節症狀嗎？",
+      "summary": "不把乾癬只當皮疹；用特殊部位、指甲、共病與關節症狀決定完整評估。",
+      "prerequisites": ["eczema-contact", "fungal-infection"],
+      "domains": ["keratinization", "systemic"],
+      "objectives": [
+        "依分布、鱗屑與指甲變化區分常見鱗屑性疾病",
+        "主動篩檢乾癬性關節炎與重要共病",
+        "在治療前評估面積、特殊部位與生活品質負擔"
+      ],
+      "clinicChecklist": [
+        "頭皮、耳後、肚臍、臀溝、伸側與掌蹠",
+        "指甲凹點、甲床分離與角化",
+        "晨僵、腫脹指趾、足跟痛與脊椎症狀",
+        "體重、血壓、吸菸飲酒與心理健康"
+      ],
+      "redFlags": ["全身泛紅合併體溫調節異常", "廣泛膿疱與全身不適", "新發明顯關節腫痛或功能下降"],
+      "supervision": "全身性與生物製劑治療需完整篩檢、監測與專科共同決策。",
+      "sourceIds": ["mohw-curriculum", "aad-guidelines"],
+      "case": {
+        "stem": "病人反覆頭皮與伸側鱗屑斑塊，指甲有凹點，並說早晨手指僵硬約一小時。",
+        "question": "哪個問題最不能漏掉？",
+        "options": ["最常用的洗髮精品牌", "關節腫痛、晨僵、腫脹指趾與功能影響", "是否喜歡吃辣", "是否曾染髮"],
+        "correctIndex": 1,
+        "rationale": "皮膚與指甲線索合併長時間晨僵時，應主動評估乾癬性關節炎，避免延誤跨科治療。"
+      }
+    },
+    {
+      "id": "pediatric-dermatology",
+      "phase": 3,
+      "phaseLabel": "擴充能力",
+      "handbookYear": "R4",
+      "priority": 72,
+      "durationMinutes": 28,
+      "title": "兒童皮膚：把年齡、疫苗與全身狀態放回來",
+      "clinicPrompt": "同一種疹在嬰兒、學齡兒童與成人意義不同；你會先看孩子是不是病得很重嗎？",
+      "summary": "以年齡、發燒、黏膜、疫苗與成長狀態分流常見兒童皮疹與不能漏的急症。",
+      "prerequisites": ["dangerous-rash", "bacterial-viral-infection"],
+      "domains": ["general", "infectious", "systemic"],
+      "objectives": [
+        "把年齡與全身狀態納入兒童皮疹鑑別",
+        "辨認發燒合併紫斑、脫水、黏膜與呼吸循環異常",
+        "以照顧者能執行的方式說明用藥、皮膚照護與回診條件"
+      ],
+      "clinicChecklist": [
+        "精神、進食、尿量、生命徵象與疫苗／接觸史",
+        "壓退性、黏膜、掌蹠、尿布區與生長狀況",
+        "核對體重、劑型、照顧者理解與誤用風險",
+        "說清楚夜間何時直接急診，不只說『有變化就回來』"
+      ],
+      "redFlags": ["發燒合併非壓退性紫斑", "嗜睡、呼吸窘迫或循環不穩", "新生兒水疱、廣泛脫皮或進食明顯下降"],
+      "supervision": "嬰幼兒與全身狀況不佳者的評估門檻應更低，必要時立即兒科共同照護。",
+      "sourceIds": ["mohw-curriculum", "mohw-program", "dermnet-emergencies"],
+      "case": {
+        "stem": "3 歲兒童高燒、精神差，雙腿出現按壓不退色的紫紅色斑點。",
+        "question": "最適當的處置是？",
+        "options": ["當作蚊蟲叮咬回家觀察", "立即依兒童急症流程評估與轉送", "先擦類固醇三天", "等皮疹擴散再抽血"],
+        "correctIndex": 1,
+        "rationale": "高燒、精神差與非壓退性紫斑可能代表嚴重感染或血管／凝血問題，必須立即升級處理。"
+      }
+    },
+    {
+      "id": "hair-nail",
+      "phase": 3,
+      "phaseLabel": "擴充能力",
+      "handbookYear": "R3",
+      "priority": 68,
+      "durationMinutes": 28,
+      "title": "掉髮與指甲：用時間軸、分布與檢驗避免亂補",
+      "clinicPrompt": "病人說『最近狂掉髮』，你能分出休止期落髮、圓禿、雄性禿與疤痕性落髮嗎？",
+      "summary": "先確認掉髮型態與毛囊是否仍在，再依病史選擇有限且能改變處置的檢查。",
+      "prerequisites": ["morphology-first", "fungal-infection"],
+      "domains": ["general", "infectious"],
+      "objectives": [
+        "以瀰漫／局部、疤痕／非疤痕與病程建立掉髮鑑別",
+        "辨認需要盡快轉介的發炎性疤痕性落髮",
+        "指甲變化先區分外傷、乾癬、黴菌與系統性線索"
+      ],
+      "clinicChecklist": [
+        "三至六個月內疾病、手術、體重變化、生產與藥物",
+        "頭皮紅、屑、膿、毛囊開口、斷髮與拉髮測試",
+        "依病史選擇血球、鐵、甲狀腺等檢查，避免套餐式抽血",
+        "疑甲癬時保留檢體確認，尤其在全身性治療前"
+      ],
+      "redFlags": ["疼痛灼熱合併毛囊開口消失", "兒童斷髮合併發炎腫塊", "指甲色素帶快速變寬或侵犯甲周"],
+      "supervision": "皮膚鏡、頭皮切片與全身性治療需專科督導與檢驗監測。",
+      "sourceIds": ["mohw-curriculum", "aad-guidelines"],
+      "case": {
+        "stem": "病人三個月前因肺炎住院，現在全頭均勻掉髮，頭皮沒有紅腫、脫屑或疤痕。",
+        "question": "哪個資訊最支持休止期落髮？",
+        "options": ["三個月前有明顯全身性壓力事件，之後出現瀰漫性掉髮", "只有單一圓形禿髮區", "頭皮疼痛且毛囊開口消失", "斷髮伴隨後頸淋巴結腫大"],
+        "correctIndex": 0,
+        "rationale": "休止期落髮常在全身性壓力事件後延遲出現，呈瀰漫性非疤痕性掉髮；其他選項指向不同且可能更需積極處理的路徑。"
+      }
+    },
+    {
+      "id": "bullous-systemic",
+      "phase": 3,
+      "phaseLabel": "擴充能力",
+      "handbookYear": "R2-R4",
+      "priority": 64,
+      "durationMinutes": 30,
+      "title": "水疱、紫斑與系統性線索：何時要兩塊切片",
+      "clinicPrompt": "面對水疱或紫斑，你能選對切片位置並知道何時需要免疫螢光嗎？",
+      "summary": "把病灶年齡、張力、黏膜與系統症狀連到組織病理、直接免疫螢光與跨科評估。",
+      "prerequisites": ["dangerous-rash", "drug-eruption", "pigmented-tumor"],
+      "domains": ["bullous", "systemic"],
+      "objectives": [
+        "以水疱張力、位置、黏膜與搔癢／疼痛建立鑑別",
+        "理解一般病理與直接免疫螢光的取材目的不同",
+        "辨認血管炎、結締組織病與器官侵犯線索"
+      ],
+      "clinicChecklist": [
+        "確認水疱是完整、鬆弛、膿疱或壞死，並檢查黏膜",
+        "記錄新藥、感染、光敏感、關節、腎臟與神經症狀",
+        "疑自體免疫水疱病時先和病理／皮膚科確認兩種取材位置與保存方式",
+        "紫斑需確認是否壓退、是否可觸及及有無腹痛／血尿"
+      ],
+      "redFlags": ["廣泛水疱或剝離合併黏膜", "紫斑合併腎臟、腹部或神經症狀", "感染或敗血症疑慮"],
+      "supervision": "切片位置、保存液與免疫檢查須於實際操作前由皮膚科及病理團隊確認。",
+      "sourceIds": ["mohw-curriculum", "mohw-program", "dermnet-emergencies"],
+      "case": {
+        "stem": "病人有新發緊繃水疱且劇癢，醫師懷疑自體免疫水疱病，準備切片。",
+        "question": "最重要的取材觀念是？",
+        "options": ["所有檢體都從水疱中央取並放同一容器", "一般病理與直接免疫螢光的取材位置及保存方式不同，應事先與病理團隊確認", "只要抽血就不需要皮膚評估", "先把所有水疱刺破再決定"],
+        "correctIndex": 1,
+        "rationale": "一般組織病理與直接免疫螢光回答不同問題，取材部位與保存方式也不同；錯誤取材可能讓關鍵檢查失去診斷價值。"
+      }
+    },
+    {
+      "id": "therapeutics-followup",
+      "phase": 3,
+      "phaseLabel": "擴充能力",
+      "handbookYear": "R1-R4",
+      "priority": 60,
+      "durationMinutes": 26,
+      "title": "處方不是終點：部位、劑型、監測與安全網",
+      "clinicPrompt": "你能把『擦這條』說成病人真的做得到、也知道何時停下來求助的計畫嗎？",
+      "summary": "把藥物選擇與部位、年齡、劑型、療程、監測及回診指標綁在一起。",
+      "prerequisites": ["eczema-contact", "acne-rosacea", "drug-eruption"],
+      "domains": ["general", "systemic"],
+      "objectives": [
+        "處方前核對診斷、部位、年齡、孕哺、器官功能與交互作用",
+        "用指尖單位或可理解方式教病人用量與範圍",
+        "每張處方附上評估指標、停藥條件與回診時間"
+      ],
+      "clinicChecklist": [
+        "藥名、劑型、部位、頻率、範圍與預計療程一致",
+        "臉、皺褶、兒童、孕哺與大面積使用另行評估",
+        "全身性治療前確認檢驗、感染、疫苗與交互作用",
+        "寫下何時有效、何時算失敗、何時需提早回診"
+      ],
+      "redFlags": ["病人無法說回使用方法", "高風險藥物缺乏必要監測", "病況惡化卻沒有提早就醫指示"],
+      "supervision": "實際處方須依最新仿單、指引、病人條件與院內規範決定。",
+      "sourceIds": ["mohw-curriculum", "mohw-program", "aad-guidelines"],
+      "case": {
+        "stem": "病人拿到兩條不同劑型外用藥，回家後不知道哪一條擦臉、哪一條擦身體，也不知道擦多久。",
+        "question": "哪一項最能降低用藥錯誤？",
+        "options": ["只在病歷寫清楚", "請病人用自己的話重述每條藥的部位、頻率、期限與停損點", "讓病人自行上網搜尋", "兩條都改成需要時使用"],
+        "correctIndex": 1,
+        "rationale": "teach-back 能直接確認病人是否理解；病歷紀錄重要，但不能取代當下可執行的用藥衛教。"
+      }
+    },
+    {
+      "id": "independent-clinic-capstone",
+      "phase": 4,
+      "phaseLabel": "督導驗證",
+      "handbookYear": "R4",
+      "priority": 50,
+      "durationMinutes": 35,
+      "title": "完整門診：從主訴到追蹤的八分鐘交班",
+      "clinicPrompt": "你能在有限時間內完成描述、鑑別、危險分流、檢查、處置、衛教與安全網，並清楚交班嗎？",
+      "summary": "把前面單元整合成一份能被教師直接觀察與回饋的門診能力檢核。",
+      "prerequisites": ["itch-urticaria-scabies", "bacterial-viral-infection", "psoriasis-keratinization", "pediatric-dermatology", "hair-nail", "bullous-systemic", "therapeutics-followup"],
+      "domains": ["general", "infectious", "tumor-surgery", "keratinization", "bullous", "systemic"],
+      "objectives": [
+        "用一段 problem representation 摘要病例",
+        "依可能性與危險性排序鑑別診斷",
+        "提出能改變處置的檢查與清楚的追蹤安全網",
+        "接受教師直接觀察並依回饋補強弱項"
+      ],
+      "clinicChecklist": [
+        "一句話摘要：病人、時間軸、形態、分布與關鍵全身線索",
+        "鑑別診斷分為最可能、不能漏、需要檢查才能區分",
+        "只安排會改變處置的檢查，並說明結果如何影響下一步",
+        "處置、衛教、提早回診條件、預定追蹤與交班責任完整",
+        "由皮膚科教師以直接觀察、病例討論或 mini-CEX 類工具評核"
+      ],
+      "redFlags": ["無法說出最危險鑑別", "處置沒有安全網或追蹤責任", "把線上答題成績當作獨立看診資格"],
+      "supervision": "只有在合格臨床教師直接觀察、病例量與法規資格皆達標後，才能判定獨立執業能力。",
+      "sourceIds": ["mohw-curriculum", "mohw-program", "tda-evaluation"],
+      "case": {
+        "stem": "你完成一位新發全身皮疹病人的問診與檢查，最可能是常見良性疾病，但仍有一個低機率、高危險的藥物反應鑑別。",
+        "question": "哪種交班最能支持安全決策？",
+        "options": ["『應該沒事，先擦藥』", "只列十個診斷，不排序也不說下一步", "說明最可能與不能漏的診斷、支持／反對證據、需做的檢查、處置及安全網", "等主治醫師自己重新問一次"],
+        "correctIndex": 2,
+        "rationale": "高品質交班不只報病名，而是呈現排序、證據、行動與不確定性，讓督導能快速修正並維持照護連續性。"
+      }
+    }
+  ]
+}
