@@ -515,6 +515,11 @@ body::after {
   font-variant-numeric: tabular-nums;
 }
 
+.upcoming-event__content {
+  display: block;
+  min-width: 0;
+}
+
 .upcoming-event__status {
   display: block;
   margin-bottom: 2px;
@@ -526,6 +531,7 @@ body::after {
   display: block;
   font-size: 13px;
   line-height: 1.55;
+  overflow-wrap: anywhere;
 }
 
 .upcoming-event__arrow {

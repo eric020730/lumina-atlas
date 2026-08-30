@@ -1533,8 +1533,10 @@ const upcomingEventTemplate = (course) => {
   return `
     <a class="upcoming-event" href="#course-${escapeHTML(course.id)}">
       <time datetime="${escapeHTML(course.startDate)}">${escapeHTML(dateLabel)}</time>
-      <span class="upcoming-event__status">${escapeHTML(course.statusLabel)}</span>
-      <strong>${escapeHTML(course.title)}</strong>
+      <span class="upcoming-event__content">
+        <span class="upcoming-event__status">${escapeHTML(course.statusLabel)}</span>
+        <strong>${escapeHTML(course.title)}</strong>
+      </span>
       <span class="upcoming-event__arrow" aria-hidden="true">↘</span>
     </a>`;
 };
