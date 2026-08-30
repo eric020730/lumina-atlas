@@ -1613,7 +1613,10 @@ body::after {
 
 @media (max-width: 1020px) {
   .site-header {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
     min-height: 66px;
+    padding-block: 8px 6px;
   }
 
   .desktop-nav {
@@ -1621,26 +1624,56 @@ body::after {
   }
 
   .menu-trigger {
-    display: grid;
+    display: none;
   }
 
   .mobile-nav {
-    top: calc(100% + 8px);
-    right: 0;
-    left: 0;
-    padding: 14px 20px 18px;
-    border: 1px solid var(--line-strong);
-    border-radius: 14px;
-    background: var(--paper);
-    box-shadow: 0 24px 58px rgba(16, 40, 46, 0.2);
+    position: static;
+    display: flex;
+    grid-column: 1 / -1;
+    gap: 4px;
+    width: 100%;
+    margin-top: 5px;
+    padding: 6px 0 0;
+    overflow-x: auto;
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-nav::-webkit-scrollbar {
+    display: none;
   }
 
   .mobile-nav a {
     display: flex;
+    flex: 0 0 auto;
     align-items: center;
-    min-height: 50px;
-    padding-block: 10px;
-    font-size: 15px;
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 9px;
+    color: var(--ink-soft);
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    scroll-snap-align: start;
+    transition: color 180ms ease, background 180ms ease;
+  }
+
+  .mobile-nav a:hover,
+  .mobile-nav a.is-current {
+    color: var(--ink);
+    background: rgba(220, 233, 231, 0.72);
   }
 
   .hero {
@@ -1684,7 +1717,7 @@ body::after {
 
 @media (max-width: 760px) {
   html {
-    scroll-padding-top: 88px;
+    scroll-padding-top: 132px;
   }
 
   .site-header {
@@ -2031,6 +2064,26 @@ body::after {
 
   .search-dialog__footer {
     display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  html {
+    scroll-padding-top: 174px;
+  }
+
+  .mobile-nav {
+    flex-wrap: wrap;
+    gap: 2px 4px;
+    overflow-x: visible;
+    scroll-snap-type: none;
+  }
+
+  .mobile-nav a {
+    flex: 1 0 72px;
+    justify-content: center;
+    padding-inline: 6px;
+    font-size: 12px;
   }
 }
 

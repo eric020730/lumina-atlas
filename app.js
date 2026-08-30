@@ -16,8 +16,6 @@ contentSectionOrder.forEach((sectionId) => {
 });
 
 const header = document.querySelector("[data-header]");
-const menuTrigger = document.querySelector("[data-menu-trigger]");
-const mobileNav = document.querySelector("[data-mobile-nav]");
 const searchDialog = document.querySelector("[data-search-dialog]");
 const searchInput = document.querySelector("[data-search-input]");
 const searchResults = document.querySelector("[data-search-results]");
@@ -340,19 +338,6 @@ if (scrollSentinel && header) {
   );
   headerObserver.observe(scrollSentinel);
 }
-
-menuTrigger?.addEventListener("click", () => {
-  const isOpen = menuTrigger.getAttribute("aria-expanded") === "true";
-  menuTrigger.setAttribute("aria-expanded", String(!isOpen));
-  mobileNav.classList.toggle("is-open", !isOpen);
-});
-
-mobileNav?.querySelectorAll("a").forEach((link) => {
-  link.addEventListener("click", () => {
-    menuTrigger.setAttribute("aria-expanded", "false");
-    mobileNav.classList.remove("is-open");
-  });
-});
 
 const openSearch = (query = "") => {
   if (!searchDialog.open) searchDialog.showModal();
