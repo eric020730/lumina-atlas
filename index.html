@@ -28,8 +28,8 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css?v=20260824-no-notes" />
-    <link rel="stylesheet" href="./taste.css?v=20260830-inline-nav" />
-    <script src="./app.js?v=20260830-inline-nav" defer></script>
+    <link rel="stylesheet" href="./taste.css?v=20260831-safety-data" />
+    <script src="./app.js?v=20260831-safety-data" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
@@ -54,7 +54,6 @@
         <a href="#courses">課程情報</a>
         <a href="#regulation-radar">法規雷達</a>
         <a href="#atlas">知識圖譜</a>
-        <a href="#life-os">2031 路徑</a>
       </nav>
 
       <div class="header-actions">
@@ -68,13 +67,10 @@
       </div>
 
       <nav class="mobile-nav" aria-label="快速導覽">
-        <a href="#pulse">本週重點</a>
-        <a href="#clinic-learning">門診課程</a>
-        <a href="#courses">課程情報</a>
-        <a href="#video-learning">影片課程</a>
-        <a href="#regulation-radar">法規雷達</a>
-        <a href="#atlas">知識圖譜</a>
-        <a href="#life-os">2031 路徑</a>
+        <a href="#clinic-learning">今日學習</a>
+        <a href="#courses">課程</a>
+        <a href="#regulation-radar">法規</a>
+        <a href="#atlas">知識庫</a>
       </nav>
     </header>
 
@@ -308,7 +304,10 @@
                   <span>YOUR PROFILE</span>
                   <strong>個人資格掃描</strong>
                 </div>
-                <p>設定只保存在這台裝置，不會上傳。</p>
+                <div class="qualification-form__privacy">
+                  <p>設定只保存在這台裝置，不會上傳。</p>
+                  <button type="button" data-clear-qualification>清除條件</button>
+                </div>
               </div>
 
               <fieldset class="choice-fieldset">
@@ -316,8 +315,9 @@
                 <label class="specialty-select" for="specialty">
                   <span class="specialty-select__label">選擇科別</span>
                   <select id="specialty" name="specialty">
+                    <option value="" selected disabled>請選擇部定專科</option>
                     <option value="family">家庭醫學科</option>
-                    <option value="radiology" selected>放射診斷科</option>
+                    <option value="radiology">放射診斷科</option>
                     <optgroup label="法定美容手術九大專科">
                       <option value="surgery">外科</option>
                       <option value="orthopedics">骨科</option>
@@ -344,7 +344,7 @@
                       <option value="occupational">職業醫學科</option>
                     </optgroup>
                   </select>
-                  <span class="specialty-select__hint" data-specialty-hint>放射診斷科屬部定專科，但不在美容手術九大專科內。</span>
+                  <span class="specialty-select__hint" data-specialty-hint>請先選擇目前持有的部定專科。</span>
                 </label>
               </fieldset>
 
@@ -352,7 +352,7 @@
                 <legend><span>02</span> 醫學系畢業時間</legend>
                 <div class="choice-grid choice-grid--two">
                   <label class="choice-card">
-                    <input type="radio" name="graduation" value="before" checked />
+                    <input type="radio" name="graduation" value="before" />
                     <span class="choice-card__body">
                       <strong>2019.08.01 前</strong>
                       <small>民國108年8月1日前畢業</small>
@@ -372,7 +372,7 @@
                 <legend><span>03</span> 想確認的施作類型</legend>
                 <div class="choice-grid choice-grid--three">
                   <label class="choice-card choice-card--procedure">
-                    <input type="radio" name="procedure" value="procedure" checked />
+                    <input type="radio" name="procedure" value="procedure" />
                     <span class="choice-card__body">
                       <strong>特定美容醫學處置</strong>
                       <small>光電、針劑、FUE</small>
@@ -428,22 +428,22 @@
               </div>
             </form>
 
-            <section class="qualification-result" aria-live="polite" aria-atomic="true" data-qualification-result>
+            <section class="qualification-result is-incomplete" data-tone="neutral" aria-live="polite" aria-atomic="true" data-qualification-result>
               <div class="scan-line" aria-hidden="true"></div>
               <div class="qualification-result__head">
                 <span>LEGAL SCOPE</span>
-                <span class="result-badge" data-result-badge>可依法施行</span>
+                <span class="result-badge" data-result-badge>尚未判讀</span>
               </div>
-              <p class="qualification-result__context" data-result-context>已取得・放射診斷科專科醫師</p>
-              <h3 data-result-title>可施行光電、針劑與FUE等處置</h3>
-              <p data-result-summary>2019年8月1日前畢業且已取得部定專科資格，不必提出32例，也不受PGY及初始32小時訓練限制。</p>
+              <p class="qualification-result__context" data-result-context>完成三項資料後顯示</p>
+              <h3 data-result-title>先選擇專科、畢業時間與施作類型</h3>
+              <p data-result-summary>本工具只協助整理法規條件、缺口與來源，不會在資料不完整時預設任何資格結果。</p>
               <ul class="result-requirements" data-result-requirements></ul>
               <div class="result-deadline" data-result-deadline hidden>
                 <span>最接近期限</span>
                 <strong data-result-days>...</strong>
                 <small data-result-date>...</small>
               </div>
-              <p class="result-caveat" data-result-caveat>仍須每3年完成24小時繼續教育，並由醫療機構向地方衛生局完成項目及醫師資格備查。</p>
+              <p class="result-caveat" data-result-caveat>最終資格仍須以最新法規、主管機關書面回覆及院所備查結果為準。</p>
             </section>
           </div>
 
@@ -490,19 +490,19 @@
               <span>01 / NON-SURGICAL</span>
               <h3>特定美容醫學處置</h3>
               <p>雷射、脈衝光、電波、超音波、肉毒桿菌素、填充製劑及FUE等。</p>
-              <strong data-scope-procedure>放射診斷科專科可適用</strong>
+              <strong data-scope-procedure>選擇科別後顯示初步條件</strong>
             </article>
             <article class="scope-card scope-card--conditional">
               <span>02 / SURGERY</span>
               <h3>美容醫學手術</h3>
               <p>雙眼皮、眼袋、除疤、FUT、局部小量抽脂及其他改變外觀之手術。</p>
-              <strong data-scope-surgery>非九大專科；僅限既有30例過渡</strong>
+              <strong data-scope-surgery>選擇科別後顯示科別門檻</strong>
             </article>
             <article class="scope-card scope-card--restricted">
               <span>03 / HIGH RISK</span>
               <h3>特定美容醫學手術</h3>
               <p>削骨、中全臉拉皮、大量或全麻抽脂、腹整、鼻整形、義乳等。</p>
-              <strong data-scope-high-risk>放射診斷科原則上不得新施作</strong>
+              <strong data-scope-high-risk>選擇科別後逐項比對</strong>
             </article>
           </div>
 
@@ -517,7 +517,7 @@
             <details>
               <summary><span>九大美容手術專科是哪些？</span><small>第25條</small></summary>
               <div class="detail-content">
-                <p>外科、骨科、神經外科、整形外科、泌尿科、婦產科、眼科、耳鼻喉科及皮膚科。<span data-specialty-detail>放射診斷科不在其中。</span>民間學會核發的美容醫學專科證書，不能取代這九大部定專科。</p>
+                <p>外科、骨科、神經外科、整形外科、泌尿科、婦產科、眼科、耳鼻喉科及皮膚科。<span data-specialty-detail>選擇科別後會在此顯示比對結果。</span>民間學會核發的美容醫學專科證書，不能取代這九大部定專科。</p>
               </div>
             </details>
             <details>
@@ -1013,12 +1013,42 @@
 
     </main>
 
+    <section class="data-control section-shell reveal" aria-labelledby="data-control-title">
+      <div class="data-control__copy">
+        <p class="section-kicker">本機資料</p>
+        <h2 id="data-control-title">把學習進度帶在自己手上</h2>
+        <p>收藏、課程進度、法規檢核與人生實驗都只存在這台裝置。可下載一份備份，之後再匯入同一網站。</p>
+      </div>
+      <div class="data-control__actions" aria-label="本機資料管理">
+        <button type="button" data-export-data>下載備份</button>
+        <button type="button" data-import-data>匯入備份</button>
+        <input type="file" accept="application/json,.json" data-import-file hidden />
+        <button class="data-control__danger" type="button" data-open-data-reset>清除本機資料</button>
+        <p role="status" aria-live="polite" data-data-status>目前不會將個人進度上傳到伺服器。</p>
+      </div>
+    </section>
+
+    <dialog class="data-reset-dialog" data-data-reset-dialog aria-labelledby="data-reset-title">
+      <form method="dialog">
+        <span>RESET LOCAL DATA</span>
+        <h2 id="data-reset-title">要清除這台裝置上的所有進度嗎？</h2>
+        <p>這會移除收藏、學習紀錄、資格條件、合規檢核與人生路徑設定。若之後可能需要，請先下載備份。</p>
+        <div>
+          <button value="cancel" type="submit">取消</button>
+          <button class="data-reset-dialog__confirm" value="default" type="button" data-confirm-data-reset>確認清除</button>
+        </div>
+      </form>
+    </dialog>
+
     <footer class="site-footer">
       <div class="footer-brand">
         <strong>微光研習所</strong><span>LUMINA ATLAS</span>
       </div>
       <p>個人醫美學習與資訊索引。內容僅供學習整理，不取代法規原文、專業訓練或臨床判斷。</p>
-      <a href="#top">回到頂端 ↑</a>
+      <nav class="footer-links" aria-label="頁尾連結">
+        <a href="#life-os">延伸工具：2031 路徑</a>
+        <a href="#top">回到頂端 ↑</a>
+      </nav>
     </footer>
 
     <dialog class="search-dialog" data-search-dialog aria-labelledby="search-dialog-title">

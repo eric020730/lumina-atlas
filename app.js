@@ -168,14 +168,14 @@ const baseKnowledgeIndex = [
   },
   {
     id: "life-os",
-    type: "私人決策工具",
+    type: "延伸決策工具",
     audience: "職涯轉換",
     intents: ["quick", "compare"],
     readTime: 3,
     title: "2031 人生路徑與 90 天實驗",
     scope: "比較診所、醫療 AI、學術、組合職涯與時間富足五條路徑，調整價值權重並追蹤九十天證據。",
     match: "職涯、創業、AI、家庭、健康、財務與時間自主",
-    evidence: "個人對話脈絡與情境推演",
+    evidence: "個人情境推演，非醫療學習主線",
     updatedAt: "2026-08-24",
     href: "#life-os",
     risk: "standard",
@@ -184,7 +184,14 @@ const baseKnowledgeIndex = [
 ];
 
 let knowledgeIndex = [...baseKnowledgeIndex];
+let clinicalSearchItems = [];
+let courseSearchItems = [];
 let activeSearchFilter = "all";
+
+const rebuildKnowledgeIndex = () => {
+  knowledgeIndex = [...baseKnowledgeIndex, ...clinicalSearchItems, ...courseSearchItems];
+  renderSearchResults();
+};
 
 const searchSynonyms = [
   ["放射科", "放射診斷科 放射科 專科醫師 資格"],
@@ -266,7 +273,7 @@ const rememberSearch = (query) => {
 };
 
 const resultCardTemplate = (item) => `
-  <a class="search-result-card" href="${safeHTML(item.href)}" data-search-result>
+  <a class="search-result-card" href="${safeHTML(item.href)}" data-search-result${item.moduleId ? ` data-search-clinic="${safeHTML(item.moduleId)}"` : ""}>
     <div class="search-result-card__topline">
       <span>${safeHTML(item.type)}</span>
       <span>${safeHTML(item.audience)}</span>
@@ -415,6 +422,10 @@ document.addEventListener("click", (event) => {
   if (result) {
     rememberSearch(searchInput.value);
     closeSearch();
+    if (result.dataset.searchClinic) {
+      event.preventDefault();
+      openClinicalModule(result.dataset.searchClinic);
+    }
   }
 });
 
@@ -843,7 +854,12 @@ const renderClinicalLearning = () => {
 
 const openClinicalModule = (moduleId) => {
   const module = getClinicalModule(moduleId);
-  if (!module || !isClinicalUnlocked(module)) return;
+  if (!module) return;
+  if (!isClinicalUnlocked(module)) {
+    clinicRoot?.scrollIntoView({ behavior: "smooth", block: "start" });
+    showToast(`請先完成 ${module.prerequisites.length} 項先修證據`);
+    return;
+  }
   activeClinicModuleId = moduleId;
   clinicalLastFeedback = null;
   localStorage.setItem("lumina-clinical-current", moduleId);
@@ -916,6 +932,39 @@ clinicWorkbench?.addEventListener("submit", (event) => {
   showToast(isCorrect ? "已建立正確證據並安排下次複習" : "已加入明日補強課表");
 });
 
+const registerClinicalSearchItems = (data) => {
+  const sourceMap = new Map(data.sources.map((source) => [source.id, source]));
+  clinicalSearchItems = data.modules.map((module) => ({
+    id: `search-clinic-${module.id}`,
+    moduleId: module.id,
+    type: "門診單元",
+    audience: `${module.handbookYear}／受督導學習`,
+    intents: ["quick", "safety", "evidence"],
+    readTime: module.durationMinutes,
+    title: module.title,
+    scope: module.summary,
+    match: module.clinicPrompt,
+    evidence: module.sourceIds
+      .map((sourceId) => sourceMap.get(sourceId)?.label)
+      .filter(Boolean)
+      .slice(0, 2)
+      .join("、") || "臨床訓練基準",
+    updatedAt: data.lastReviewed,
+    href: "#clinic-learning",
+    risk: module.redFlags.length ? "safety" : "standard",
+    keywords: [
+      module.phaseLabel,
+      module.clinicPrompt,
+      module.summary,
+      ...module.objectives,
+      ...module.clinicChecklist,
+      ...module.redFlags,
+      ...module.domains,
+    ].join(" "),
+  }));
+  rebuildKnowledgeIndex();
+};
+
 const loadClinicalLearning = async () => {
   if (!clinicRoot) return;
   try {
@@ -953,6 +1002,7 @@ const loadClinicalLearning = async () => {
     activeClinicModuleId = storedModule && isClinicalUnlocked(storedModule)
       ? storedModule.id
       : plan[0]?.module.id || clinicalData.modules[0].id;
+    registerClinicalSearchItems(clinicalData);
     renderClinicalLearning();
     clinicRoot.setAttribute("aria-busy", "false");
   } catch (error) {
@@ -1342,6 +1392,36 @@ const formatDateRange = (startDate, endDate) => {
   return `${formatFullDate(startDate)}-${formatShortDate(endDate)}`;
 };
 
+const getTaiwanTodayKey = () => new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Taipei",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+}).format(new Date());
+
+const getCourseHealth = (course) => {
+  const today = parseTaiwanDate(getTaiwanTodayKey());
+  const checkedAt = parseTaiwanDate(course.checkedAt);
+  const endDate = parseTaiwanDate(course.endDate);
+  const registrationDeadline = course.registrationDeadline ? parseTaiwanDate(course.registrationDeadline) : null;
+  const issues = [];
+
+  if (parseTaiwanDate(course.endDate) < parseTaiwanDate(course.startDate)) issues.push("課程結束日早於開始日");
+  if (["open", "ongoing", "verify"].includes(course.status) && endDate < today) issues.push("課程已結束但狀態仍顯示可報名或待確認");
+  if (course.status === "open" && registrationDeadline && registrationDeadline < today) issues.push("報名期限已過但狀態仍顯示開放");
+
+  const checkedAgeDays = Math.floor((today - checkedAt) / 86_400_000);
+  if (checkedAgeDays > 14) issues.push(`最後查核已過 ${checkedAgeDays} 天`);
+
+  if (issues.length) {
+    return { tone: "warning", label: "狀態待複核", summary: issues.join("；"), healthy: false };
+  }
+  if (course.creditStatus === "unverified" || course.status === "verify") {
+    return { tone: "pending", label: "細節待確認", summary: "課程存在，但認證、名額或採認資訊仍須回原始公告確認。", healthy: true };
+  }
+  return { tone: "verified", label: "資料已查核", summary: `最後查核 ${formatFullDate(course.checkedAt)}`, healthy: true };
+};
+
 const formatTimelineDate = (startDate, endDate) => {
   const start = formatShortDate(startDate);
   if (startDate === endDate) return start;
@@ -1460,6 +1540,7 @@ const courseCardTemplate = (course) => {
   const month = parseTaiwanDate(course.startDate).toLocaleDateString("zh-TW", { month: "short" });
   const day = parseTaiwanDate(course.startDate).toLocaleDateString("zh-TW", { day: "2-digit" });
   const sourceUrl = course.sourceUrl.startsWith("https://") ? course.sourceUrl : "#";
+  const health = getCourseHealth(course);
   const registrationDeadline = course.registrationDeadline
     ? formatFullDate(course.registrationDeadline)
     : "未公告固定期限";
@@ -1483,6 +1564,7 @@ const courseCardTemplate = (course) => {
         <div class="course-card__badges">
           <span class="course-status course-status--${escapeHTML(course.status)}">${escapeHTML(course.statusLabel)}</span>
           <span class="verification-badge">${escapeHTML(course.verificationLabel)}</span>
+          <span class="course-health course-health--${escapeHTML(health.tone)}" title="${escapeHTML(health.summary)}">${escapeHTML(health.label)}</span>
         </div>
       </header>
       <div class="course-card__body">
@@ -1606,7 +1688,7 @@ const updateUpcomingEvents = (courses) => {
 };
 
 const registerCourseSearchItems = (courses) => {
-  const courseItems = courses.map((course) => ({
+  courseSearchItems = courses.map((course) => ({
     id: `search-course-${course.id}`,
     type: "近期課程",
     audience: course.audience,
@@ -1630,8 +1712,7 @@ const registerCourseSearchItems = (courses) => {
       ...course.formats,
     ].join(" "),
   }));
-  knowledgeIndex = [...baseKnowledgeIndex, ...courseItems];
-  renderSearchResults();
+  rebuildKnowledgeIndex();
 };
 
 const loadCourseIntelligence = async () => {
@@ -1642,7 +1723,10 @@ const loadCourseIntelligence = async () => {
     courseFeed.innerHTML = payload.courses.map(courseCardTemplate).join("");
     courseFeed.setAttribute("aria-busy", "false");
     courseFreshness.textContent = `最後查核 ${new Date(payload.lastUpdated).toLocaleString("zh-TW", { timeZone: "Asia/Taipei", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" })}・${payload.sourceCount} 個來源・${payload.courses.length} 門課`;
-    verifiedCount.textContent = `${payload.courses.length} 門課已查核`;
+    const healthWarnings = payload.courses.filter((course) => !getCourseHealth(course).healthy).length;
+    verifiedCount.textContent = healthWarnings
+      ? `${payload.courses.length - healthWarnings} 門資料正常・${healthWarnings} 門待複核`
+      : `${payload.courses.length} 門資料狀態正常`;
     wireSaveButtons(courseFeed);
     applyCourseFilter();
     renderCourseTimeline(payload.courses);
@@ -1683,6 +1767,7 @@ const specialtyDetail = document.querySelector("[data-specialty-detail]");
 const scopeProcedure = document.querySelector("[data-scope-procedure]");
 const scopeSurgery = document.querySelector("[data-scope-surgery]");
 const scopeHighRisk = document.querySelector("[data-scope-high-risk]");
+const clearQualificationButton = document.querySelector("[data-clear-qualification]");
 const transitionDeadline = new Date("2026-12-31T23:59:59+08:00");
 const extendedTransitionDeadline = new Date("2027-12-31T23:59:59+08:00");
 
@@ -1717,8 +1802,8 @@ const specialtyProfiles = {
 const qualificationScenarios = {
   procedureBefore: {
     tone: "allowed",
-    badge: "可依法施行",
-    title: "可施行光電、針劑與FUE等處置",
+    badge: "初步符合條件",
+    title: "初步未見此類處置的訓練門檻缺口",
     summary: "2019年8月1日前畢業且已取得部定專科資格，不必提出32例，也不受PGY及初始32小時訓練限制。",
     requirements: ["不需32例案例審查", "免初始32小時訓練限制", "每3年完成24小時繼續教育", "由院所完成項目及醫師資格備查"],
     caveat: "放射科專科的豁免只適用特定美容醫學處置，不會延伸成美容手術資格。",
@@ -1733,8 +1818,8 @@ const qualificationScenarios = {
   },
   procedureAfterExisting: {
     tone: "warning",
-    badge: "既有業務過渡",
-    title: "可在既有處置過渡期內補齊資格",
+    badge: "可能適用過渡",
+    title: "既有處置可能適用補件過渡期",
     summary: "若2026年1月1日前已施行，第27條之1第4項文字提供二年補齊PGY與32小時證明的過渡空間。",
     requirements: ["確認並保存PGY完訓證明", "完成認可學會32小時訓練", "不需32例案例審查", "就二年過渡起算取得地方衛生局書面確認"],
     caveat: "學會作業資料普遍建議2026年底前完成；如要援用二年條款，不要只靠口頭詢問。",
@@ -1743,8 +1828,8 @@ const qualificationScenarios = {
   },
   surgeryCases: {
     tone: "warning",
-    badge: "可申請過渡",
-    title: "可走30例既有手術案例認定",
+    badge: "可能適用過渡",
+    title: "可能符合30例既有手術過渡條件",
     summary: "放射科不在九大美容手術專科內，但2026年新制前已有至少30例者，可依過渡條款申請繼續施行。",
     requirements: ["送審2026年1月1日前至少30例手術", "取得醫師全聯會案例認定證明", "完成美容醫學手術訓練至少32小時", "備妥病歷、手術紀錄及同意書"],
     caveat: "這是既有業務的過渡保留，不是取得所有美容手術的新資格；建議立刻送件，預留補件與複審時間。",
@@ -1781,6 +1866,7 @@ const saveQualificationProfile = () => {
   if (!qualificationForm) return;
   const data = new FormData(qualificationForm);
   const profile = {
+    schemaVersion: 2,
     specialty: data.get("specialty"),
     graduation: data.get("graduation"),
     procedure: data.get("procedure"),
@@ -1789,6 +1875,10 @@ const saveQualificationProfile = () => {
     existingSurgery: data.get("existingSurgery") === "on",
     hasLegacyCertificate: data.get("hasLegacyCertificate") === "on",
   };
+  if (!profile.specialty && !profile.graduation && !profile.procedure) {
+    localStorage.removeItem("lumina-qualification-profile");
+    return;
+  }
   localStorage.setItem("lumina-qualification-profile", JSON.stringify(profile));
 };
 
@@ -1797,6 +1887,10 @@ const loadQualificationProfile = () => {
   try {
     const profile = JSON.parse(localStorage.getItem("lumina-qualification-profile") || "null");
     if (!profile) return;
+    if (profile.schemaVersion !== 2) {
+      localStorage.removeItem("lumina-qualification-profile");
+      return;
+    }
     const specialty = qualificationForm.elements.specialty;
     if (specialty && specialtyProfiles[profile.specialty]) specialty.value = profile.specialty;
     ["graduation", "procedure"].forEach((name) => {
@@ -1812,9 +1906,7 @@ const loadQualificationProfile = () => {
   }
 };
 
-const getQualificationScenario = () => {
-  const data = new FormData(qualificationForm);
-  const profile = specialtyProfiles[data.get("specialty")] || specialtyProfiles.radiology;
+const getQualificationScenario = (data, profile) => {
   const graduation = data.get("graduation");
   const procedure = data.get("procedure");
 
@@ -1822,8 +1914,8 @@ const getQualificationScenario = () => {
     const existing = data.get("existingSurgery") === "on";
     return {
       tone: existing ? "warning" : "allowed",
-      badge: existing ? "一年過渡期" : "具科別門檻",
-      title: existing ? "可在期限內補齊32小時訓練" : "完成32小時訓練後可施行",
+      badge: existing ? "可能適用過渡" : "科別門檻符合",
+      title: existing ? "既有業務可能適用一年補訓過渡" : "科別門檻符合，仍應先完成32小時訓練",
       summary: `${profile.label}屬第25條法定九大美容手術專科，${existing ? "2026年前已施行者可在一年內補齊訓練" : "新進業務應先取得32小時訓練證明"}。`,
       requirements: ["完成認可學會美容醫學手術訓練至少32小時", "每3年完成繼續教育至少24小時", "由院所完成施行項目及醫師資格備查", "特定高風險手術仍須再核對第26條逐項科別"],
       caveat: "第25條的一般美容手術資格，不代表可施行所有特定美容手術。",
@@ -1844,8 +1936,8 @@ const getQualificationScenario = () => {
   if (procedure === "highRisk" && profile.highRisk?.length) {
     return {
       tone: "warning",
-      badge: "逐項限定",
-      title: "可施行第26條所列的部分項目",
+      badge: "逐項初步比對",
+      title: "條文列有此科別的部分項目",
       summary: `${profile.label}並非可施行全部特定美容手術；現行條文列入的項目為：${profile.highRisk.join("、")}。`,
       requirements: [`可適用項目：${profile.highRisk.join("、")}`, "應完成32小時美容手術訓練", "由院所依項目向地方衛生局申請核准與登記"],
       caveat: "未列於第26條該科別之項目，不得以一般美容手術資格或訓練證明擴張施作。",
@@ -1882,25 +1974,62 @@ const getQualificationScenario = () => {
 const renderQualification = () => {
   if (!qualificationForm || !qualificationResult) return;
   const data = new FormData(qualificationForm);
-  const profile = specialtyProfiles[data.get("specialty")] || specialtyProfiles.radiology;
+  const profile = specialtyProfiles[data.get("specialty")] || null;
   const graduation = data.get("graduation");
   const procedure = data.get("procedure");
+  const isComplete = Boolean(profile && graduation && procedure);
 
   document.querySelectorAll("[data-conditional]").forEach((field) => {
     const type = field.dataset.conditional;
-    if (type === "procedure") field.hidden = !(procedure === "procedure" && graduation === "after");
-    if (type === "surgery") field.hidden = !(procedure === "surgery" && !profile.generalSurgery);
-    if (type === "eligibleSurgery") field.hidden = !(procedure === "surgery" && profile.generalSurgery);
-    if (type === "highRisk") field.hidden = !(procedure === "highRisk" && !profile.highRisk?.length);
+    if (type === "procedure") field.hidden = !(isComplete && procedure === "procedure" && graduation === "after");
+    if (type === "surgery") field.hidden = !(isComplete && procedure === "surgery" && !profile.generalSurgery);
+    if (type === "eligibleSurgery") field.hidden = !(isComplete && procedure === "surgery" && profile.generalSurgery);
+    if (type === "highRisk") field.hidden = !(isComplete && procedure === "highRisk" && !profile.highRisk?.length);
   });
 
-  const scenario = getQualificationScenario();
+  if (profile) {
+    const surgeryHint = profile.generalSurgery
+      ? "屬美容手術九大專科；特定美容手術仍應依項目核對科別。"
+      : "屬部定專科，但不在美容手術九大專科內。";
+    specialtyHint.textContent = `${profile.label}${surgeryHint}`;
+    specialtyDetail.textContent = `${profile.label}${profile.generalSurgery ? "在九大專科內，但特定美容手術仍有逐項限制。" : "不在其中。"}`;
+    scopeProcedure.textContent = `${profile.label}專科可能適用；仍須依畢業時間補足條件`;
+    scopeSurgery.textContent = profile.generalSurgery
+      ? `${profile.label}屬九大專科；仍須32小時訓練`
+      : "非九大專科；僅可能適用既有30例過渡";
+    scopeHighRisk.textContent = profile.highRisk?.length
+      ? `條文列有項目：${profile.highRisk.join("、")}`
+      : `${profile.label}原則上不得新施作`;
+  } else {
+    specialtyHint.textContent = "請先選擇目前持有的部定專科。";
+    specialtyDetail.textContent = "選擇科別後會在此顯示比對結果。";
+    scopeProcedure.textContent = "選擇科別後顯示初步條件";
+    scopeSurgery.textContent = "選擇科別後顯示科別門檻";
+    scopeHighRisk.textContent = "選擇科別後逐項比對";
+  }
+
+  qualificationResult.classList.toggle("is-incomplete", !isComplete);
+  if (!isComplete) {
+    const completeCount = [profile, graduation, procedure].filter(Boolean).length;
+    qualificationResult.dataset.tone = "neutral";
+    resultBadge.textContent = "尚未判讀";
+    resultContext.textContent = `已完成 ${completeCount} / 3 項資料`;
+    resultTitle.textContent = "先完成專科、畢業時間與施作類型";
+    resultSummary.textContent = "本工具不會在資料不完整時預設任何資格結果；完成三項資料後才會顯示條件與應查核缺口。";
+    resultRequirements.replaceChildren();
+    resultDeadline.hidden = true;
+    resultCaveat.textContent = "最終資格仍須以最新法規、主管機關書面回覆及院所備查結果為準。";
+    saveQualificationProfile();
+    return;
+  }
+
+  const scenario = getQualificationScenario(data, profile);
   qualificationResult.dataset.tone = scenario.tone;
   resultBadge.textContent = scenario.badge;
-  resultContext.textContent = `已取得・${profile.label}專科醫師`;
+  resultContext.textContent = `輸入條件・${profile.label}專科醫師`;
   resultTitle.textContent = scenario.title;
   resultSummary.textContent = scenario.summary;
-  resultCaveat.textContent = scenario.caveat;
+  resultCaveat.textContent = `${scenario.caveat} 本結果是條件整理，不是主管機關資格認定。`;
   resultRequirements.replaceChildren(...scenario.requirements.map((item) => {
     const li = document.createElement("li");
     li.textContent = item;
@@ -1916,19 +2045,6 @@ const renderQualification = () => {
     resultDeadline.hidden = true;
   }
 
-  const surgeryHint = profile.generalSurgery
-    ? "屬美容手術九大專科；特定美容手術仍應依項目核對科別。"
-    : "屬部定專科，但不在美容手術九大專科內。";
-  specialtyHint.textContent = `${profile.label}${surgeryHint}`;
-  specialtyDetail.textContent = `${profile.label}${profile.generalSurgery ? "在九大專科內，但特定美容手術仍有逐項限制。" : "不在其中。"}`;
-  scopeProcedure.textContent = `${profile.label}專科可適用（依畢業時間補足條件）`;
-  scopeSurgery.textContent = profile.generalSurgery
-    ? `${profile.label}屬九大專科；仍須32小時訓練`
-    : "非九大專科；僅限既有30例過渡";
-  scopeHighRisk.textContent = profile.highRisk?.length
-    ? `僅限法定項目：${profile.highRisk.join("、")}`
-    : `${profile.label}原則上不得新施作`;
-
   qualificationResult.classList.remove("is-scanning");
   void qualificationResult.offsetWidth;
   qualificationResult.classList.add("is-scanning");
@@ -1938,6 +2054,12 @@ const renderQualification = () => {
 loadQualificationProfile();
 renderQualification();
 qualificationForm?.addEventListener("change", renderQualification);
+clearQualificationButton?.addEventListener("click", () => {
+  qualificationForm.reset();
+  localStorage.removeItem("lumina-qualification-profile");
+  renderQualification();
+  showToast("已清除資格掃描條件");
+});
 
 if (regulationClock) {
   const days = getDaysUntil(transitionDeadline);
@@ -2280,6 +2402,80 @@ lifeExperiments?.addEventListener("change", (event) => {
 });
 
 const lifeOsLoadTask = initializeLifeOs();
+
+const exportDataButton = document.querySelector("[data-export-data]");
+const importDataButton = document.querySelector("[data-import-data]");
+const importDataInput = document.querySelector("[data-import-file]");
+const dataStatus = document.querySelector("[data-data-status]");
+const dataResetDialog = document.querySelector("[data-data-reset-dialog]");
+const openDataResetButton = document.querySelector("[data-open-data-reset]");
+const confirmDataResetButton = document.querySelector("[data-confirm-data-reset]");
+const localDataPrefix = "lumina-";
+
+const getLuminaStorageItems = () => Object.fromEntries(
+  Array.from({ length: localStorage.length }, (_, index) => localStorage.key(index))
+    .filter((key) => key?.startsWith(localDataPrefix))
+    .map((key) => [key, localStorage.getItem(key)]),
+);
+
+const setDataStatus = (message) => {
+  if (dataStatus) dataStatus.textContent = message;
+};
+
+exportDataButton?.addEventListener("click", () => {
+  const payload = {
+    product: "lumina-atlas",
+    schemaVersion: 1,
+    exportedAt: new Date().toISOString(),
+    items: getLuminaStorageItems(),
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const downloadUrl = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = downloadUrl;
+  link.download = `lumina-atlas-backup-${getTaiwanTodayKey()}.json`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 0);
+  setDataStatus(`已下載備份，共 ${Object.keys(payload.items).length} 組本機資料。`);
+  showToast("進度備份已下載");
+});
+
+importDataButton?.addEventListener("click", () => importDataInput?.click());
+
+importDataInput?.addEventListener("change", async () => {
+  const file = importDataInput.files?.[0];
+  if (!file) return;
+  try {
+    const payload = JSON.parse(await file.text());
+    if (payload.product !== "lumina-atlas" || payload.schemaVersion !== 1 || !payload.items || typeof payload.items !== "object") {
+      throw new Error("備份格式不相容");
+    }
+    const entries = Object.entries(payload.items).filter(
+      ([key, value]) => key.startsWith(localDataPrefix) && typeof value === "string",
+    );
+    if (!entries.length) throw new Error("備份內沒有可匯入的進度");
+    entries.forEach(([key, value]) => localStorage.setItem(key, value));
+    setDataStatus(`已匯入 ${entries.length} 組資料，正在重新整理頁面。`);
+    showToast("備份匯入完成");
+    window.setTimeout(() => window.location.reload(), 700);
+  } catch (error) {
+    setDataStatus(error instanceof Error ? error.message : "無法讀取這份備份");
+    showToast("備份匯入失敗");
+  } finally {
+    importDataInput.value = "";
+  }
+});
+
+openDataResetButton?.addEventListener("click", () => dataResetDialog?.showModal());
+
+confirmDataResetButton?.addEventListener("click", () => {
+  Object.keys(getLuminaStorageItems()).forEach((key) => localStorage.removeItem(key));
+  dataResetDialog?.close();
+  setDataStatus("已清除這台裝置上的網站進度，正在重新整理頁面。");
+  window.setTimeout(() => window.location.reload(), 500);
+});
 
 const reveals = document.querySelectorAll(".reveal");
 const observer = new IntersectionObserver(
