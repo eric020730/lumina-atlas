@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastUpdated": "2026-08-24T16:30:00+08:00",
+  "lastUpdated": "2026-08-31T09:08:20+08:00",
   "updateCadence": "每週一 09:00（Asia/Taipei）",
   "sourceCount": 12,
   "lessons": [
@@ -15,7 +15,7 @@
       "objective": "先建立表皮、真皮與皮下組織的基本地圖，之後才知道不同療程大致作用在哪一層。",
       "takeaway": "表皮、真皮與皮下組織各自扮演什麼角色？",
       "sourceUrl": "https://www.youtube.com/watch?v=zRjTkEIjEM8",
-      "checkedAt": "2026-08-24"
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "Zfv5MbPIgFA",
@@ -28,7 +28,7 @@
       "objective": "理解皮膚屏障、保濕與刺激反應，建立先處理皮膚健康、再考慮醫美療程的順序。",
       "takeaway": "皮膚屏障受損時，為什麼不適合急著增加刺激性療程？",
       "sourceUrl": "https://www.youtube.com/watch?v=Zfv5MbPIgFA",
-      "checkedAt": "2026-08-24"
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "9sBS8C-R6gs",
@@ -41,7 +41,7 @@
       "objective": "學會從標示理解廣效防護、防曬係數與使用情境；影片為英文，可開啟 YouTube 字幕。",
       "takeaway": "一款防曬產品的標示，至少應該看懂哪些資訊？",
       "sourceUrl": "https://www.youtube.com/watch?v=9sBS8C-R6gs",
-      "checkedAt": "2026-08-24"
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "pLHo2b4B108",
@@ -54,7 +54,7 @@
       "objective": "練習辨認敏感肌、淡斑、抗老等常見宣稱，分開產品行銷語言與可以驗證的效果。",
       "takeaway": "影片中的哪一種宣稱需要更多證據才能成立？",
       "sourceUrl": "https://www.youtube.com/watch?v=pLHo2b4B108",
-      "checkedAt": "2026-08-24"
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "jIkNbX37wBQ",
@@ -67,7 +67,7 @@
       "objective": "先從全貌區分光電、能量與注射治療，避免把不同機轉的療程放在同一個價格表比較。",
       "takeaway": "色素、肌肉、容量流失與鬆弛，各自對應哪一類治療邏輯？",
       "sourceUrl": "https://www.youtube.com/watch?v=jIkNbX37wBQ",
-      "checkedAt": "2026-08-24"
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "LR6g-xYnJlU",
@@ -80,7 +80,7 @@
       "objective": "理解雷射後的清潔、防曬、傷口照護與異常警訊，知道哪些狀況需要回診。",
       "takeaway": "正常恢復反應與需要立即聯絡醫療院所的警訊有何不同？",
       "sourceUrl": "https://www.youtube.com/watch?v=LR6g-xYnJlU",
-      "checkedAt": "2026-08-24"
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "CbGUqnc4jf8",
@@ -93,20 +93,20 @@
       "objective": "比較兩類能量的作用方式、深度與預期限制，不用品牌名稱代替治療評估。",
       "takeaway": "電波與音波的主要差異是什麼？哪些結構問題不是它們能解決的？",
       "sourceUrl": "https://www.youtube.com/watch?v=CbGUqnc4jf8",
-      "checkedAt": "2026-08-24"
+      "checkedAt": "2026-08-31"
     },
     {
-      "id": "mD1GRDPzZdA",
+      "id": "NfITNmX5R4E",
       "week": 4,
       "category": "energy",
-      "categoryLabel": "埋線拉提",
-      "title": "想對抗鬆弛，不可不知的埋線",
-      "source": "中華民國美容醫學醫學會・曾繁聞醫師",
-      "duration": "04:15",
-      "objective": "認識埋線的機械性支撐、適用限制與常見風險，和非侵入性能量療程分開比較。",
-      "takeaway": "埋線、電波與音波在機轉和可逆性上有什麼不同？",
-      "sourceUrl": "https://www.youtube.com/watch?v=mD1GRDPzZdA",
-      "checkedAt": "2026-08-24"
+      "categoryLabel": "電波安全",
+      "title": "鳳凰電波副作用與術後照護",
+      "source": "ME Media 美醫誌・沈孟暵醫師",
+      "duration": "05:56",
+      "objective": "認識電波治療後常見的紅、腫、熱、痛與燙傷風險，建立療程前評估、合理期待及異常時回診的安全觀念。",
+      "takeaway": "哪些電波術後反應可以先觀察，哪些狀況應立即聯絡醫療院所？",
+      "sourceUrl": "https://www.youtube.com/watch?v=NfITNmX5R4E",
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "Gj-FpR9IPcY",
@@ -119,7 +119,7 @@
       "objective": "理解肉毒桿菌素是暫時降低肌肉收縮，不是填補凹陷，也不是所有皺紋的通用答案。",
       "takeaway": "動態紋和靜態紋為什麼不能用同一套思路處理？",
       "sourceUrl": "https://www.youtube.com/watch?v=Gj-FpR9IPcY",
-      "checkedAt": "2026-08-24"
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "wPkwOUuwEks",
@@ -132,7 +132,7 @@
       "objective": "比較肌肉放鬆、立即填充與膠原刺激三種不同目的，建立材料選擇的基本語言。",
       "takeaway": "玻尿酸、肉毒與膠原刺激劑分別改變了什麼？",
       "sourceUrl": "https://www.youtube.com/watch?v=wPkwOUuwEks",
-      "checkedAt": "2026-08-24"
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "SLTmAvB6nlo",
@@ -145,7 +145,7 @@
       "objective": "認識填充劑血管栓塞的嚴重性與緊急警訊；風險很低不等於沒有風險。",
       "takeaway": "注射後出現哪些視覺或皮膚變化，不能在家等待觀察？",
       "sourceUrl": "https://www.youtube.com/watch?v=SLTmAvB6nlo",
-      "checkedAt": "2026-08-24"
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "bqcVD3jaaqc",
@@ -158,7 +158,7 @@
       "objective": "學會核對機構、醫師、設備、麻醉與緊急後送資訊，把安全條件放在價格之前。",
       "takeaway": "預約療程前，至少要向醫師或院所確認哪五件事？",
       "sourceUrl": "https://www.youtube.com/watch?v=bqcVD3jaaqc",
-      "checkedAt": "2026-08-24"
+      "checkedAt": "2026-08-31"
     }
   ]
 }

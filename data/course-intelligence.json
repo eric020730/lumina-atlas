@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "lastUpdated": "2026-08-24T10:05:00+08:00",
+  "lastUpdated": "2026-08-31T09:08:20+08:00",
   "updateCadence": "每週一 09:00（Asia/Taipei）",
-  "sourceCount": 5,
+  "sourceCount": 8,
   "courses": [
     {
       "id": "cscsm-autumn-2026",
@@ -13,8 +13,8 @@
       "registrationDeadline": "2026-08-23",
       "location": "台北・華南銀行國際會議中心",
       "formats": ["conference"],
-      "status": "waitlist",
-      "statusLabel": "報名截止・可詢問候補",
+      "status": "closed",
+      "statusLabel": "報名額滿・不開放現場報名",
       "audience": "醫師、護理及相關會員（依主辦資格）",
       "verification": "official-listed",
       "verificationLabel": "全聯會課程表列",
@@ -25,7 +25,7 @@
       "tags": ["特管時數", "法規", "國際研討會"],
       "sourceUrl": "https://www.cscsm.org.tw/course_1_detail.aspx?c=467c64858e9d4637b748bea59419e68d",
       "sourceLabel": "美醫會課程原頁",
-      "checkedAt": "2026-08-24"
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "tsaps-annual-2026",
@@ -38,7 +38,7 @@
       "formats": ["conference", "open"],
       "status": "open",
       "statusLabel": "開放報名",
-      "audience": "醫師、醫學生與非醫師人員依身分類別報名",
+      "audience": "美外會員與學員、整形外科專科醫師及住院醫師、醫學生；非醫師依專屬類別報名",
       "verification": "official",
       "verificationLabel": "學會官方公告",
       "creditStatus": "confirmed",
@@ -48,7 +48,7 @@
       "tags": ["填充注射", "病人安全", "併發症", "經營管理"],
       "sourceUrl": "https://www.tsaps.org.tw/portal_d16.php?button_num=d16&owner_num=d16_34913",
       "sourceLabel": "美容外科醫學會活動頁",
-      "checkedAt": "2026-08-24"
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "cscsm-botox-anatomy-2026",
@@ -56,12 +56,12 @@
       "organizer": "中華民國美容醫學醫學會",
       "startDate": "2026-09-13",
       "endDate": "2026-09-13",
-      "registrationDeadline": null,
-      "location": "台北・依主辦單位通知",
+      "registrationDeadline": "2026-08-31",
+      "location": "台北・依定美時尚診所",
       "formats": ["practice", "open"],
       "status": "open",
       "statusLabel": "開放符合資格醫師報名",
-      "audience": "具西醫師執照之醫師；實作須自備模特",
+      "audience": "美醫會西醫師會員，或具台灣部定專科西醫師執照之非會員醫師；實作須自備模特",
       "verification": "official",
       "verificationLabel": "學會官方公告",
       "creditStatus": "expected",
@@ -69,32 +69,32 @@
       "price": "依會員身分與主辦公告",
       "summary": "陳建名醫師主講，實作部位包含抬頭紋、皺眉紋、魚尾紋與臉部拉提。",
       "tags": ["肉毒", "解剖", "臉部拉提", "醫師實作"],
-      "sourceUrl": "https://www.cscsm.org.tw/events.aspx",
-      "sourceLabel": "美醫會活動列表",
-      "checkedAt": "2026-08-24"
+      "sourceUrl": "https://www.cscsm.org.tw/events_detail.aspx?c=3353b88c4b494d629d9e13f64bd1af0d",
+      "sourceLabel": "美醫會課程原頁",
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "hugel-taichung-2026-10-04",
       "title": "肉毒桿菌＋玻尿酸・全臉與身體實作班（台中場）",
-      "organizer": "Hugel Academy 輕齡美學學院",
+      "organizer": "HUGEL Taiwan／Hugel Academy 輕齡美學學院",
       "startDate": "2026-10-04",
       "endDate": "2026-10-04",
       "registrationDeadline": null,
       "location": "台中・佐生文心診所",
       "formats": ["practice", "open"],
       "status": "verify",
-      "statusLabel": "招生中・認證時數待確認",
+      "statusLabel": "有報名連結・招生狀態與特管時數待確認",
       "audience": "醫師；實作需自備模特並辦理支援報備",
       "verification": "organizer-poster",
       "verificationLabel": "原廠活動海報",
       "creditStatus": "unverified",
       "regulatoryHours": "海報未標示特管時數，報名前須向主辦確認",
-      "price": "實作：玻尿酸 NT$10,000／肉毒 NT$6,000／全天 NT$13,600",
-      "summary": "上午 Revolax 玻尿酸下半臉精雕，下午 Letybo 肉毒臉部與身體應用；屬單一原廠產品導向實作。",
+      "price": "實作：玻尿酸 NT$10,000／肉毒 NT$6,000／全天 NT$13,600；觀摩：NT$5,000／NT$3,000／全天 NT$8,000",
+      "summary": "陳昌詮、蘇浚維醫師主講；上午 Revolax 玻尿酸下半臉精雕，下午 Letybo 肉毒臉部與身體應用，屬原廠產品導向實作。",
       "tags": ["肉毒", "玻尿酸", "原廠課", "台中"],
-      "sourceUrl": "https://www.facebook.com/HUGEL-Aesthetics-Taiwan-106649461823168/",
-      "sourceLabel": "HUGEL Taiwan 官方社群",
-      "checkedAt": "2026-08-24"
+      "sourceUrl": "https://www.facebook.com/HugelTaiwan/posts/pfbid0omjXULYwTMNLHct4AnUhfzGK9GKNpFZa67xUnBYFMWvj26wYiDmw9kkFeGRvsVCtl",
+      "sourceLabel": "HUGEL Taiwan 官方活動貼文",
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "cscsm-tear-trough-2026",
@@ -102,7 +102,7 @@
       "organizer": "中華民國美容醫學醫學會",
       "startDate": "2026-10-18",
       "endDate": "2026-10-18",
-      "registrationDeadline": null,
+      "registrationDeadline": "2026-08-17",
       "location": "台北・依定美時尚診所",
       "formats": ["practice"],
       "status": "waitlist",
@@ -115,32 +115,94 @@
       "price": "實操 NT$10,000",
       "summary": "黃耀麟醫師主講的高階部位實作，設有既有注射經驗門檻，並非零基礎入門課。",
       "tags": ["玻尿酸", "淚溝", "進階實作", "候補"],
-      "sourceUrl": "https://www.cscsm.org.tw/events.aspx",
-      "sourceLabel": "美醫會活動列表",
-      "checkedAt": "2026-08-24"
+      "sourceUrl": "https://www.cscsm.org.tw/events_detail.aspx?c=4ee1c22796d447b3a1c2778d425a46a2",
+      "sourceLabel": "美醫會課程原頁",
+      "checkedAt": "2026-08-31"
     },
     {
       "id": "cscsm-injection-elearning-2026",
       "title": "微創針劑注射教育訓練・線上理論課程",
       "organizer": "中華民國美容醫學醫學會",
-      "startDate": "2026-08-17",
+      "startDate": "2024-10-25",
       "endDate": "2027-12-31",
-      "registrationDeadline": null,
+      "registrationDeadline": "2027-10-25",
       "location": "線上",
       "formats": ["online", "open"],
       "status": "ongoing",
       "statusLabel": "持續開放",
       "audience": "依學會資格；特管認證以醫師身分及完訓規定為準",
       "verification": "official-listed",
-      "verificationLabel": "全聯會課程表列",
-      "creditStatus": "confirmed",
-      "regulatoryHours": "核心 4.5h＋專業 9h，共 13.5h",
-      "price": "依會員身分與主辦公告",
+      "verificationLabel": "全聯會 2026 課程表列",
+      "creditStatus": "expected",
+      "regulatoryHours": "線上理論預計核心 4.5h＋專業 9h；全聯會已列 2026 課程，2027 採認請報名前確認",
+      "price": "線上理論首購：會員 NT$10,000／非會員 NT$15,000；回訓會員 NT$8,000；實習另計",
       "summary": "可作為特定美容醫學處置訓練的一部分，但不等於已完成法定 32 小時全部要求。",
       "tags": ["線上", "特管時數", "針劑基礎", "持續招生"],
-      "sourceUrl": "https://www.tma.tw/cosMedCertify_2026/index04-1_list.asp",
-      "sourceLabel": "醫師公會全聯會課程表",
-      "checkedAt": "2026-08-24"
+      "sourceUrl": "https://www.cscsm.org.tw/elearning_detail.aspx?c=aa614f4a17ea4fad92601a69ee325ee6",
+      "sourceLabel": "美醫會數位課程原頁",
+      "checkedAt": "2026-08-31"
+    },
+    {
+      "id": "cscsm-laser-elearning-2026",
+      "title": "雷射光電治療教育訓練・線上理論課程",
+      "organizer": "中華民國美容醫學醫學會",
+      "startDate": "2025-01-20",
+      "endDate": "2027-12-31",
+      "registrationDeadline": "2027-10-25",
+      "location": "線上",
+      "formats": [
+        "online",
+        "open"
+      ],
+      "status": "ongoing",
+      "statusLabel": "持續開放",
+      "audience": "具西醫師執照之醫師；實體實習須先完成線上理論課程",
+      "verification": "official-listed",
+      "verificationLabel": "全聯會 2026 課程表列",
+      "creditStatus": "expected",
+      "regulatoryHours": "線上理論預計核心 7h＋專業 14.5h；搭配實體實習 8h 後專業合計 22.5h，2027 採認請報名前確認",
+      "price": "依會員身分與官方報名表",
+      "summary": "涵蓋光源原理、色素與疤痕、電波音波、併發症及術後照護；線上理論完訓後才能報名實體實習。",
+      "tags": [
+        "線上",
+        "雷射光電",
+        "特管時數",
+        "持續招生"
+      ],
+      "sourceUrl": "https://www.cscsm.org.tw/elearning_detail.aspx?c=3f3ca9db4286426e8f20b642d05ed81b",
+      "sourceLabel": "美醫會數位課程原頁",
+      "checkedAt": "2026-08-31"
+    },
+    {
+      "id": "tmias-lower-eyelid-2026",
+      "title": "眼整形臨床手術全攻略・下眼瞼核心術式",
+      "organizer": "台灣微整形美容醫學會／台灣顏面整形重建外科醫學會",
+      "startDate": "2026-09-06",
+      "endDate": "2026-09-06",
+      "registrationDeadline": null,
+      "location": "台北・台北醫學大學形態學大樓",
+      "formats": [
+        "practice",
+        "open"
+      ],
+      "status": "open",
+      "statusLabel": "官方頁仍提供報名表",
+      "audience": "依主辦資格；實作 16 位、觀察 16 位",
+      "verification": "official-listed",
+      "verificationLabel": "全聯會課程表列",
+      "creditStatus": "expected",
+      "regulatoryHours": "預計美容醫學手術專業進階 8h；另列學會積分 12",
+      "price": "依官方課程 DM",
+      "summary": "周哲宇醫師主講下眼瞼核心術式，採實作與觀察小班制；屬美容醫學手術進階課程。",
+      "tags": [
+        "眼整形",
+        "美容手術",
+        "特管時數",
+        "醫師實作"
+      ],
+      "sourceUrl": "https://www.tmias.org.tw/events/content.php?id=175&p=1&c=Y",
+      "sourceLabel": "微整形美容醫學會課程原頁",
+      "checkedAt": "2026-08-31"
     }
   ]
 }
